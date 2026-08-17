@@ -353,6 +353,11 @@
                         <span>Tracker Status Misi</span>
                     </a>
 
+                    <a href="#analitik" onclick="showAppSection('analitik'); toggleMenu()" id="nav-link-analitik" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-500"></i>
+                        <span>Analitik Video</span>
+                    </a>
+
                     <a href="#riwayat" onclick="showAppSection('riwayat'); toggleMenu()" id="nav-link-riwayat" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="history" class="w-5 h-5 text-slate-500"></i>
                         <span>Riwayat Transaksi</span>
@@ -539,6 +544,59 @@
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6">
                     <div id="user-mision-tracker-list" class="space-y-4">
                         <p class="text-xs text-slate-400 text-center py-8">Memuat tracker misi...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN MEMBER: ANALITIK VIDEO MISI                   -->
+            <!-- ========================================================= -->
+            <section id="sec-analitik" class="hidden max-w-5xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-violet-100 text-violet-900">Performa Konten</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Analitik Video Misi Saya</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Rekap Like, View, Komentar, dan Share dari setiap video misi yang Anda kirimkan. Data diperbarui oleh Admin.</p>
+                    </div>
+                </div>
+
+                <!-- Ringkasan Total Analitik Member -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Like</span>
+                        </div>
+                        <p id="analitik-total-likes" class="text-xl font-black text-slate-900">0</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total View</span>
+                        </div>
+                        <p id="analitik-total-views" class="text-xl font-black text-slate-900">0</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Komentar</span>
+                        </div>
+                        <p id="analitik-total-comments" class="text-xl font-black text-slate-900">0</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i data-lucide="share-2" class="w-4 h-4 text-amber-500"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Share</span>
+                        </div>
+                        <p id="analitik-total-shares" class="text-xl font-black text-slate-900">0</p>
+                    </div>
+                </div>
+
+                <!-- Daftar Analitik Per Video -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6">
+                    <h3 class="font-extrabold text-slate-900 text-base mb-4">Rincian Per Video</h3>
+                    <div id="user-analitik-list" class="space-y-3">
+                        <p class="text-xs text-slate-400 text-center py-8">Memuat data analitik...</p>
                     </div>
                 </div>
             </section>
@@ -855,6 +913,9 @@
                     <button id="admin-tab-btn-trackers" onclick="switchAdminTab('trackers')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Tracker Misi Member
                     </button>
+                    <button id="admin-tab-btn-analytics" onclick="switchAdminTab('analytics')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Analitik Video Member
+                    </button>
                     <button id="admin-tab-btn-transactions" onclick="switchAdminTab('transactions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Kelola & Riwayat Transaksi
                     </button>
@@ -949,6 +1010,92 @@
 
                     <div id="admin-trackers-list" class="space-y-3">
                         <p class="text-xs text-slate-400">Memuat data tracker misi...</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB: ANALITIK VIDEO SELURUH MEMBER -->
+                <div id="admin-subtab-analytics" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 text-base">Analitik Video Misi Seluruh Member</h3>
+                                <p class="text-xs text-slate-500">Rekap Like, View, Komentar & Share dari seluruh link video misi yang dikirim member. Isi/perbarui angka lewat tombol "Edit" pada Tracker Misi Member.</p>
+                            </div>
+                        </div>
+
+                        <!-- Ringkasan Total Analitik Global -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Like</span>
+                                </div>
+                                <p id="admin-analitik-total-likes" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total View</span>
+                                </div>
+                                <p id="admin-analitik-total-views" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Komentar</span>
+                                </div>
+                                <p id="admin-analitik-total-comments" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="share-2" class="w-4 h-4 text-amber-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Share</span>
+                                </div>
+                                <p id="admin-analitik-total-shares" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Rekap Per Member -->
+                        <h4 class="font-extrabold text-slate-900 text-sm mb-3">Rekap Per Member</h4>
+                        <div class="overflow-x-auto mb-6">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                        <th class="p-3">Member</th>
+                                        <th class="p-3 text-center">Jumlah Video</th>
+                                        <th class="p-3 text-center">Like</th>
+                                        <th class="p-3 text-center">View</th>
+                                        <th class="p-3 text-center">Komentar</th>
+                                        <th class="p-3 text-center">Share</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-analitik-per-member-body">
+                                    <tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat rekap member...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Rincian Per Video -->
+                        <h4 class="font-extrabold text-slate-900 text-sm mb-3">Rincian Per Video</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                        <th class="p-3">Member</th>
+                                        <th class="p-3">Misi</th>
+                                        <th class="p-3">Link Video</th>
+                                        <th class="p-3 text-center">Like</th>
+                                        <th class="p-3 text-center">View</th>
+                                        <th class="p-3 text-center">Komentar</th>
+                                        <th class="p-3 text-center">Share</th>
+                                        <th class="p-3">Tanggal Kirim</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-analitik-detail-body">
+                                    <tr><td colspan="8" class="p-4 text-center text-slate-400">Memuat data video...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1164,6 +1311,28 @@
                             <option value="rejected">Ditolak (Rejected)</option>
                         </select>
                     </div>
+                </div>
+                <div>
+                    <p class="block font-bold text-slate-700 mb-1">Analitik Video (Like / View / Komentar / Share)</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Like</label>
+                            <input type="number" id="edit-tracker-likes" min="0" value="0" class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">View</label>
+                            <input type="number" id="edit-tracker-views" min="0" value="0" class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Komentar</label>
+                            <input type="number" id="edit-tracker-comments" min="0" value="0" class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 mb-1 uppercase">Share</label>
+                            <input type="number" id="edit-tracker-shares" min="0" value="0" class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">*Masukkan angka Like, View, Komentar, dan Share sesuai data terbaru dari video TikTok/media sosial member.</p>
                 </div>
                 <div>
                     <label class="block font-bold text-slate-700 mb-1">Catatan / Alasan Admin</label>
@@ -1687,7 +1856,7 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'trackermisi', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page
@@ -1906,9 +2075,13 @@
                     }
                 }
 
+                // Render Analitik Video Member (menu Analitik Video)
+                renderUserAnalitikList(userClaims);
+
                 // Render ke Admin Subtab Jika Admin
                 if (window.currentUserProfile?.role === 'admin') {
                     renderAdminTrackersList();
+                    renderAdminAnalitikList();
                 }
                 safeLucideIcons();
             }, (err) => console.error("Error claims:", err));
@@ -2103,6 +2276,10 @@
                 proof: proofUrl,
                 status: 'pending',
                 reward: m.reward || 5000,
+                likes: 0,
+                views: 0,
+                comments: 0,
+                shares: 0,
                 adminNotes: '',
                 submittedAt: new Date().toISOString()
             });
@@ -2115,7 +2292,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['members', 'missions', 'trackers', 'transactions', 'products', 'announcements'];
+            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -2173,6 +2350,139 @@
                 `;
             }).join('');
             safeLucideIcons();
+        }
+
+        // Render Analitik Video milik member yang sedang login (menu "Analitik Video")
+        function renderUserAnalitikList(userClaims) {
+            const container = document.getElementById('user-analitik-list');
+            if (!container) return;
+
+            let totalLikes = 0, totalViews = 0, totalComments = 0, totalShares = 0;
+            userClaims.forEach(c => {
+                totalLikes += c.likes || 0;
+                totalViews += c.views || 0;
+                totalComments += c.comments || 0;
+                totalShares += c.shares || 0;
+            });
+
+            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val.toLocaleString('id-ID'); };
+            setTxt('analitik-total-likes', totalLikes);
+            setTxt('analitik-total-views', totalViews);
+            setTxt('analitik-total-comments', totalComments);
+            setTxt('analitik-total-shares', totalShares);
+
+            if (userClaims.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-xs">
+                        <i data-lucide="bar-chart-3" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                        <p>Anda belum pernah mengirimkan link video misi.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...userClaims].sort((a,b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+            container.innerHTML = sorted.map(c => {
+                const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleString('id-ID') : '-';
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2 text-xs">
+                        <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <h4 class="font-extrabold text-slate-900 text-sm">${c.missionTitle}</h4>
+                            <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                        </div>
+                        <p class="text-slate-600">Link Video: <a href="${c.proof}" target="_blank" class="text-blue-600 underline font-mono break-all">${c.proof}</a></p>
+                        <div class="grid grid-cols-4 gap-2 pt-1">
+                            <div class="bg-white rounded-lg p-2 border border-slate-200 text-center">
+                                <p class="text-[9px] font-bold uppercase text-slate-400">Like</p>
+                                <p class="font-black text-slate-900">${(c.likes || 0).toLocaleString('id-ID')}</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-2 border border-slate-200 text-center">
+                                <p class="text-[9px] font-bold uppercase text-slate-400">View</p>
+                                <p class="font-black text-slate-900">${(c.views || 0).toLocaleString('id-ID')}</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-2 border border-slate-200 text-center">
+                                <p class="text-[9px] font-bold uppercase text-slate-400">Komentar</p>
+                                <p class="font-black text-slate-900">${(c.comments || 0).toLocaleString('id-ID')}</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-2 border border-slate-200 text-center">
+                                <p class="text-[9px] font-bold uppercase text-slate-400">Share</p>
+                                <p class="font-black text-slate-900">${(c.shares || 0).toLocaleString('id-ID')}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Analitik Video seluruh member (Admin Subtab "Analitik Video Member")
+        function renderAdminAnalitikList() {
+            const detailBody = document.getElementById('admin-analitik-detail-body');
+            const perMemberBody = document.getElementById('admin-analitik-per-member-body');
+            if (!detailBody || !perMemberBody) return;
+
+            const trackers = Object.values(window.allTrackersMap || {});
+
+            let totalLikes = 0, totalViews = 0, totalComments = 0, totalShares = 0;
+            const perMember = {};
+
+            trackers.forEach(c => {
+                const likes = c.likes || 0, views = c.views || 0, comments = c.comments || 0, shares = c.shares || 0;
+                totalLikes += likes; totalViews += views; totalComments += comments; totalShares += shares;
+
+                const key = c.userId || c.username;
+                if (!perMember[key]) {
+                    perMember[key] = { userNama: c.userNama, username: c.username, count: 0, likes: 0, views: 0, comments: 0, shares: 0 };
+                }
+                perMember[key].count += 1;
+                perMember[key].likes += likes;
+                perMember[key].views += views;
+                perMember[key].comments += comments;
+                perMember[key].shares += shares;
+            });
+
+            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val.toLocaleString('id-ID'); };
+            setTxt('admin-analitik-total-likes', totalLikes);
+            setTxt('admin-analitik-total-views', totalViews);
+            setTxt('admin-analitik-total-comments', totalComments);
+            setTxt('admin-analitik-total-shares', totalShares);
+
+            const memberRows = Object.values(perMember);
+            if (memberRows.length === 0) {
+                perMemberBody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada data video misi.</td></tr>';
+            } else {
+                memberRows.sort((a,b) => b.views - a.views);
+                perMemberBody.innerHTML = memberRows.map(r => `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-800">${r.userNama} <span class="text-slate-400 font-normal">(${r.username})</span></td>
+                        <td class="p-3 text-center">${r.count}</td>
+                        <td class="p-3 text-center">${r.likes.toLocaleString('id-ID')}</td>
+                        <td class="p-3 text-center">${r.views.toLocaleString('id-ID')}</td>
+                        <td class="p-3 text-center">${r.comments.toLocaleString('id-ID')}</td>
+                        <td class="p-3 text-center">${r.shares.toLocaleString('id-ID')}</td>
+                    </tr>
+                `).join('');
+            }
+
+            if (trackers.length === 0) {
+                detailBody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-slate-400">Belum ada video misi yang dikirim member.</td></tr>';
+            } else {
+                const sorted = [...trackers].sort((a,b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+                detailBody.innerHTML = sorted.map(c => {
+                    const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleString('id-ID') : '-';
+                    return `
+                        <tr class="border-b border-slate-100 hover:bg-slate-50">
+                            <td class="p-3 font-bold text-slate-800">${c.userNama} <span class="text-slate-400 font-normal">(${c.username})</span></td>
+                            <td class="p-3">${c.missionTitle}</td>
+                            <td class="p-3"><a href="${c.proof}" target="_blank" class="text-blue-600 underline font-mono break-all">${c.proof}</a></td>
+                            <td class="p-3 text-center">${(c.likes || 0).toLocaleString('id-ID')}</td>
+                            <td class="p-3 text-center">${(c.views || 0).toLocaleString('id-ID')}</td>
+                            <td class="p-3 text-center">${(c.comments || 0).toLocaleString('id-ID')}</td>
+                            <td class="p-3 text-center">${(c.shares || 0).toLocaleString('id-ID')}</td>
+                            <td class="p-3 text-slate-400 font-mono text-[10px]">${dateStr}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
         }
 
         function renderAdminTxList() {
@@ -2430,6 +2740,10 @@
             document.getElementById('edit-tracker-proof').value = c.proof || '';
             document.getElementById('edit-tracker-reward').value = c.reward || 0;
             document.getElementById('edit-tracker-status').value = c.status || 'pending';
+            document.getElementById('edit-tracker-likes').value = c.likes || 0;
+            document.getElementById('edit-tracker-views').value = c.views || 0;
+            document.getElementById('edit-tracker-comments').value = c.comments || 0;
+            document.getElementById('edit-tracker-shares').value = c.shares || 0;
             document.getElementById('edit-tracker-notes').value = c.adminNotes || '';
 
             const modal = document.getElementById('edit-tracker-modal');
@@ -2465,6 +2779,10 @@
                 proof: document.getElementById('edit-tracker-proof').value.trim(),
                 reward: newReward,
                 status: newStatus,
+                likes: parseInt(document.getElementById('edit-tracker-likes').value) || 0,
+                views: parseInt(document.getElementById('edit-tracker-views').value) || 0,
+                comments: parseInt(document.getElementById('edit-tracker-comments').value) || 0,
+                shares: parseInt(document.getElementById('edit-tracker-shares').value) || 0,
                 adminNotes: document.getElementById('edit-tracker-notes').value.trim()
             });
 
