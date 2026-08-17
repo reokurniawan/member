@@ -1552,6 +1552,23 @@
         function setupRealtimeListeners() {
             const uid = window.currentUserProfile?.uid;
 
+            // Realtime Store Products (produk yang ditambahkan lewat Admin Panel)
+            onSnapshot(PRODUCTS_COL, (snapshot) => {
+                window.dynamicProducts = snapshot.docs.map(docSnap => {
+                    const d = docSnap.data();
+                    return {
+                        id: docSnap.id,
+                        category: d.category,
+                        image: d.image,
+                        name: d.name,
+                        price: d.price
+                    };
+                });
+                if (typeof renderStoreProducts === 'function') {
+                    renderStoreProducts();
+                }
+            }, (err) => console.error("Error loading store products:", err));
+
             // Realtime Current User Balance Sync
             if (uid) {
                 onSnapshot(doc(USERS_COL, uid), (docSnap) => {
@@ -2390,8 +2407,14 @@
         const defaultProducts = [
             { id: 'p1', category: 'buku', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7jdOSxS902R0P7PWycFb0khgJ0d2WC6-As_XkC2sWODv0rBp9ncaPDjEYejlthwoAtly6Ge489oJqLIjUf-33hMXk4nSHlA3VYBhLUAZK1l2bKP91pK7sHfLr6fLymbg4rYQSpAwOYpS9lJFKywqXeJ-8aQFjqePH9JKZWookOdrOylF7FpKbFCe3AmB8/s1024/IMG_0255.png', name: 'BUKU: TAK PERLU TERANG CUKUP REDUP TAPI TAK PADAM', price: 85000 },
             { id: 'p2', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEibRWdEOk6Ssi-qKy2AE1ptCvaXFiq_S2hdJEmzWBVfzPJUC21LiarHEyvvPl3G1jJuP7reX56NjcNLbZAqXQrxnmLWQ2wlbli0jXJAZvnJYm49DOihzZw4mn7G8Oi6wOys74EwZfJojyhIMzjIEJi4Pf47diFWNhZkxbFF3FsEJoHljyPnib98upgePC8f', name: 'BUKU: KETIKA AKU TERBANG TINGGI SETINGGI ANGKASA', price: 75000 },
-            { id: 'p3', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEh2dJv4DnXT0jjH72lP8_bm9OeLPAVZrRL_2ESpWHAVeaY01nCzakyVgur_2AWIzeYQd0BDncmonMi1RKiMn5YCdYzdIry6cfMo0jlB3-7p_B6k2DxUT7kRn8hf3CXXbytlB-oBLWKvymqtgKo4XgN3vPYQpMk5gBQEx0tp8XxwDeQCkNQ6l6yyph6PA7UK', name: 'REXER PERFUME BUNDLE PACK', price: 99999 },
-            { id: 'p4', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEhEVGQDEMAxc04CaPMpx_nbEtw-znupBD0EZ6mhIVp1466B3EjNVDAbnB1kZygQmB9lRNRTG2OVP3t8OIIoSezQpo0oqyX3y9wuKZlkt_N2un5f9RWM7let9El0e18dxYBAYyG-gFtvmY_59tyiqnP9x3UO67I5TaeeRw8j-vI_oThQYmg5A9r7D-v0Ix9G', name: 'REXER PERFUME MOON LIGHT X', price: 39000 }
+            { id: 'p3', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEhd6QHOYfR6qpQ7LnD4ZHgOxqcYq7ekUTcj3TNVYtlmq493hUto9Z5atsKkGOc72tHsBthc-T3Ja2fbhujnJIlzLKPAqbppYwypRmNX8RBD7s3_v5nVJRaDKolRiMQPhmTfItib_aXtaU423w4KnOpzLDz8-5lk02BYGoQToVvvke5ipeuKbvg99s4KIbFS', name: 'BUKU: QOF', price: 80000 },
+            { id: 'p4', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEinVUk1B6BcqtWIBymrnLdYt3FfrlOne6T8Q64HucEzkKkKN2WrRCxBZWzRvRkDInW845KlxcXlFITXacBqSPB5kzKzSFb3iCtIYfeHgGePxLKex7efEDuwOBAXgDy2EW893llO_yYHz_xynTffawqmz4UgLwPrWf70dylZ-cT3VdZvBdtQZ8Wqq1oqtpER', name: 'BUKU: AVICENNA', price: 80500 },
+            { id: 'p5', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEiHiNXe3PSSrlUO1HVjJFhLOReuLpNE_pa4xk6dpQA0ckNhAZF9MqO-uqsRKVqJaiMbnRvs41Y-KOBX2yOJrg_YNbrt4LKX32NWrnCU1qcGSW1I20qTo4QzB82RtUluqh1ybjp0kTxEZISInA_Tkp0lkgytLwHx_tgiHCvVkdJSWpxcoZKY78r7XIjIFyl3', name: 'BUKU: AMBIGU', price: 99500 },
+            { id: 'p6', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEgOc-UgTewhgCjhOCorQYy3OnxJ-ZMu51X6xHHSbG6kqQakvb6iw0d2yvoH6-uJozYLo6GTZaKeCJriOq-i3p53xdwIrV8vpLDeuOayUMWuH2tIrO86gZHzyMMVCLeT26zjv4y-QNid2PG6Dv4HZ_K9srn5F4AO9xIoEOpzl8bDonCWJd9MeKlA0iG_IvTX', name: "BUKU: LO GAK SENDIRIAN SUMPAH !!!", price: 89999 },
+            { id: 'p7', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEh2dJv4DnXT0jjH72lP8_bm9OeLPAVZrRL_2ESpWHAVeaY01nCzakyVgur_2AWIzeYQd0BDncmonMi1RKiMn5YCdYzdIry6cfMo0jlB3-7p_B6k2DxUT7kRn8hf3CXXbytlB-oBLWKvymqtgKo4XgN3vPYQpMk5gBQEx0tp8XxwDeQCkNQ6l6yyph6PA7UK', name: 'REXER PERFUME BUNDLE PACK', price: 99999 },
+            { id: 'p8', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEhEVGQDEMAxc04CaPMpx_nbEtw-znupBD0EZ6mhIVp1466B3EjNVDAbnB1kZygQmB9lRNRTG2OVP3t8OIIoSezQpo0oqyX3y9wuKZlkt_N2un5f9RWM7let9El0e18dxYBAYyG-gFtvmY_59tyiqnP9x3UO67I5TaeeRw8j-vI_oThQYmg5A9r7D-v0Ix9G', name: 'REXER PERFUME MOON LIGHT X', price: 39000 },
+            { id: 'p9', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEiWWmuUSKIV1QlzMawI110g4fzknpFNRNmjz3MqfBrTvKOS531s3NpwBoKCVqADXL6xIYvFgGd3_4yC3zxvpep5qmhnQ7YAFnJPcDbFMziR4QcO0cC7MnVsaF5wtTF6Eyzkfxo0t9RvnKmxZK8gfNpxmkXfNCmYCjK_pPKyPykq3kXI0OvNjw9F3NDOv7Ly', name: 'REXER PERFUME LOOK MAN', price: 39000 },
+            { id: 'p10', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEiTASGw-ZV-0lcyW0kc_FMAxF9NiX8r2rx0vOnvXn7BDz7zG9zSo1iZu83guRxqQgxVSxJqJtuMtUX5u1e1447q4z8aBe-Sb0qE7rtZrTsHhBbIp8PN11NyYsu690y1hxioCqlsogR3K7_pSYClnCoVvAblrKXeLLf7_lMgWjVR-Ig1Ey_UmQccM4lPYrz-', name: 'REXER PERFUME HYPER X', price: 39000 }
         ];
 
         let cart = [];
@@ -2401,7 +2424,8 @@
             const grid = document.getElementById('product-grid');
             if (!grid) return;
 
-            const filtered = defaultProducts.filter(p => currentStoreCat === 'all' || p.category === currentStoreCat);
+            const allProducts = defaultProducts.concat(window.dynamicProducts || []);
+            const filtered = allProducts.filter(p => currentStoreCat === 'all' || p.category === currentStoreCat);
 
             grid.innerHTML = filtered.map(p => `
                 <div class="product-card rounded-xl overflow-hidden flex flex-col justify-between p-3">
@@ -2622,4 +2646,3 @@
     </script>
 </body>
 </html>
-
