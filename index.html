@@ -313,6 +313,16 @@
                         <span>Beranda & Misi</span>
                     </a>
 
+                    <a href="#trackermisi" onclick="showAppSection('trackermisi'); toggleMenu()" id="nav-link-trackermisi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="list-checks" class="w-5 h-5 text-slate-500"></i>
+                        <span>Tracker Status Misi</span>
+                    </a>
+
+                    <a href="#riwayat" onclick="showAppSection('riwayat'); toggleMenu()" id="nav-link-riwayat" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="history" class="w-5 h-5 text-slate-500"></i>
+                        <span>Riwayat Transaksi</span>
+                    </a>
+
                     <a href="#ihsg" onclick="showAppSection('ihsg'); toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="trending-up" class="w-5 h-5 text-slate-500"></i>
                         <span>IHSG Monitor</span>
@@ -398,6 +408,35 @@
                         </div>
                     </div>
 
+                    <!-- Tombol Akses Cepat Tracker & Riwayat -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button onclick="showAppSection('trackermisi')" class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-slate-900 transition text-left flex items-center justify-between group shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center font-bold">
+                                    <i data-lucide="list-checks" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-900 text-xs">Tracker Status Misi</h4>
+                                    <p class="text-[11px] text-slate-500">Cek status pengerjaan & klaim video</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+                        </button>
+
+                        <button onclick="showAppSection('riwayat')" class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-slate-900 transition text-left flex items-center justify-between group shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-700 flex items-center justify-center font-bold">
+                                    <i data-lucide="history" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-900 text-xs">Riwayat Transaksi Saya</h4>
+                                    <p class="text-[11px] text-slate-500">Pantau catatan Deposit & Penarikan</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+                        </button>
+                    </div>
+
                     <!-- DAFTAR MISI HARI INI (TAMPILAN MODEL KARTU) -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -442,6 +481,52 @@
                                 <p id="info-bank-norek" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN MEMBER: TRACKER STATUS MISI                   -->
+            <!-- ========================================================= -->
+            <section id="sec-trackermisi" class="hidden max-w-5xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900">Aktivitas Misi</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Tracker Status Misi Saya</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Pantau status pengerjaan, persetujuan klaim video konten, dan feedback dari Admin.</p>
+                    </div>
+                    <button onclick="showAppSection('beranda')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Kerjakan Misi Baru</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6">
+                    <div id="user-mision-tracker-list" class="space-y-4">
+                        <p class="text-xs text-slate-400 text-center py-8">Memuat tracker misi...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN MEMBER: RIWAYAT TRANSAKSI                     -->
+            <!-- ========================================================= -->
+            <section id="sec-riwayat" class="hidden max-w-5xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-100 text-blue-900">Aktivitas Keuangan</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Riwayat Transaksi Saya</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Catatan pengajuan Deposit dan Penarikan saldo akun Anda secara real-time.</p>
+                    </div>
+                    <button onclick="showAppSection('transaksi')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                        <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+                        <span>Ajukan Transaksi</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6">
+                    <div id="user-tx-history-list" class="space-y-3">
+                        <p class="text-xs text-slate-400 text-center py-8">Memuat riwayat transaksi...</p>
                     </div>
                 </div>
             </section>
@@ -720,7 +805,7 @@
                     <div>
                         <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-full uppercase tracking-wider">Akses Terotorisasi</span>
                         <h2 class="text-2xl font-black mt-2">Pusat Kendali Admin ZHEDVATOR</h2>
-                        <p class="text-xs text-slate-400 mt-1">Kelola data member lengkap, verifikasi transaksi, setujui klaim video misi, dan terbitkan pengumuman.</p>
+                        <p class="text-xs text-slate-400 mt-1">Kelola data member lengkap, verifikasi transaksi, setujui klaim video misi, serta edit & hapus riwayat/tracker secara langsung.</p>
                     </div>
                 </div>
 
@@ -730,10 +815,13 @@
                         Daftar Member (Lengkap)
                     </button>
                     <button id="admin-tab-btn-missions" onclick="switchAdminTab('missions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola Misi & Klaim
+                        Kelola Misi Baru
+                    </button>
+                    <button id="admin-tab-btn-trackers" onclick="switchAdminTab('trackers')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Tracker Misi Member
                     </button>
                     <button id="admin-tab-btn-transactions" onclick="switchAdminTab('transactions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola Transaksi
+                        Kelola & Riwayat Transaksi
                     </button>
                     <button id="admin-tab-btn-products" onclick="switchAdminTab('products')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Kelola Produk Store
@@ -771,7 +859,7 @@
                     </div>
                 </div>
 
-                <!-- ADMIN SUB-TAB 2: KELOLA MISI & KLAIM -->
+                <!-- ADMIN SUB-TAB 2: KELOLA MISI BARU -->
                 <div id="admin-subtab-missions" class="hidden space-y-6">
                     <!-- Form Buat Misi Baru -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
@@ -813,25 +901,37 @@
                             <p class="text-xs text-slate-400">Memuat misi...</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Klaim Misi Masuk -->
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Klaim Misi & Link Video Konten Member</h3>
-                        <div id="admin-claims-list" class="space-y-3">
-                            <p class="text-xs text-slate-400">Memuat data pengajuan klaim...</p>
+                <!-- ADMIN SUB-TAB 3: TRACKER MISI MEMBER MASTER -->
+                <div id="admin-subtab-trackers" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">Tracker Pengerjaan Misi Seluruh Member</h3>
+                            <p class="text-xs text-slate-500">Verifikasi, edit detail link video konten, ubah status, atau hapus tracker klaim member.</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- ADMIN SUB-TAB 3: KELOLA TRANSAKSI -->
-                <div id="admin-subtab-transactions" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Deposit & Withdraw Member</h3>
-                    <div id="admin-transactions-list" class="space-y-3">
-                        <p class="text-xs text-slate-400">Memuat transaksi pending...</p>
+                    <div id="admin-trackers-list" class="space-y-3">
+                        <p class="text-xs text-slate-400">Memuat data tracker misi...</p>
                     </div>
                 </div>
 
-                <!-- ADMIN SUB-TAB 4: KELOLA PRODUK STORE -->
+                <!-- ADMIN SUB-TAB 4: KELOLA & RIWAYAT TRANSAKSI MASTER -->
+                <div id="admin-subtab-transactions" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">Kelola & Riwayat Transaksi Member</h3>
+                            <p class="text-xs text-slate-500">Setujui pengajuan deposit/withdraw, edit riwayat transaksi, atau hapus catatan transaksi.</p>
+                        </div>
+                    </div>
+
+                    <div id="admin-transactions-list" class="space-y-3">
+                        <p class="text-xs text-slate-400">Memuat daftar transaksi...</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 5: KELOLA PRODUK STORE -->
                 <div id="admin-subtab-products" class="hidden space-y-6">
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                         <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Tambah Produk Baru ke Store</h3>
@@ -871,7 +971,7 @@
                     </div>
                 </div>
 
-                <!-- ADMIN SUB-TAB 5: PENGUMUMAN MEMBER -->
+                <!-- ADMIN SUB-TAB 6: PENGUMUMAN MEMBER -->
                 <div id="admin-subtab-announcements" class="hidden space-y-6">
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                         <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Siarkan Pengumuman / Broadcast Baru</h3>
@@ -991,6 +1091,97 @@
                 <div class="flex gap-2 pt-3">
                     <button type="button" onclick="closeEditMemberModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-50">Batal</button>
                     <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Tracker Misi Member (Admin) -->
+    <div id="edit-tracker-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="font-extrabold text-slate-900 text-base">Edit Tracker Misi Member</h3>
+                <button type="button" onclick="closeEditTrackerModal()" class="text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveTrackerEdit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Pengguna / Member</label>
+                    <input type="text" id="edit-tracker-user" readonly class="w-full p-2.5 bg-slate-100 border rounded-xl font-medium text-slate-500">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Judul Misi</label>
+                    <input type="text" id="edit-tracker-title" readonly class="w-full p-2.5 bg-slate-100 border rounded-xl font-medium text-slate-500">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Link Video Konten Member</label>
+                    <input type="url" id="edit-tracker-proof" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Hadiah Saldo (Rp)</label>
+                        <input type="number" id="edit-tracker-reward" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Status Klaim</label>
+                        <select id="edit-tracker-status" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                            <option value="pending">Pending</option>
+                            <option value="approved">Disetujui (Approved)</option>
+                            <option value="rejected">Ditolak (Rejected)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Catatan / Alasan Admin</label>
+                    <textarea id="edit-tracker-notes" placeholder="Catatan untuk member (misal: Video sesuai/tidak sesuai)..." rows="2" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium"></textarea>
+                </div>
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeEditTrackerModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Transaksi (Admin) -->
+    <div id="edit-tx-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="font-extrabold text-slate-900 text-base">Edit Catatan Transaksi</h3>
+                <button type="button" onclick="closeEditTxModal()" class="text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="saveTxEdit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Pengguna / Member</label>
+                    <input type="text" id="edit-tx-user" readonly class="w-full p-2.5 bg-slate-100 border rounded-xl font-medium text-slate-500">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Tipe Transaksi</label>
+                        <select id="edit-tx-type" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                            <option value="DEPOSIT">DEPOSIT</option>
+                            <option value="WITHDRAW">WITHDRAW</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Nominal (Rp)</label>
+                        <input type="number" id="edit-tx-amount" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Rincian Catatan / Tujuan</label>
+                    <input type="text" id="edit-tx-details" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Status Transaksi</label>
+                    <select id="edit-tx-status" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                        <option value="pending">Pending</option>
+                        <option value="approved">Disetujui (Approved)</option>
+                        <option value="rejected">Ditolak (Rejected)</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeEditTxModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800">Simpan Transaksi</button>
                 </div>
             </form>
         </div>
@@ -1124,8 +1315,13 @@
         window.currentUserProfile = null;
         window.selectedEditMember = null;
         window.selectedSubmitMission = null;
+        window.selectedEditTracker = null;
+        window.selectedEditTx = null;
+
         window.allMembersMap = {};
         window.allMissionsMap = {};
+        window.allTrackersMap = {};
+        window.allTxMap = {};
 
         // Safe Lucide Loader
         function safeLucideIcons() {
@@ -1268,7 +1464,7 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page
@@ -1351,17 +1547,19 @@
         }
 
         /* ----------------------------------------------------------------- */
-        /* 3. REALTIME FIRESTORE LISTENERS                                   */
+        /* 3. REALTIME FIRESTORE LISTENERS & MEMBER TRACKER / RIWAYAT        */
         /* ----------------------------------------------------------------- */
         function setupRealtimeListeners() {
+            const uid = window.currentUserProfile?.uid;
+
             // Realtime Current User Balance Sync
-            if (window.currentUserProfile?.uid) {
-                onSnapshot(doc(USERS_COL, window.currentUserProfile.uid), (docSnap) => {
+            if (uid) {
+                onSnapshot(doc(USERS_COL, uid), (docSnap) => {
                     if (docSnap.exists()) {
                         window.currentUserProfile = { uid: docSnap.id, ...docSnap.data() };
                         document.getElementById('user-display-saldo').textContent = formatRupiah(window.currentUserProfile.saldo || 0);
                     }
-                });
+                }, (err) => console.error("Error balance:", err));
             }
 
             // Realtime Member Missions List (KARTU VIEW)
@@ -1411,7 +1609,130 @@
                 });
                 grid.innerHTML = html;
                 safeLucideIcons();
-            });
+            }, (err) => console.error("Error missions:", err));
+
+            // Realtime Tracker Misi Member
+            onSnapshot(CLAIMS_COL, (snapshot) => {
+                const userTrackerContainer = document.getElementById('user-mision-tracker-list');
+                window.allTrackersMap = {};
+
+                let userClaims = [];
+                snapshot.forEach(docSnap => {
+                    const c = { id: docSnap.id, ...docSnap.data() };
+                    window.allTrackersMap[c.id] = c;
+                    if (c.userId === uid) userClaims.push(c);
+                });
+
+                if (userTrackerContainer) {
+                    if (userClaims.length === 0) {
+                        userTrackerContainer.innerHTML = `
+                            <div class="text-center py-8 text-slate-400 text-xs">
+                                <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                                <p>Anda belum pernah mengirimkan klaim video misi.</p>
+                            </div>
+                        `;
+                    } else {
+                        userClaims.sort((a,b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+                        userTrackerContainer.innerHTML = userClaims.map(c => {
+                            const statusBadges = {
+                                pending: 'bg-amber-100 text-amber-900 border-amber-200',
+                                approved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                                rejected: 'bg-rose-100 text-rose-800 border-rose-200'
+                            };
+                            const statusText = {
+                                pending: 'Sedang Diverifikasi',
+                                approved: 'Disetujui (+Saldo)',
+                                rejected: 'Ditolak Admin'
+                            };
+                            const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleString('id-ID') : '-';
+
+                            return `
+                                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] border ${statusBadges[c.status] || statusBadges.pending}">${statusText[c.status] || c.status}</span>
+                                            <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                                        </div>
+                                        <h4 class="font-extrabold text-slate-900 text-sm">${c.missionTitle}</h4>
+                                        <p class="text-slate-600 font-medium">Link Video: <a href="${c.proof}" target="_blank" class="text-blue-600 underline font-mono break-all">${c.proof}</a></p>
+                                        ${c.adminNotes ? `<p class="text-xs text-amber-900 bg-amber-50 p-2 rounded-lg border border-amber-200 mt-1"><strong>Catatan Admin:</strong> ${c.adminNotes}</p>` : ''}
+                                    </div>
+                                    <div class="text-right shrink-0">
+                                        <span class="text-sm font-black text-emerald-700">+${formatRupiah(c.reward)}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                // Render ke Admin Subtab Jika Admin
+                if (window.currentUserProfile?.role === 'admin') {
+                    renderAdminTrackersList();
+                }
+                safeLucideIcons();
+            }, (err) => console.error("Error claims:", err));
+
+            // Realtime Riwayat Transaksi Member & Master
+            onSnapshot(TX_COL, (snapshot) => {
+                const userTxContainer = document.getElementById('user-tx-history-list');
+                window.allTxMap = {};
+
+                let userTxs = [];
+                snapshot.forEach(docSnap => {
+                    const tx = { id: docSnap.id, ...docSnap.data() };
+                    window.allTxMap[tx.id] = tx;
+                    if (tx.userId === uid) userTxs.push(tx);
+                });
+
+                if (userTxContainer) {
+                    if (userTxs.length === 0) {
+                        userTxContainer.innerHTML = `
+                            <div class="text-center py-8 text-slate-400 text-xs">
+                                <i data-lucide="receipt" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                                <p>Belum ada riwayat transaksi deposit atau withdraw.</p>
+                            </div>
+                        `;
+                    } else {
+                        userTxs.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                        userTxContainer.innerHTML = userTxs.map(tx => {
+                            const statusBadges = {
+                                pending: 'bg-amber-100 text-amber-900 border-amber-200',
+                                approved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                                rejected: 'bg-rose-100 text-rose-800 border-rose-200'
+                            };
+                            const statusText = {
+                                pending: 'Menunggu Verifikasi',
+                                approved: 'Berhasil / Disetujui',
+                                rejected: 'Ditolak'
+                            };
+                            const dateStr = tx.createdAt ? new Date(tx.createdAt).toLocaleString('id-ID') : '-';
+
+                            return `
+                                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between text-xs">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2 py-0.5 rounded font-extrabold uppercase text-[10px] ${tx.type === 'DEPOSIT' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">${tx.type}</span>
+                                            <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] border ${statusBadges[tx.status] || statusBadges.pending}">${statusText[tx.status] || tx.status}</span>
+                                            <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                                        </div>
+                                        <p class="font-bold text-slate-900 text-xs">${tx.details || 'Pengajuan Transaksi'}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-black ${tx.type === 'DEPOSIT' ? 'text-emerald-700' : 'text-slate-900'}">${tx.type === 'DEPOSIT' ? '+' : '-'}${formatRupiah(tx.amount)}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                // Render ke Admin Subtab Jika Admin
+                if (window.currentUserProfile?.role === 'admin') {
+                    renderAdminTxList();
+                }
+                safeLucideIcons();
+            }, (err) => console.error("Error tx:", err));
 
             // Realtime Announcements Banner Listener
             onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
@@ -1509,7 +1830,6 @@
             const modal = document.getElementById('mission-detail-modal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            // Reset iframe video
             document.getElementById('detail-mission-video-container').innerHTML = '';
         };
 
@@ -1543,6 +1863,7 @@
                 proof: proofUrl,
                 status: 'pending',
                 reward: m.reward || 5000,
+                adminNotes: '',
                 submittedAt: new Date().toISOString()
             });
 
@@ -1551,10 +1872,10 @@
         };
 
         /* ----------------------------------------------------------------- */
-        /* 5. ADMIN PANEL CORE LOGIC & EDIT MEMBER LENGKAP                   */
+        /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['members', 'missions', 'transactions', 'products', 'announcements'];
+            const tabs = ['members', 'missions', 'trackers', 'transactions', 'products', 'announcements'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -1567,6 +1888,98 @@
                 }
             });
         };
+
+        function renderAdminTrackersList() {
+            const container = document.getElementById('admin-trackers-list');
+            if (!container) return;
+
+            const trackers = Object.values(window.allTrackersMap);
+            if (trackers.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Belum ada pengajuan klaim tracker misi.</p>';
+                return;
+            }
+
+            trackers.sort((a,b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+            container.innerHTML = trackers.map(c => {
+                const statusBadges = {
+                    pending: 'bg-amber-100 text-amber-900 border-amber-200',
+                    approved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    rejected: 'bg-rose-100 text-rose-800 border-rose-200'
+                };
+                const dateStr = c.submittedAt ? new Date(c.submittedAt).toLocaleString('id-ID') : '-';
+
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded-full font-bold uppercase text-[9px] border ${statusBadges[c.status] || statusBadges.pending}">${c.status}</span>
+                                <span class="font-extrabold text-slate-900">${c.userNama} (${c.username})</span>
+                                <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                            </div>
+                            <p class="font-bold text-slate-800">Misi: ${c.missionTitle} (+${formatRupiah(c.reward)})</p>
+                            <p class="text-slate-600">Link Video: <a href="${c.proof}" target="_blank" class="text-blue-600 font-mono underline break-all">${c.proof}</a></p>
+                            ${c.adminNotes ? `<p class="text-[11px] text-amber-900 font-medium">Catatan Admin: ${c.adminNotes}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            ${c.status === 'pending' ? `
+                                <button onclick="approveClaim('${c.id}', '${c.userId}', ${c.reward})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
+                                <button onclick="rejectClaim('${c.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
+                            ` : ''}
+                            <button onclick="openEditTrackerModal('${c.id}')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Edit</button>
+                            <button onclick="deleteTracker('${c.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-2.5 py-1.5 rounded-lg text-[11px]">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            safeLucideIcons();
+        }
+
+        function renderAdminTxList() {
+            const container = document.getElementById('admin-transactions-list');
+            if (!container) return;
+
+            const txs = Object.values(window.allTxMap);
+            if (txs.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Belum ada pengajuan transaksi.</p>';
+                return;
+            }
+
+            txs.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+            container.innerHTML = txs.map(tx => {
+                const statusBadges = {
+                    pending: 'bg-amber-100 text-amber-900 border-amber-200',
+                    approved: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    rejected: 'bg-rose-100 text-rose-800 border-rose-200'
+                };
+                const dateStr = tx.createdAt ? new Date(tx.createdAt).toLocaleString('id-ID') : '-';
+
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold uppercase px-2 py-0.5 rounded text-[10px] ${tx.type === 'DEPOSIT' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'}">${tx.type}</span>
+                                <span class="px-2 py-0.5 rounded-full font-bold uppercase text-[9px] border ${statusBadges[tx.status] || statusBadges.pending}">${tx.status}</span>
+                                <span class="font-extrabold text-slate-900">${tx.userNama} (${tx.username})</span>
+                                <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                            </div>
+                            <p class="font-bold text-slate-800">Nominal: ${formatRupiah(tx.amount)}</p>
+                            <p class="text-slate-500 font-mono text-[11px]">Detail: ${tx.details}</p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            ${tx.status === 'pending' ? `
+                                <button onclick="approveTransaction('${tx.id}', '${tx.userId}', '${tx.type}', ${tx.amount})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
+                                <button onclick="rejectTransaction('${tx.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
+                            ` : ''}
+                            <button onclick="openEditTxModal('${tx.id}')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Edit</button>
+                            <button onclick="deleteTransaction('${tx.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-2.5 py-1.5 rounded-lg text-[11px]">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            safeLucideIcons();
+        }
 
         function listenAdminData() {
             // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI)
@@ -1643,63 +2056,6 @@
                     `;
                 });
                 container.innerHTML = html;
-            });
-
-            // Listen Claims
-            onSnapshot(CLAIMS_COL, (snapshot) => {
-                const container = document.getElementById('admin-claims-list');
-                if (!container) return;
-                if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-slate-400">Belum ada pengajuan klaim misi.</p>'; return; }
-                let html = '';
-                snapshot.forEach(docSnap => {
-                    const c = { id: docSnap.id, ...docSnap.data() };
-                    if (c.status === 'pending') {
-                        html += `
-                            <div class="p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-amber-50/50">
-                                <div>
-                                    <p class="font-extrabold text-slate-900">${c.userNama} (${c.username})</p>
-                                    <p class="text-slate-700 font-bold">Misi: ${c.missionTitle} (+${formatRupiah(c.reward)})</p>
-                                    <p class="text-slate-500 mt-1">
-                                        <span class="font-bold text-slate-700">Link Video Konten:</span> 
-                                        <a href="${c.proof}" target="_blank" class="text-blue-600 font-medium underline break-all">${c.proof}</a>
-                                    </p>
-                                </div>
-                                <div class="flex gap-2 shrink-0">
-                                    <button onclick="approveClaim('${c.id}', '${c.userId}', ${c.reward})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-[11px]">Setujui</button>
-                                    <button onclick="rejectClaim('${c.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-[11px]">Tolak</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada pengajuan klaim pending.</p>';
-            });
-
-            // Listen Transactions
-            onSnapshot(TX_COL, (snapshot) => {
-                const container = document.getElementById('admin-transactions-list');
-                if (!container) return;
-                if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-slate-400">Belum ada pengajuan transaksi.</p>'; return; }
-                let html = '';
-                snapshot.forEach(docSnap => {
-                    const tx = { id: docSnap.id, ...docSnap.data() };
-                    if (tx.status === 'pending') {
-                        html += `
-                            <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-slate-50">
-                                <div>
-                                    <span class="font-bold uppercase px-2 py-0.5 rounded text-[10px] ${tx.type === 'DEPOSIT' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${tx.type}</span>
-                                    <p class="font-bold text-slate-900 mt-1">${tx.userNama} - ${formatRupiah(tx.amount)}</p>
-                                    <p class="text-slate-500 font-mono text-[10px]">Detail: ${tx.details}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="approveTransaction('${tx.id}', '${tx.userId}', '${tx.type}', ${tx.amount})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
-                                    <button onclick="rejectTransaction('${tx.id}')" class="bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada transaksi pending.</p>';
             });
 
             // Listen Products
@@ -1819,6 +2175,63 @@
             window.showToast("Klaim ditolak.");
         };
 
+        window.deleteTracker = async (claimId) => {
+            await deleteDoc(doc(CLAIMS_COL, claimId));
+            window.showToast("Tracker misi berhasil dihapus.");
+        };
+
+        window.openEditTrackerModal = (claimId) => {
+            const c = window.allTrackersMap[claimId];
+            if (!c) return;
+
+            window.selectedEditTracker = claimId;
+            document.getElementById('edit-tracker-user').value = `${c.userNama} (${c.username})`;
+            document.getElementById('edit-tracker-title').value = c.missionTitle;
+            document.getElementById('edit-tracker-proof').value = c.proof || '';
+            document.getElementById('edit-tracker-reward').value = c.reward || 0;
+            document.getElementById('edit-tracker-status').value = c.status || 'pending';
+            document.getElementById('edit-tracker-notes').value = c.adminNotes || '';
+
+            const modal = document.getElementById('edit-tracker-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeEditTrackerModal = () => {
+            const modal = document.getElementById('edit-tracker-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.saveTrackerEdit = async (e) => {
+            e.preventDefault();
+            const claimId = window.selectedEditTracker;
+            const c = window.allTrackersMap[claimId];
+            if (!claimId || !c) return;
+
+            const newStatus = document.getElementById('edit-tracker-status').value;
+            const newReward = parseFloat(document.getElementById('edit-tracker-reward').value) || 0;
+
+            // Jika status berubah menjadi approved dan sebelumnya bukan approved, tambahkan saldo member
+            if (newStatus === 'approved' && c.status !== 'approved') {
+                const uDoc = await getDoc(doc(USERS_COL, c.userId));
+                if (uDoc.exists()) {
+                    const curSaldo = uDoc.data().saldo || 0;
+                    await updateDoc(doc(USERS_COL, c.userId), { saldo: curSaldo + newReward });
+                }
+            }
+
+            await updateDoc(doc(CLAIMS_COL, claimId), {
+                proof: document.getElementById('edit-tracker-proof').value.trim(),
+                reward: newReward,
+                status: newStatus,
+                adminNotes: document.getElementById('edit-tracker-notes').value.trim()
+            });
+
+            window.showToast("Tracker misi member berhasil diperbarui!");
+            closeEditTrackerModal();
+        };
+
         window.approveTransaction = async (txId, userId, type, amount) => {
             const uDoc = await getDoc(doc(USERS_COL, userId));
             if (uDoc.exists()) {
@@ -1833,6 +2246,64 @@
         window.rejectTransaction = async (txId) => {
             await updateDoc(doc(TX_COL, txId), { status: 'rejected' });
             window.showToast("Transaksi ditolak.");
+        };
+
+        window.deleteTransaction = async (txId) => {
+            await deleteDoc(doc(TX_COL, txId));
+            window.showToast("Riwayat transaksi berhasil dihapus.");
+        };
+
+        window.openEditTxModal = (txId) => {
+            const tx = window.allTxMap[txId];
+            if (!tx) return;
+
+            window.selectedEditTx = txId;
+            document.getElementById('edit-tx-user').value = `${tx.userNama} (${tx.username})`;
+            document.getElementById('edit-tx-type').value = tx.type || 'DEPOSIT';
+            document.getElementById('edit-tx-amount').value = tx.amount || 0;
+            document.getElementById('edit-tx-details').value = tx.details || '';
+            document.getElementById('edit-tx-status').value = tx.status || 'pending';
+
+            const modal = document.getElementById('edit-tx-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeEditTxModal = () => {
+            const modal = document.getElementById('edit-tx-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.saveTxEdit = async (e) => {
+            e.preventDefault();
+            const txId = window.selectedEditTx;
+            const tx = window.allTxMap[txId];
+            if (!txId || !tx) return;
+
+            const newStatus = document.getElementById('edit-tx-status').value;
+            const newType = document.getElementById('edit-tx-type').value;
+            const newAmount = parseFloat(document.getElementById('edit-tx-amount').value) || 0;
+
+            // Jika status diubah ke approved dari status lain
+            if (newStatus === 'approved' && tx.status !== 'approved') {
+                const uDoc = await getDoc(doc(USERS_COL, tx.userId));
+                if (uDoc.exists()) {
+                    const curSaldo = uDoc.data().saldo || 0;
+                    const updatedSaldo = newType === 'DEPOSIT' ? curSaldo + newAmount : Math.max(0, curSaldo - newAmount);
+                    await updateDoc(doc(USERS_COL, tx.userId), { saldo: updatedSaldo });
+                }
+            }
+
+            await updateDoc(doc(TX_COL, txId), {
+                type: newType,
+                amount: newAmount,
+                details: document.getElementById('edit-tx-details').value.trim(),
+                status: newStatus
+            });
+
+            window.showToast("Data transaksi berhasil diperbarui!");
+            closeEditTxModal();
         };
 
         // Open Modal Edit Member Lengkap
