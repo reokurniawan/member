@@ -791,6 +791,28 @@
         // -----------------------------------------------------------------
         // 1. AUTHENTICATION & SESSION MANAGEMENT
         // -----------------------------------------------------------------
+        window.switchAuthTab = (tab) => {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const loginBtn = document.getElementById('tab-login-btn');
+            const registerBtn = document.getElementById('tab-register-btn');
+            
+            const alertBox = document.getElementById('auth-alert-box');
+            if (alertBox) alertBox.classList.add('hidden');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginBtn.className = "flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider";
+                if (registerBtn) registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700 transition-all uppercase tracking-wider";
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                if (registerBtn) registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider";
+                loginBtn.className = "flex-1 py-3 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700 transition-all uppercase tracking-wider";
+            }
+        };
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 // Fetch User Profile from Firestore
@@ -989,11 +1011,11 @@
                 listBtn.className = "px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 transition";
                 historyContainer.classList.remove('hidden');
                 listContainer.classList.add('hidden');
-                loadMemberMissionClaimsHistory();
+                window.loadMemberMissionClaimsHistory();
             }
         };
 
-        async function loadMemberMissions() {
+        window.loadMemberMissions = async () => {
             const container = document.getElementById('misi-list-container');
             container.innerHTML = `<p class="col-span-full py-8 text-center text-xs text-slate-400">Memuat misi...</p>`;
 
@@ -1030,7 +1052,7 @@
             } catch (err) {
                 container.innerHTML = `<p class="col-span-full py-8 text-center text-xs text-rose-500">Gagal memuat misi.</p>`;
             }
-        }
+        };
 
         window.openSubmitMisiModal = (id, title, reward) => {
             window.selectedSubmitMission = { id, title, reward };
@@ -1065,15 +1087,15 @@
                     createdAt: new Date().toISOString()
                 });
 
-                closeSubmitMisiModal();
+                window.closeSubmitMisiModal();
                 showToast("Bukti pengerjaan berhasil dikirim ke Admin!");
-                switchMisiTab('history');
+                window.switchMisiTab('history');
             } catch (err) {
                 showToast("Gagal mengirim bukti: " + err.message);
             }
         };
 
-        async function loadMemberMissionClaimsHistory() {
+        window.loadMemberMissionClaimsHistory = async () => {
             const container = document.getElementById('misi-history-container');
             container.innerHTML = `<p class="text-center text-xs text-slate-400 py-4">Memuat riwayat...</p>`;
 
@@ -1110,7 +1132,7 @@
             } catch (err) {
                 container.innerHTML = `<p class="text-center text-xs text-rose-500 py-4">Gagal memuat riwayat.</p>`;
             }
-        }
+        };
 
         // -----------------------------------------------------------------
         // 4. DEPOSIT & WITHDRAWAL LOGIC
@@ -1229,12 +1251,12 @@
                 }
             });
 
-            if (sub === 'members') loadAdminMembersList();
-            if (sub === 'missions') loadAdminMissionClaims();
-            if (sub === 'tx') loadAdminTransactions();
+            if (sub === 'members') window.loadAdminMembersList();
+            if (sub === 'missions') window.loadAdminMissionClaims();
+            if (sub === 'tx') window.loadAdminTransactions();
         };
 
-        async function loadAdminDashboard() {
+        window.loadAdminDashboard = async () => {
             try {
                 const usersSnap = await getDocs(USERS_COL);
                 const txSnap = await getDocs(TX_COL);
@@ -1254,7 +1276,7 @@
             } catch (err) {
                 console.error("Admin dash load error:", err);
             }
-        }
+        };
 
         window.loadAdminMembersList = async () => {
             const tbody = document.getElementById('admin-members-tbody');
@@ -1360,7 +1382,7 @@
             }
         };
 
-        async function loadAdminMissionClaims() {
+        window.loadAdminMissionClaims = async () => {
             const container = document.getElementById('admin-claims-container');
             try {
                 const snapshot = await getDocs(CLAIMS_COL);
@@ -1395,7 +1417,7 @@
             } catch (err) {
                 container.innerHTML = `<p class="text-center py-4 text-rose-500">Gagal memuat klaim misi.</p>`;
             }
-        }
+        };
 
         window.approveClaim = async (claimId, userId, reward) => {
             try {
@@ -1408,7 +1430,7 @@
                 // Update claim status
                 await updateDoc(doc(CLAIMS_COL, claimId), { status: 'APPROVED' });
                 showToast("Klaim disetujui & saldo imbalan ditambahkan ke member!");
-                loadAdminMissionClaims();
+                window.loadAdminMissionClaims();
             } catch (err) {
                 showToast("Gagal menyetujui klaim: " + err.message);
             }
@@ -1418,13 +1440,13 @@
             try {
                 await updateDoc(doc(CLAIMS_COL, claimId), { status: 'REJECTED' });
                 showToast("Klaim misi ditolak.");
-                loadAdminMissionClaims();
+                window.loadAdminMissionClaims();
             } catch (err) {
                 showToast("Gagal menolak klaim: " + err.message);
             }
         };
 
-        async function loadAdminTransactions() {
+        window.loadAdminTransactions = async () => {
             const container = document.getElementById('admin-tx-container');
             try {
                 const snapshot = await getDocs(TX_COL);
@@ -1461,7 +1483,7 @@
             } catch (err) {
                 container.innerHTML = `<p class="text-center py-4 text-rose-500">Gagal memuat transaksi.</p>`;
             }
-        }
+        };
 
         window.approveTx = async (txId, userId, type, amount) => {
             try {
@@ -1481,7 +1503,7 @@
 
                 await updateDoc(doc(TX_COL, txId), { status: 'APPROVED' });
                 showToast(`Transaksi ${type} disetujui & saldo member diperbarui!`);
-                loadAdminTransactions();
+                window.loadAdminTransactions();
             } catch (err) {
                 showToast("Gagal memproses transaksi: " + err.message);
             }
@@ -1491,7 +1513,7 @@
             try {
                 await updateDoc(doc(TX_COL, txId), { status: 'REJECTED' });
                 showToast("Transaksi ditolak.");
-                loadAdminTransactions();
+                window.loadAdminTransactions();
             } catch (err) {
                 showToast("Gagal menolak transaksi: " + err.message);
             }
