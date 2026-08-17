@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHEDVATOR - Portal Terpadu Member & Admin</title>
-    
-    <!-- Tailwind CSS CDN -->
+    <title>ZHEDVATOR - Admin & Member Portal</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Lucide Icons & Font Awesome -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Chart.js & TradingView JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -32,16 +32,18 @@
             font-family: 'Outfit', sans-serif;
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Product Cards */
         .product-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -50,7 +52,7 @@
         .product-card:hover {
             border-color: #0f172a;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.08);
         }
         .product-image-container {
             aspect-ratio: 1 / 1;
@@ -67,6 +69,23 @@
             transform: scale(1.05);
         }
 
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 14px;
+            background: #0f172a;
+            color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+            max-width: calc(100vw - 48px);
+        }
+
         .tradingview-widget-container {
             height: 520px;
             width: 100%;
@@ -76,21 +95,22 @@
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
 
     <!-- ================================================================= -->
-    <!-- SECTION 1: AUTENTIKASI (LOGIN & REGISTER)                        -->
+    <!-- SECTION 1: AUTENTIKASI (LOG IN & PENDAFTARAN)                     -->
     <!-- ================================================================= -->
     <div id="view-auth" class="min-h-screen flex flex-col items-center justify-center p-4 bg-slate-100 w-full">
-        <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden my-8">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden my-8">
             
-            <div class="bg-slate-900 p-6 text-center text-white relative">
-                <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/20 text-2xl font-black">
+            <!-- Header Branding -->
+            <div class="bg-white p-6 border-b border-slate-100 text-center">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-slate-900 text-white font-extrabold rounded-2xl text-2xl tracking-wider mb-2 shadow-md">
                     Z
                 </div>
-                <h1 class="text-2xl font-black tracking-wider font-heading">ZHEDVATOR</h1>
-                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Portal Akun & Keanggotaan Terproteksi</p>
+                <h1 class="text-2xl font-black tracking-wider text-slate-900">ZHEDVATOR</h1>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Portal Akun & Keanggotaan Terpadu</p>
             </div>
 
             <!-- Tab Switcher -->
-            <div class="flex border-b border-slate-200 bg-slate-50">
+            <div class="flex border-b border-slate-100 bg-slate-50">
                 <button id="tab-login-btn" onclick="switchAuthTab('login')" class="flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider">
                     Masuk Akun
                 </button>
@@ -99,649 +119,855 @@
                 </button>
             </div>
 
-            <div id="auth-alert-box" class="hidden m-6 mb-0 p-4 rounded-2xl text-xs font-medium transition-all"></div>
+            <!-- Alert Notification Box -->
+            <div id="auth-alert-box" class="hidden m-6 mb-0 p-4 rounded-xl text-xs font-medium transition-all duration-300"></div>
 
             <div class="p-6">
-                <!-- LOGIN FORM -->
+                <!-- FORM LOG IN -->
                 <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email / Username</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email Registrasi</label>
                         <input type="email" id="login-email" required placeholder="email@contoh.com" 
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium transition">
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition text-slate-800 text-xs font-medium">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Kata Sandi</label>
-                        <input type="password" id="login-password" required placeholder="••••••••" 
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium transition">
+                        <input type="password" id="login-password" required placeholder="Masukkan Kata Sandi" 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition text-slate-800 text-xs font-medium">
                     </div>
 
                     <button type="submit" id="login-btn"
-                        class="w-full py-3.5 px-4 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition shadow-md active:scale-[0.99] flex justify-center items-center gap-2 uppercase tracking-wider">
-                        <i data-lucide="log-in" class="w-4 h-4"></i>
-                        <span>Masuk Ke Portal</span>
+                        class="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition duration-200 shadow-md active:scale-[0.99] flex justify-center items-center gap-2 uppercase tracking-wider">
+                        <span>Masuk Ke Dashboard</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </form>
 
-                <!-- REGISTER FORM -->
+                <!-- FORM PENDAFTARAN -->
                 <form id="register-form" onsubmit="handleRegister(event)" class="space-y-3.5 hidden">
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Lengkap</label>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Lengkap</label>
                         <input type="text" id="reg-nama" required placeholder="Nama Sesuai KTP" 
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Username Unik</label>
-                        <input type="text" id="reg-username" required placeholder="contoh: user123" pattern="[a-zA-Z0-9_]{3,20}" title="Minimal 3 huruf/angka tanpa spasi"
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email</label>
-                            <input type="email" id="reg-email" required placeholder="email@contoh.com" 
-                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">NIK (16 Digit)</label>
+                            <input type="text" id="reg-nik" required placeholder="16 Digit NIK" pattern="[0-9]{16}" title="Harus 16 angka"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">No. WhatsApp</label>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">No. WhatsApp</label>
                             <input type="tel" id="reg-wa" required placeholder="08123456789" 
-                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Kata Sandi Akun</label>
-                        <input type="password" id="reg-password" required minlength="6" placeholder="Minimal 6 karakter" 
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Email Aktif</label>
+                        <input type="email" id="reg-email" required placeholder="email@contoh.com" 
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Bank / E-Wallet</label>
-                            <select id="reg-bank" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Kata Sandi</label>
+                            <input type="password" id="reg-password" required minlength="6" placeholder="Min. 6 Karakter" 
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Tempat, Tgl Lahir</label>
+                            <input type="text" id="reg-ttl" required placeholder="Jakarta, 15 Jan 1998" 
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Bank / E-Wallet</label>
+                            <select id="reg-bank" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                                 <option value="">Pilih Bank</option>
                                 <option value="BCA">BCA</option>
                                 <option value="MANDIRI">Mandiri</option>
                                 <option value="BRI">BRI</option>
                                 <option value="BNI">BNI</option>
+                                <option value="CIMB">CIMB Niaga</option>
                                 <option value="DANA">DANA</option>
                                 <option value="OVO">OVO</option>
-                                <option value="GOPAY">GoPay</option>
+                                <option value="GOPAY">GOPAY</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">No. Rekening/E-Wallet</label>
-                            <input type="text" id="reg-norek" required placeholder="Nomor Rekening" 
-                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">No. Rekening</label>
+                            <input type="number" id="reg-norek" required placeholder="Nomor Rekening" 
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Pemilik Rekening</label>
-                        <input type="text" id="reg-nama-pemilik" required placeholder="Atas Nama Rekening" 
-                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Atas Nama Pemilik Rekening</label>
+                        <input type="text" id="reg-nama-pemilik" required placeholder="Sesuai Buku Tabungan / Akun" 
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-xs font-medium">
                     </div>
 
                     <button type="submit" id="reg-btn"
-                        class="w-full py-3.5 px-4 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition shadow-md active:scale-[0.99] flex justify-center items-center gap-2 uppercase tracking-wider mt-2">
+                        class="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition duration-200 shadow-md active:scale-[0.99] flex justify-center items-center gap-2 uppercase tracking-wider mt-2">
+                        <span>Buat Akun Member</span>
                         <i data-lucide="user-plus" class="w-4 h-4"></i>
-                        <span>Daftar Akun Baru</span>
                     </button>
                 </form>
             </div>
 
-            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 text-center text-xs text-slate-400">
-                &copy; 2026 ZHEDVATOR Portal. Integrated System.
+            <!-- Footer Auth -->
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
+                &copy; 2026 ZHEDVATOR Portal. Protected by Firebase Auth.
             </div>
         </div>
     </div>
 
     <!-- ================================================================= -->
-    <!-- SECTION 2: APPLICATION MAIN SHELL (MEMBER & ADMIN)               -->
+    <!-- SECTION 2: APLIKASI UTAMA (MEMBER & ADMIN PORTAL)                 -->
     <!-- ================================================================= -->
     <div id="view-app" class="hidden min-h-screen flex flex-col justify-between w-full">
 
-        <!-- Global Navigation Header -->
+        <!-- Global Header Navigation -->
         <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-                <a href="#beranda" class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 bg-slate-900 text-white font-black rounded-xl flex items-center justify-center text-lg tracking-wider shadow-sm">
-                        Z
-                    </div>
-                    <div>
-                        <h1 class="text-base font-black tracking-wider text-slate-900 leading-tight font-heading">ZHEDVATOR</h1>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest" id="app-header-page-title">PORTAL MEMBER</p>
-                    </div>
-                </a>
+                <div class="flex items-center gap-3">
+                    <a href="#beranda" class="flex items-center gap-2">
+                        <div class="w-9 h-9 bg-slate-900 text-white font-black rounded-xl flex items-center justify-center text-lg tracking-wider shadow-sm">
+                            Z
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-wider text-slate-900 leading-tight">ZHEDVATOR</h1>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest" id="app-header-page-title">PORTAL ANGGOTA</p>
+                        </div>
+                    </a>
+                </div>
 
                 <div class="flex items-center gap-2">
-                    <!-- Admin Panel Access Button (Only visible if role === 'admin') -->
-                    <a href="#admin" id="btn-admin-panel" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm animate-pulse">
+                    <!-- Tombol Navigasi Cepat Admin (Hanya Tampak Jika Role Admin) -->
+                    <a id="admin-badge-btn" href="#admin" onclick="showAppSection('admin')" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl transition shadow-sm items-center gap-1.5 uppercase tracking-wider">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                        <span>PANEL ADMIN</span>
+                        <span>Panel Admin</span>
                     </a>
 
-                    <button id="header-cart-btn" onclick="openCartModal()" class="relative p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition flex items-center justify-center" title="Keranjang Belanja">
+                    <!-- Tombol Cart khusus saat di E-Commerce -->
+                    <button id="header-cart-btn" onclick="openCartModal()" class="relative p-2.5 text-slate-800 hover:bg-slate-100 rounded-full transition focus:outline-none flex items-center justify-center" title="Keranjang Belanja">
                         <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                        <span id="cart-badge" class="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 text-[10px] font-black text-white bg-slate-900 rounded-full hidden">0</span>
+                        <span id="cart-badge" class="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-slate-900 rounded-full hidden">0</span>
                     </button>
 
-                    <button onclick="toggleMenu()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition flex items-center justify-center active:scale-95">
-                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    <!-- Tombol Hamburger Menu Sidebar -->
+                    <button onclick="toggleMenu()" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 transition-all focus:outline-none flex items-center justify-center active:scale-95" aria-label="Buka Menu Navigasi">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
                 </div>
             </div>
         </header>
 
-        <!-- Sidebar Overlay & Panel -->
-        <div id="menu-overlay" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleMenu()"></div>
+        <!-- Sidebar Navigation Drawer Overlay -->
+        <div id="menu-overlay" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300" onclick="toggleMenu()"></div>
 
+        <!-- Panel Sidebar Menu -->
         <aside id="side-menu" class="fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between">
             <div>
+                <!-- Header Drawer -->
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-                        <i data-lucide="compass" class="w-4 h-4 text-slate-700"></i> Menu Navigasi
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <i data-lucide="compass" class="w-5 h-5 text-slate-700"></i> Menu Navigasi
                     </h3>
-                    <button onclick="toggleMenu()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100">
-                        <i data-lucide="x" class="w-4 h-4"></i>
+                    <button onclick="toggleMenu()" class="p-2 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
 
-                <div class="p-4 bg-slate-50 border-b border-slate-100">
+                <!-- Ringkasan Akun -->
+                <div class="p-5 bg-slate-50 border-b border-slate-100">
                     <div class="flex items-center justify-between mb-1">
-                        <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">Pengguna Aktif</p>
-                        <span id="menu-role-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-slate-200 text-slate-800">MEMBER</span>
+                        <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-wider">Akun Terverifikasi</p>
+                        <span id="menu-user-role" class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-slate-200 text-slate-800">MEMBER</span>
                     </div>
                     <p id="menu-user-name" class="font-extrabold text-slate-900 text-sm truncate">-</p>
                     <p id="menu-user-email" class="text-xs text-slate-500 truncate">-</p>
                 </div>
 
-                <nav class="p-3 space-y-1">
-                    <a href="#beranda" onclick="toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-bold text-slate-900 bg-slate-100 rounded-xl">
-                        <i data-lucide="home" class="w-4 h-4"></i> <span>Beranda</span>
+                <!-- Link Navigasi Internal -->
+                <nav class="p-4 space-y-1.5">
+                    <a href="#beranda" onclick="toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-900 bg-slate-100 rounded-xl transition">
+                        <i data-lucide="home" class="w-5 h-5 text-slate-900"></i>
+                        <span>Beranda & Misi</span>
                     </a>
-                    <a href="#misi" onclick="toggleMenu()" id="nav-link-misi" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                        <i data-lucide="target" class="w-4 h-4"></i> <span>Misi Member</span>
+
+                    <a href="#ihsg" onclick="toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-slate-500"></i>
+                        <span>IHSG Monitor</span>
                     </a>
-                    <a href="#transaksi" onclick="toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                        <i data-lucide="arrow-left-right" class="w-4 h-4"></i> <span>Deposit & Withdraw</span>
+                    
+                    <a href="#transaksi" onclick="toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="arrow-left-right" class="w-5 h-5 text-slate-500"></i>
+                        <span>Deposit / Withdraw</span>
                     </a>
-                    <a href="#ihsg" onclick="toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                        <i data-lucide="line-chart" class="w-4 h-4"></i> <span>IHSG Monitor</span>
+
+                    <a href="#ecomerce" onclick="toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-slate-500"></i>
+                        <span>Store Produk</span>
                     </a>
-                    <a href="#ecomerce" onclick="toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                        <i data-lucide="shopping-bag" class="w-4 h-4"></i> <span>E-Commerce Store</span>
+
+                    <a href="#topup" onclick="toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="zap" class="w-5 h-5 text-slate-500"></i>
+                        <span>Top Up Service</span>
                     </a>
-                    <a href="#topup" onclick="toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                        <i data-lucide="zap" class="w-4 h-4"></i> <span>Top Up Service</span>
-                    </a>
-                    <a href="#admin" onclick="toggleMenu()" id="nav-link-admin" class="hidden flex items-center gap-3 px-3.5 py-2.5 text-xs font-black text-amber-800 bg-amber-50 rounded-xl border border-amber-200">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-amber-600"></i> <span>Kelola Admin Web</span>
+
+                    <a href="#admin" onclick="toggleMenu()" id="nav-link-admin" class="hidden items-center gap-3 px-4 py-3 text-sm font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-amber-700"></i>
+                        <span>PANEL KELOLA ADMIN</span>
                     </a>
                 </nav>
             </div>
 
             <div class="p-4 border-t border-slate-100">
-                <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition">
-                    <i data-lucide="log-out" class="w-4 h-4"></i> <span>Keluar Akun</span>
+                <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Keluar Akun</span>
                 </button>
             </div>
         </aside>
 
-        <!-- Router Content View -->
+        <!-- Main View Router Container -->
         <main class="flex-grow w-full">
             
             <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 1: BERANDA MEMBER                             -->
+            <!-- SUB-HALAMAN 1: BERANDA MEMBER & MISI                      -->
             <!-- ========================================================= -->
-            <section id="sec-beranda" class="max-w-5xl mx-auto px-4 py-6 w-full space-y-6">
-                
-                <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1 block">Selamat Datang Kembali,</span>
-                        <h2 id="user-display-nama" class="text-2xl md:text-3xl font-black text-slate-900 mb-1">-</h2>
-                        <p class="text-xs text-slate-500 flex items-center gap-1.5">
-                            <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-                            Username: <span id="user-display-username" class="font-bold text-slate-700">@ -</span>
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-900 text-white p-6 rounded-2xl min-w-[280px] shadow-lg flex flex-col justify-between">
-                        <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">
-                            <span>Saldo Utama Akun</span>
-                            <i data-lucide="wallet" class="w-4 h-4 text-slate-300"></i>
-                        </div>
-                        <div class="text-3xl font-black tracking-tight text-white mb-4" id="user-display-saldo">
-                            Rp 0
-                        </div>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs text-slate-400">
-                            <span>Role: <strong id="user-display-role" class="text-emerald-400 font-bold uppercase">Member</strong></span>
-                            <button onclick="reloadUserProfile()" class="hover:text-white transition flex items-center gap-1 font-semibold">
-                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
+            <section id="sec-beranda" class="max-w-5xl mx-auto px-4 py-8 w-full space-y-6">
+                <!-- Status Loading -->
+                <div id="loading-state" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-900 border-t-transparent mb-4"></div>
+                    <p class="text-xs font-bold text-slate-600">Sinkronisasi data akun Firebase...</p>
                 </div>
 
-                <!-- Fast Actions -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <a href="#misi" class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-slate-900 transition flex items-center gap-3">
-                        <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="target" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">Misi Aktif</p>
-                            <p class="text-[10px] text-slate-400">Kerjakan & Dapatkan Saldo</p>
-                        </div>
-                    </a>
-                    <a href="#transaksi" class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-slate-900 transition flex items-center gap-3">
-                        <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="arrow-down-left" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">Deposit / Top Up</p>
-                            <p class="text-[10px] text-slate-400">Tambah Saldo Akun</p>
-                        </div>
-                    </a>
-                    <a href="#transaksi" class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-slate-900 transition flex items-center gap-3">
-                        <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl"><i data-lucide="arrow-up-right" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">Penarikan (WD)</p>
-                            <p class="text-[10px] text-slate-400">Cairkan Ke Rekening</p>
-                        </div>
-                    </a>
-                    <a href="#ecomerce" class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-slate-900 transition flex items-center gap-3">
-                        <div class="p-2.5 bg-purple-50 text-purple-600 rounded-xl"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900">Rexer Store</p>
-                            <p class="text-[10px] text-slate-400">Belanja Produk</p>
-                        </div>
-                    </a>
-                </div>
+                <div id="dashboard-content" class="hidden space-y-6">
+                    <!-- Banner Pengumuman Admin -->
+                    <div id="announcement-banner-container" class="space-y-3"></div>
 
-                <!-- Account Info Details -->
-                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
-                            <i data-lucide="id-card" class="w-4 h-4 text-slate-700"></i> Informasi Rekening Bank & Akun
-                        </h3>
+                    <!-- Card Ucapan & Saldo Utama -->
+                    <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">Status Aktif</span>
+                                <span id="user-role-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-800">Member</span>
+                            </div>
+                            <h2 id="user-display-nama" class="text-2xl md:text-3xl font-black text-slate-900 mb-1">-</h2>
+                            <p class="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
+                                <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span id="user-display-email">-</span>
+                            </p>
+                        </div>
+
+                        <!-- Box Saldo Utama -->
+                        <div class="bg-slate-900 text-white p-6 rounded-2xl min-w-[290px] shadow-lg flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">
+                                <span>Saldo Dompet Anda</span>
+                                <i data-lucide="wallet" class="w-4 h-4 text-slate-300"></i>
+                            </div>
+                            <div class="text-3xl font-black tracking-tight text-white mb-4" id="user-display-saldo">
+                                Rp 0
+                            </div>
+
+                            <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs text-slate-400">
+                                <span>Penarikan Instan</span>
+                                <a href="#transaksi" onclick="showAppSection('transaksi')" class="hover:text-white transition font-bold flex items-center gap-1">
+                                    Cairkan <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Bank / E-Wallet</p>
-                            <p id="info-bank" class="font-bold text-slate-900 text-sm mt-0.5">-</p>
+
+                    <!-- DAFTAR MISI HARI INI -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="target" class="w-5 h-5 text-slate-700"></i>
+                                <h3 class="font-extrabold text-slate-900 text-base">Misi Berhadiah Saldo</h3>
+                            </div>
+                            <span class="text-xs bg-slate-900 text-white font-bold px-3 py-1 rounded-full">Selesaikan & Klaim</span>
                         </div>
-                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Nomor Rekening</p>
-                            <p id="info-norek" class="font-mono font-bold text-slate-900 text-sm mt-0.5 tracking-wider">-</p>
+
+                        <div class="p-6">
+                            <div id="member-missions-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <p class="text-xs text-slate-400 text-center py-6 col-span-2">Memuat daftar misi aktif...</p>
+                            </div>
                         </div>
-                        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Atas Nama Pemilik</p>
-                            <p id="info-nama-pemilik" class="font-bold text-slate-900 text-sm mt-0.5">-</p>
+                    </div>
+
+                    <!-- Detail Data Diri Pengguna -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="id-card" class="w-5 h-5 text-slate-700"></i>
+                                <h3 class="font-extrabold text-slate-900 text-base">Informasi Data Diri & Rekening</h3>
+                            </div>
+                        </div>
+
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium">
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">NIK (KTP)</p>
+                                <p id="info-nik" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">No. WhatsApp</p>
+                                <p id="info-wa" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Tempat, Tanggal Lahir</p>
+                                <p id="info-ttl" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Rekening Tujuan Pencairan</p>
+                                <p id="info-bank-norek" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 2: MISI MEMBER (PENGERJAAN & PROOF)           -->
+            <!-- SUB-HALAMAN 2: MONITOR IHSG REAL-TIME                     -->
             <!-- ========================================================= -->
-            <section id="sec-misi" class="hidden max-w-5xl mx-auto px-4 py-6 w-full space-y-6">
-                <div class="bg-slate-900 text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] font-extrabold uppercase tracking-widest text-amber-300">Peluang Imbalan</span>
-                        <h2 class="text-2xl font-black mt-2 font-heading">Portal Misi Keanggotaan</h2>
-                        <p class="text-xs text-slate-300 mt-1">Selesaikan tugas dari Admin untuk mendapatkan imbalan saldo yang langsung masuk ke akun Anda.</p>
+            <section id="sec-ihsg" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+                <!-- Banner Branding -->
+                <div class="mb-6 bg-slate-900 text-white rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2.5 bg-slate-800 rounded-xl">
+                            <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-sm sm:text-base">IHSG Financial Terminal</h2>
+                            <p class="text-xs text-slate-400">Analisis Pergerakan Saham & Pasar Modal Terpadu.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div id="market-status" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span id="market-text" class="text-slate-200">PASAR BUKA</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Tabs: Available Missions vs Submission History -->
-                <div class="flex border-b border-slate-200">
-                    <button id="tab-misi-list-btn" onclick="switchMisiTab('list')" class="px-5 py-3 text-xs font-bold border-b-2 border-slate-900 text-slate-900 transition">Daftar Misi Aktif</button>
-                    <button id="tab-misi-history-btn" onclick="switchMisiTab('history')" class="px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 transition">Riwayat Klaim Misi Saya</button>
-                </div>
+                <!-- Panel Ringkasan Performa IHSG -->
+                <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                    <div class="col-span-2 md:col-span-3 lg:col-span-2 bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Indeks Utama IHSG</span>
+                                <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">REAL-TIME</span>
+                            </div>
+                            <div class="flex items-baseline gap-3">
+                                <span id="ihsg-price" class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900">7.534,80</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span id="ihsg-change-badge" class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-900 text-white">
+                                <i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span>+38,40 (+0.51%)</span>
+                            </span>
+                            <span class="text-[11px] text-slate-400 font-medium">Update: <span id="last-update">-</span></span>
+                        </div>
+                    </div>
 
-                <!-- Active Missions Grid -->
-                <div id="misi-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Dynamic rendering from Firestore -->
-                    <div class="col-span-full py-12 text-center text-slate-400 text-xs font-medium bg-white rounded-3xl border border-slate-200">
-                        Memuat daftar misi aktif...
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex items-center gap-2 text-slate-400 mb-2">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-700"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider">Tertinggi</span>
+                        </div>
+                        <div>
+                            <span id="ihsg-high" class="text-xl font-bold text-slate-800">7.552,10</span>
+                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Sesi Hari Ini</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex items-center gap-2 text-slate-400 mb-2">
+                            <i data-lucide="arrow-down-right" class="w-4 h-4 text-slate-700"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider">Terendah</span>
+                        </div>
+                        <div>
+                            <span id="ihsg-low" class="text-xl font-bold text-slate-800">7.488,30</span>
+                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Sesi Hari Ini</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="flex items-center gap-2 text-slate-400 mb-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-slate-700"></i>
+                            <span class="text-xs font-bold uppercase tracking-wider">Volume</span>
+                        </div>
+                        <div>
+                            <span id="ihsg-volume" class="text-xl font-bold text-slate-800">18,24 B</span>
+                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Lembar Saham</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navigasi Mode Grafik -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                    <div class="bg-slate-200/80 p-1 rounded-xl flex items-center gap-1">
+                        <button id="btn-tab-tv" onclick="switchIhsgTab('tv')" class="px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm">
+                            TradingView Interactive
+                        </button>
+                        <button id="btn-tab-tick" onclick="switchIhsgTab('tick')" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900">
+                            Live Tick Stream
+                        </button>
                     </div>
                 </div>
 
-                <!-- Member Mission History List -->
-                <div id="misi-history-container" class="hidden space-y-3">
-                    <div class="py-12 text-center text-slate-400 text-xs font-medium bg-white rounded-3xl border border-slate-200">
-                        Memuat riwayat pengerjaan misi Anda...
+                <!-- Container Grafik -->
+                <section class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm mb-8 relative overflow-hidden">
+                    <div id="tab-tradingview" class="w-full rounded-xl overflow-hidden">
+                        <div class="tradingview-widget-container">
+                            <div id="tradingview_ihsg_chart" style="height:100%;width:100%;"></div>
+                        </div>
                     </div>
-                </div>
+
+                    <div id="tab-simulated-tick" class="hidden w-full">
+                        <div class="flex items-center justify-between mb-4 px-2">
+                            <h3 class="font-bold text-sm text-slate-800">Simulasi Stream Detik</h3>
+                            <button onclick="resetTickChart()" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 hover:bg-slate-900 hover:text-white font-semibold transition flex items-center gap-1">
+                                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                                <span>Reset Grafik</span>
+                            </button>
+                        </div>
+                        <div class="relative h-[450px] w-full">
+                            <canvas id="ihsgTickChart"></canvas>
+                        </div>
+                    </div>
+                </section>
             </section>
 
             <!-- ========================================================= -->
             <!-- SUB-HALAMAN 3: PORTAL TRANSAKSI (DEPOSIT & WITHDRAW)      -->
             <!-- ========================================================= -->
-            <section id="sec-transaksi" class="hidden max-w-4xl mx-auto px-4 py-6 w-full space-y-6">
-                <div class="text-center max-w-lg mx-auto">
-                    <h2 class="text-2xl font-black text-slate-900 font-heading">Layanan Transaksi Keuangan</h2>
-                    <p class="text-xs text-slate-500 mt-1">Ajukan Deposit untuk menambah saldo atau Withdraw untuk mencairkan saldo ke rekening Anda.</p>
+            <section id="sec-transaksi" class="hidden max-w-4xl mx-auto px-4 py-8 w-full">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mb-2">Portal Transaksi Keuangan</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto font-medium">Ajukan Deposit untuk menambah saldo atau Withdraw untuk mencairkan dana Anda secara langsung.</p>
                 </div>
 
-                <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-xl mx-auto">
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden max-w-xl mx-auto">
+                    <!-- Form Tabs -->
                     <div class="flex border-b border-slate-200">
                         <button id="tabDepositBtn" onclick="switchTxTab('DEPOSIT')" class="w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider">
-                            <i data-lucide="arrow-down-left" class="w-4 h-4"></i> Deposit Saldo
+                            <i class="fa-solid fa-arrow-down-left"></i> DEPOSIT SALDO
                         </button>
                         <button id="tabWithdrawBtn" onclick="switchTxTab('WITHDRAW')" class="w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider">
-                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i> Penarikan (Withdraw)
+                            <i class="fa-solid fa-arrow-up-right"></i> PENARIKAN (WITHDRAW)
                         </button>
                     </div>
 
                     <!-- FORM DEPOSIT -->
-                    <div id="depositFormContainer" class="p-6 space-y-5">
-                        <div class="bg-slate-900 text-white p-5 rounded-2xl relative overflow-hidden">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">Rekening Resmi Deposit</span>
+                    <div id="depositFormContainer" class="p-6 sm:p-8 space-y-6">
+                        <div class="bg-slate-900 text-white p-5 rounded-2xl relative overflow-hidden shadow-md">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">Rekening Transfer Deposit</span>
                                 <span class="bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded">BANK BRI</span>
                             </div>
-                            <p class="text-xs text-slate-400 mb-1">Nomor Rekening Tujuan:</p>
-                            <div class="flex items-center justify-between bg-slate-800 p-3 rounded-xl border border-slate-700 mb-2">
-                                <span class="text-base font-mono font-bold tracking-wider text-white">646801000142569</span>
-                                <button type="button" onclick="copyToClipboard('646801000142569')" class="text-xs bg-white text-slate-900 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">
+                            <p class="text-xs text-slate-400 mb-1">Nomor Rekening Resmi:</p>
+                            <div class="flex items-center justify-between mb-3 bg-slate-800 p-2.5 rounded-xl border border-slate-700">
+                                <span class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white">646801000142569</span>
+                                <button onclick="copyToClipboard('646801000142569')" class="text-xs bg-white text-slate-900 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-200 transition active:scale-95">
                                     Salin
                                 </button>
                             </div>
-                            <p class="text-xs text-slate-400">Atas Nama: <strong class="text-white uppercase">PT ZHEDVANOIS CREATIVE AGENCY</strong></p>
+                            <p class="text-xs text-slate-400">Atas Nama:</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-wide">PT ZHEDVANOIS CREATIVE AGENCY</p>
                         </div>
 
                         <form onsubmit="handleTxSubmit(event, 'DEPOSIT')" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jumlah Deposit (Rp)</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Jumlah Deposit (Rp)</label>
                                 <div class="relative">
-                                    <span class="absolute left-4 top-3 text-slate-400 font-bold text-xs">Rp</span>
-                                    <input type="number" id="depositAmount" required min="10000" placeholder="50000" class="w-full bg-slate-50 font-bold text-sm pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-slate-900 transition">
+                                    <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
+                                    <input type="number" id="depositAmount" required min="10000" placeholder="50000" class="w-full bg-slate-50 font-bold text-base pl-12 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 focus:bg-white transition">
                                 </div>
-                                <p class="text-[10px] text-slate-400 mt-1">*Minimal deposit Rp 10.000</p>
+                                <p class="text-[11px] text-slate-500 mt-1">*Minimal deposit Rp 10.000</p>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan / Referensi Transfer</label>
-                                <input type="text" id="depositNotes" placeholder="Contoh: Transfer via BRI Mobile / No Ref" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-slate-900 transition">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Catatan / Referensi Bukti Transfer</label>
+                                <input type="text" id="depositNotes" placeholder="Nomor referensi / Link bukti transfer" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 transition">
                             </div>
 
-                            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-xs uppercase tracking-wider flex justify-center items-center gap-2">
+                            <button type="submit" id="btnSubmitDeposit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-200 shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
                                 <span>Kirim Pengajuan Deposit</span>
-                                <i data-lucide="send" class="w-4 h-4"></i>
+                                <i class="fa-solid fa-paper-plane"></i>
                             </button>
                         </form>
                     </div>
 
                     <!-- FORM WITHDRAW -->
-                    <div id="withdrawFormContainer" class="p-6 space-y-5 hidden">
+                    <div id="withdrawFormContainer" class="p-6 sm:p-8 space-y-6 hidden">
                         <form onsubmit="handleTxSubmit(event, 'WITHDRAW')" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jumlah Penarikan (Rp)</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Jumlah Penarikan (Rp)</label>
                                 <div class="relative">
-                                    <span class="absolute left-4 top-3 text-slate-400 font-bold text-xs">Rp</span>
-                                    <input type="number" id="withdrawAmount" required min="20000" placeholder="100000" class="w-full bg-slate-50 font-bold text-sm pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-slate-900 transition">
+                                    <span class="absolute left-4 top-3.5 text-slate-400 font-bold text-sm">Rp</span>
+                                    <input type="number" id="withdrawAmount" required min="20000" placeholder="100000" class="w-full bg-slate-50 font-bold text-base pl-12 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 focus:bg-white transition">
                                 </div>
-                                <p class="text-[10px] text-slate-400 mt-1">*Minimal penarikan Rp 20.000</p>
+                                <p class="text-[11px] text-slate-500 mt-1">*Minimal penarikan Rp 20.000</p>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Rekening Tujuan Penarikan</label>
-                                <input type="text" id="withdrawDestination" required readonly class="w-full bg-slate-100 text-xs font-bold px-4 py-3 rounded-xl border border-slate-200 text-slate-600">
-                                <p class="text-[10px] text-slate-400 mt-1">*Sesuai dengan rekening bank terdaftar pada akun Anda.</p>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Tujuan Pencairan (Bank / E-Wallet)</label>
+                                <input type="text" id="withdrawDestination" required placeholder="Contoh: BCA 123456789 a.n Budi" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 transition">
                             </div>
 
-                            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition shadow-lg text-xs uppercase tracking-wider flex justify-center items-center gap-2">
-                                <span>Kirim Pengajuan Withdraw</span>
-                                <i data-lucide="send" class="w-4 h-4"></i>
+                            <button type="submit" id="btnSubmitWithdraw" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-200 shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                                <span>Kirim Pengajuan Penarikan</span>
+                                <i class="fa-solid fa-paper-plane"></i>
                             </button>
                         </form>
                     </div>
                 </div>
-
-                <!-- History Transactions -->
-                <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="font-bold text-slate-900 text-sm mb-4">Riwayat Transaksi Saya</h3>
-                    <div id="tx-history-container" class="space-y-2 text-xs">
-                        <p class="text-slate-400 text-center py-4">Memuat riwayat transaksi...</p>
-                    </div>
-                </div>
             </section>
 
             <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 4: MONITOR IHSG REAL-TIME                     -->
+            <!-- SUB-HALAMAN 4: E-COMMERCE STORE                           -->
             <!-- ========================================================= -->
-            <section id="sec-ihsg" class="hidden max-w-7xl mx-auto px-4 py-6 w-full space-y-6">
-                <div class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-slate-800 rounded-xl"><i data-lucide="line-chart" class="w-5 h-5 text-white"></i></div>
-                        <div>
-                            <h2 class="font-bold text-sm">Financial Market Analytics</h2>
-                            <p class="text-xs text-slate-400">Analisis Pasar Modal IHSG Real-time.</p>
+            <section id="sec-ecomerce" class="hidden max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Hero Banner -->
+                <section class="mb-10 rounded-2xl bg-slate-900 text-white p-6 sm:p-10 relative overflow-hidden shadow-xl">
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="inline-block px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-[10px] font-bold tracking-wider uppercase mb-3 border border-slate-700">
+                            Official Store ZHEDVATOR
+                        </span>
+                        <h1 class="text-2xl sm:text-4xl font-black tracking-tight mb-3 leading-tight">
+                            Buku Inspiratif & Koleksi Parfum Premium Rexer
+                        </h1>
+                        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-6">
+                            Belanja kebutuhan buku dan parfum eksklusif terhubung langsung ke layanan pemesanan WhatsApp.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Search & Kategori -->
+                <section id="katalog-store">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-2 border-b border-slate-200">
+                        <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
+                            <button onclick="setStoreCategory('all')" id="cat-btn-all" class="category-btn px-4 py-2 rounded-full text-xs font-bold transition bg-slate-900 text-white">
+                                Semua Produk
+                            </button>
+                            <button onclick="setStoreCategory('buku')" id="cat-btn-buku" class="category-btn px-4 py-2 rounded-full text-xs font-medium text-slate-600 hover:bg-slate-200 transition">
+                                Buku & Novel
+                            </button>
+                            <button onclick="setStoreCategory('parfum')" id="cat-btn-parfum" class="category-btn px-4 py-2 rounded-full text-xs font-medium text-slate-600 hover:bg-slate-200 transition">
+                                Parfum Rexer
+                            </button>
                         </div>
                     </div>
-                    <div id="clock-time" class="font-mono text-xs font-bold bg-slate-800 px-3 py-1.5 rounded-full text-slate-200">
-                        00:00:00 WIB
+
+                    <!-- Product Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="product-grid"></div>
+                </section>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN 5: TOP UP SERVICE                             -->
+            <!-- ========================================================= -->
+            <section id="sec-topup" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-black text-base text-slate-900">ZHEDVATOR TOP UP SERVICE</h2>
+                            <p class="text-xs text-slate-500 font-medium">Layanan Top Up Game Terpercaya via Toko VIP.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl border border-slate-200 p-4 shadow-sm relative overflow-hidden">
-                    <div class="tradingview-widget-container">
-                        <div id="tradingview_ihsg_chart" style="height:100%;width:100%;"></div>
-                    </div>
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative min-h-[75vh]">
+                    <iframe 
+                        id="topupIframe" 
+                        src="https://zhedvanois.toko.vip" 
+                        title="Top Up Service"
+                        class="w-full h-[80vh] min-h-[650px] border-0"
+                        loading="lazy"
+                    ></iframe>
                 </div>
             </section>
 
             <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 5: E-COMMERCE REXER STORE                    -->
+            <!-- SUB-HALAMAN 6: KONTROL PANEL ADMIN (KHUSUS ROLE ADMIN)     -->
             <!-- ========================================================= -->
-            <section id="sec-ecomerce" class="hidden max-w-7xl mx-auto px-4 py-6 w-full space-y-6">
-                <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-xl">
-                    <h1 class="text-2xl sm:text-3xl font-black mb-2 font-heading">Koleksi Novel Karya & Parfum Rexer</h1>
-                    <p class="text-slate-400 text-xs max-w-xl">Dapatkan produk pilihan berkualitas dengan kemudahan belanja langsung terhubung ke WhatsApp resmi.</p>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" id="product-grid"></div>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 6: TOP UP SERVICE (TOKO VIP EMBED)            -->
-            <!-- ========================================================= -->
-            <section id="sec-topup" class="hidden max-w-7xl mx-auto px-4 py-6 w-full space-y-4">
-                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center justify-between">
+            <section id="sec-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
+                <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 class="font-black text-sm text-slate-900">ZHEDVANOIS TOP UP SERVICE</h2>
-                        <p class="text-xs text-slate-500">Layanan Top Up voucher game terpercaya.</p>
-                    </div>
-                    <a href="https://zhedvanois.toko.vip" target="_blank" class="px-3.5 py-2 text-xs font-bold rounded-xl bg-slate-900 text-white hover:bg-slate-800">
-                        Buka Tab Baru
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-                    <iframe src="https://zhedvanois.toko.vip" title="Top Up Service" class="w-full h-[75vh] min-h-[600px] border-0"></iframe>
-                </div>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 7: PANEL ADMIN MANAGEMENT (FULL ACCESS)       -->
-            <!-- ========================================================= -->
-            <section id="sec-admin" class="hidden max-w-7xl mx-auto px-4 py-6 w-full space-y-6">
-                <!-- Admin Header Banner -->
-                <div class="bg-amber-500 text-slate-950 rounded-3xl p-6 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <span class="px-3 py-1 bg-slate-950 text-white rounded-full text-[10px] font-black uppercase tracking-widest">Akses Administrator Utama</span>
-                        <h2 class="text-2xl font-black mt-1 font-heading">Pusat Kendali Web ZHEDVATOR</h2>
-                        <p class="text-xs text-slate-900 font-medium">Kelola saldo member, buat misi baru, verifikasi klaim misi, dan setujui penarikan/deposit.</p>
+                        <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-full uppercase tracking-wider">Akses Terotorisasi</span>
+                        <h2 class="text-2xl font-black mt-2">Pusat Kendali Admin ZHEDVATOR</h2>
+                        <p class="text-xs text-slate-400 mt-1">Kelola data member, verifikasi transaksi, setujui klaim misi, dan terbitkan pengumuman.</p>
                     </div>
                 </div>
 
-                <!-- Admin Tabs Navigation -->
-                <div class="flex flex-wrap border-b border-slate-200 bg-white rounded-2xl p-1 gap-1 border">
-                    <button id="admin-tab-overview" onclick="switchAdminSubTab('overview')" class="px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-900 text-white">Ringkasan Stat</button>
-                    <button id="admin-tab-members" onclick="switchAdminSubTab('members')" class="px-4 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900">Data Member & Saldo</button>
-                    <button id="admin-tab-missions" onclick="switchAdminSubTab('missions')" class="px-4 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900">Kelola Misi & Klaim</button>
-                    <button id="admin-tab-tx" onclick="switchAdminSubTab('tx')" class="px-4 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900">Deposit & Withdraw</button>
+                <!-- Admin Tab Switcher -->
+                <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm overflow-x-auto scrollbar-hide">
+                    <button id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider">
+                        Daftar Member
+                    </button>
+                    <button id="admin-tab-btn-missions" onclick="switchAdminTab('missions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Kelola Misi & Klaim
+                    </button>
+                    <button id="admin-tab-btn-transactions" onclick="switchAdminTab('transactions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Kelola Transaksi
+                    </button>
+                    <button id="admin-tab-btn-products" onclick="switchAdminTab('products')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Kelola Produk Store
+                    </button>
+                    <button id="admin-tab-btn-announcements" onclick="switchAdminTab('announcements')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Pengumuman Member
+                    </button>
                 </div>
 
-                <!-- SUB-TAB 1: OVERVIEW STATS -->
-                <div id="admin-sub-overview" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">Total Member</p>
-                        <h3 id="stat-total-members" class="text-2xl font-black text-slate-900 mt-1">0</h3>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-amber-500 uppercase">Pending Deposit/WD</p>
-                        <h3 id="stat-pending-tx" class="text-2xl font-black text-amber-600 mt-1">0</h3>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-blue-500 uppercase">Misi Aktif</p>
-                        <h3 id="stat-active-missions" class="text-2xl font-black text-blue-600 mt-1">0</h3>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <p class="text-[10px] font-bold text-emerald-500 uppercase">Klaim Misi Pending</p>
-                        <h3 id="stat-pending-claims" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
-                    </div>
-                </div>
-
-                <!-- SUB-TAB 2: KELOLA MEMBER & EDIT SALDO -->
-                <div id="admin-sub-members" class="hidden bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-black text-slate-900 text-sm">Daftar Anggota / Member Terdaftar</h3>
-                        <button onclick="loadAdminMembersList()" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl font-bold">Refresh Data</button>
-                    </div>
-
+                <!-- ADMIN SUB-TAB 1: KELOLA MEMBER -->
+                <div id="admin-subtab-members" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Member Terdaftar</h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="border-b border-slate-200 text-[10px] font-bold text-slate-400 uppercase">
-                                    <th class="py-3 px-2">Member</th>
-                                    <th class="py-3 px-2">Role</th>
-                                    <th class="py-3 px-2">Bank & Rekening</th>
-                                    <th class="py-3 px-2">Saldo Akun</th>
-                                    <th class="py-3 px-2 text-right">Aksi</th>
+                                <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                    <th class="p-3">Nama / Email</th>
+                                    <th class="p-3">NIK</th>
+                                    <th class="p-3">WhatsApp</th>
+                                    <th class="p-3">Saldo (Rp)</th>
+                                    <th class="p-3">Role</th>
+                                    <th class="p-3 text-center">Aksi Edit</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-members-tbody" class="text-xs divide-y divide-slate-100">
-                                <tr><td colspan="5" class="py-6 text-center text-slate-400">Memuat data member...</td></tr>
+                            <tbody id="admin-members-table-body">
+                                <tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat data member...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- SUB-TAB 3: KELOLA MISI & VERIFIKASI KLAIM -->
-                <div id="admin-sub-missions" class="hidden space-y-6">
+                <!-- ADMIN SUB-TAB 2: KELOLA MISI & KLAIM -->
+                <div id="admin-subtab-missions" class="hidden space-y-6">
                     <!-- Form Buat Misi Baru -->
-                    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
-                        <h3 class="font-black text-slate-900 text-sm">Buat Misi Baru Untuk Member</h3>
-                        <form onsubmit="handleCreateMission(event)" class="space-y-3">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Judul Misi</label>
-                                    <input type="text" id="misi-title" required placeholder="Contoh: Follow IG & Share Post" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Imbalan Saldo (Rp)</label>
-                                    <input type="number" id="misi-reward" required min="500" placeholder="5000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
-                                </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Terbitkan Misi Baru</h3>
+                        <form onsubmit="handleAdminCreateMission(event)" class="space-y-4 max-w-2xl">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Judul Misi</label>
+                                <input type="text" id="mission-title" required placeholder="Contoh: Follow Instagram & Share Post" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Deskripsi & Instruksi Tugas</label>
-                                <textarea id="misi-desc" required placeholder="Jelaskan langkah-langkah yang harus dilakukan member..." rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium resize-none"></textarea>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Tugas</label>
+                                <textarea id="mission-desc" required placeholder="Jelaskan langkah-langkah tugas..." rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
                             </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Link Tugas (Opsional)</label>
-                                <input type="url" id="misi-link" placeholder="https://instagram.com/p/..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Hadiah Saldo (Rp)</label>
+                                    <input type="number" id="mission-reward" required min="1000" placeholder="5000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Link Tugas (Opsional)</label>
+                                    <input type="url" id="mission-link" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                </div>
                             </div>
-                            <button type="submit" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-800">
-                                Terbitkan Misi Sekarang
+                            <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                                Terbitkan Misi
                             </button>
                         </form>
                     </div>
 
-                    <!-- Verifikasi Klaim Misi Member -->
-                    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
-                        <h3 class="font-black text-slate-900 text-sm">Verifikasi Klaim Misi Dari Member</h3>
-                        <div id="admin-claims-container" class="space-y-3 text-xs">
-                            <p class="text-slate-400 text-center py-4">Memuat klaim misi...</p>
+                    <!-- List Misi Terbit -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Misi Diterbitkan</h3>
+                        <div id="admin-missions-list" class="space-y-3">
+                            <p class="text-xs text-slate-400">Memuat misi...</p>
+                        </div>
+                    </div>
+
+                    <!-- Klaim Misi Masuk -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Klaim Misi dari Member</h3>
+                        <div id="admin-claims-list" class="space-y-3">
+                            <p class="text-xs text-slate-400">Memuat data pengajuan klaim...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUB-TAB 4: KELOLA TRANSAKSI DEPOSIT & WITHDRAW -->
-                <div id="admin-sub-tx" class="hidden bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
-                    <h3 class="font-black text-slate-900 text-sm">Kelola Pengajuan Deposit & Penarikan</h3>
-                    <div id="admin-tx-container" class="space-y-3 text-xs">
-                        <p class="text-slate-400 text-center py-4">Memuat daftar transaksi...</p>
+                <!-- ADMIN SUB-TAB 3: KELOLA TRANSAKSI -->
+                <div id="admin-subtab-transactions" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Deposit & Withdraw Member</h3>
+                    <div id="admin-transactions-list" class="space-y-3">
+                        <p class="text-xs text-slate-400">Memuat transaksi pending...</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 4: KELOLA PRODUK STORE -->
+                <div id="admin-subtab-products" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Tambah Produk Baru ke Store</h3>
+                        <form onsubmit="handleAdminAddProduct(event)" class="space-y-4 max-w-2xl">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Produk</label>
+                                <input type="text" id="prod-name" required placeholder="Contoh: REXER PERFUME MOON LIGHT X" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Harga (Rp)</label>
+                                    <input type="number" id="prod-price" required min="1000" placeholder="85000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
+                                    <select id="prod-category" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                        <option value="buku">Buku & Novel</option>
+                                        <option value="parfum">Parfum Rexer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">URL Foto Produk</label>
+                                <input type="url" id="prod-image" required placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            </div>
+                            <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                                Simpan Produk Baru
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Produk Store Sekarang</h3>
+                        <div id="admin-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <p class="text-xs text-slate-400">Memuat produk...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 5: PENGUMUMAN MEMBER -->
+                <div id="admin-subtab-announcements" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Siarkan Pengumuman / Broadcast Baru</h3>
+                        <form onsubmit="handleAdminCreateAnnouncement(event)" class="space-y-4 max-w-2xl">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Judul Pengumuman</label>
+                                <input type="text" id="announcement-title" required placeholder="Contoh: Pemeliharaan Sistem Sistemik" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Isi Pesan Pengumuman</label>
+                                <textarea id="announcement-msg" required placeholder="Tuliskan pesan lengkap..." rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Tipe Badge Informasi</label>
+                                <select id="announcement-type" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                    <option value="info">Info Umum (Biru)</option>
+                                    <option value="warning">Peringatan (Kuning)</option>
+                                    <option value="success">Pengumuman Penting (Hijau)</option>
+                                    <option value="urgent">Urgent / Darurat (Merah)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                                Broadcast Ke Semua Member
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengumuman Aktif</h3>
+                        <div id="admin-announcements-list" class="space-y-3">
+                            <p class="text-xs text-slate-400">Memuat pengumuman...</p>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
 
         <!-- Global Footer -->
-        <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-            <p>&copy; 2026 PT ZHEDVANOIS CREATIVE AGENCY. All rights reserved.</p>
+        <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 font-medium">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p>&copy; 2026 PT ZHEDVANOIS CREATIVE AGENCY. All rights reserved.</p>
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                    <span class="w-1.5 h-1.5 bg-slate-900 rounded-full"></span>
+                    <span class="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                </div>
+            </div>
         </footer>
     </div>
 
-    <!-- Modal Edit Saldo Member (Admin) -->
-    <div id="modal-edit-balance" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <h3 class="font-black text-slate-900 text-sm">Edit Saldo Member</h3>
-            <p id="modal-member-info" class="text-xs text-slate-500 font-medium">-</p>
-            <div>
-                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Saldo Baru (Rp)</label>
-                <input type="number" id="modal-input-saldo" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold text-sm">
-            </div>
-            <div class="flex gap-2">
-                <button onclick="closeEditBalanceModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
-                <button onclick="saveMemberBalance()" class="flex-1 py-2.5 bg-slate-900 text-white font-bold rounded-xl text-xs">Simpan</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Misi Submission (Member) -->
-    <div id="modal-submit-misi" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
-            <h3 class="font-black text-slate-900 text-sm">Kirim Bukti Pengerjaan Misi</h3>
-            <p id="modal-misi-title" class="text-xs font-bold text-blue-600">-</p>
-            <form onsubmit="handleMisiSubmission(event)" class="space-y-3">
+    <!-- MODALS GLOBAL -->
+    <!-- Edit Member Modal -->
+    <div id="edit-member-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
+            <h3 class="font-extrabold text-slate-900 text-base mb-4">Edit Data & Saldo Member</h3>
+            <form onsubmit="saveMemberEdit(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Bukti Link / Tangkapan Layar URL</label>
-                    <input type="text" id="misi-proof-link" required placeholder="https://drive.google.com/... atau link post" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                    <label class="block font-bold text-slate-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="edit-mem-nama" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Catatan Tambahan</label>
-                    <textarea id="misi-proof-notes" placeholder="Tuliskan username medsos atau catatan..." rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium resize-none"></textarea>
+                    <label class="block font-bold text-slate-700 mb-1">Saldo Member (Rp)</label>
+                    <input type="number" id="edit-mem-saldo" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
                 </div>
-                <div class="flex gap-2">
-                    <button type="button" onclick="closeSubmitMisiModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs">Batal</button>
-                    <button type="submit" class="flex-1 py-2.5 bg-slate-900 text-white font-bold rounded-xl text-xs">Kirim Ke Admin</button>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Role Akun</label>
+                    <select id="edit-mem-role" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                        <option value="member">Member</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeEditMemberModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600">Batal</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Cart Modal & Checkout -->
+    <!-- Submit Mission Modal -->
+    <div id="submit-mission-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
+            <h3 class="font-extrabold text-slate-900 text-base mb-1" id="submit-misi-title">Kirim Bukti Pengerjaan Misi</h3>
+            <p class="text-xs text-slate-500 mb-4">Pastikan Anda telah menyelesaikan tugas sebelum mengirimkan bukti.</p>
+            <form onsubmit="submitMissionClaim(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Link Bukti / Catatan Pengerjaan</label>
+                    <textarea id="claim-proof" required placeholder="Masukkan URL screenshot / username media sosial Anda..." rows="3" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium"></textarea>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeSubmitMissionModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600">Batal</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold">Kirim Klaim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
     <div class="fixed inset-0 z-50 hidden items-center justify-center p-4" id="cart-modal">
         <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeCartModal()"></div>
-        <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden flex flex-col max-h-[90vh]">
             <div class="px-5 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                <h3 class="text-sm font-black text-slate-900">Keranjang Belanja Rexer Store</h3>
-                <button onclick="closeCartModal()" class="text-slate-400 hover:text-slate-900"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <h3 class="text-base font-extrabold text-slate-900">Keranjang Belanja</h3>
+                <button class="text-slate-400 hover:text-slate-900 p-1 rounded-full" onclick="closeCartModal()">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
             <div class="px-5 py-4 overflow-y-auto flex-grow" id="cart-items-container"></div>
-            <div class="px-5 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-900" id="cart-total-price">Total: Rp 0</span>
-                <button onclick="submitCartOrder()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i> Order via WA
+            <div class="px-5 py-4 border-t border-slate-200 bg-slate-50">
+                <button onclick="proceedToCheckout()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider">
+                    Lanjut Checkout WhatsApp
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-2xl translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50 border border-slate-800">
-        <i data-lucide="info" class="w-4 h-4 text-amber-400"></i>
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-circle-info"></i>
         <span id="toastMsg">Notifikasi</span>
     </div>
 
@@ -782,784 +1008,691 @@
         const MISSIONS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'missions');
         const CLAIMS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'mission_submissions');
         const TX_COL = collection(db, 'artifacts', appId, 'public', 'data', 'transactions');
+        const PRODUCTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+        const ANNOUNCEMENTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
 
         // Global State
         window.currentUserProfile = null;
         window.selectedEditMember = null;
         window.selectedSubmitMission = null;
 
-        // -----------------------------------------------------------------
-        // 1. AUTHENTICATION & SESSION MANAGEMENT
-        // -----------------------------------------------------------------
+        // Safe Lucide Loader
+        function safeLucideIcons() {
+            if (window.lucide) {
+                try {
+                    window.lucide.createIcons();
+                } catch(e) {}
+            }
+        }
+
+        /* ----------------------------------------------------------------- */
+        /* 1. AUTHENTICATION & SESSION MANAGEMENT                            */
+        /* ----------------------------------------------------------------- */
+        onAuthStateChanged(auth, async (user) => {
+            const viewAuth = document.getElementById('view-auth');
+            const viewApp = document.getElementById('view-app');
+
+            if (user) {
+                try {
+                    const userDoc = await getDoc(doc(USERS_COL, user.uid));
+                    if (userDoc.exists()) {
+                        window.currentUserProfile = { uid: user.uid, ...userDoc.data() };
+                    } else {
+                        window.currentUserProfile = {
+                            uid: user.uid,
+                            email: user.email,
+                            nama: 'Member',
+                            role: user.email.includes('admin') ? 'admin' : 'member',
+                            saldo: 0
+                        };
+                    }
+
+                    viewAuth.classList.add('hidden');
+                    viewApp.classList.remove('hidden');
+
+                    setupUserDashboardUI();
+                    setupAdminDashboardUI();
+                    setupRealtimeListeners();
+                    showAppSection(window.location.hash.replace('#', '') || 'beranda');
+                } catch(err) {
+                    console.error("Error loading user profile:", err);
+                }
+            } else {
+                window.currentUserProfile = null;
+                viewAuth.classList.remove('hidden');
+                viewApp.classList.add('hidden');
+            }
+            safeLucideIcons();
+        });
+
         window.switchAuthTab = (tab) => {
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
             const loginBtn = document.getElementById('tab-login-btn');
             const registerBtn = document.getElementById('tab-register-btn');
-            
-            const alertBox = document.getElementById('auth-alert-box');
-            if (alertBox) alertBox.classList.add('hidden');
+            document.getElementById('auth-alert-box').classList.add('hidden');
 
             if (tab === 'login') {
                 loginForm.classList.remove('hidden');
                 registerForm.classList.add('hidden');
                 loginBtn.className = "flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider";
-                if (registerBtn) registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700 transition-all uppercase tracking-wider";
+                registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700 transition-all uppercase tracking-wider";
             } else {
                 loginForm.classList.add('hidden');
                 registerForm.classList.remove('hidden');
-                if (registerBtn) registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider";
+                registerBtn.className = "flex-1 py-3 text-xs font-bold text-slate-900 border-b-2 border-slate-900 transition-all uppercase tracking-wider";
                 loginBtn.className = "flex-1 py-3 text-xs font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700 transition-all uppercase tracking-wider";
             }
         };
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // Fetch User Profile from Firestore
-                const userDoc = await getDoc(doc(USERS_COL, user.uid));
-                if (userDoc.exists()) {
-                    window.currentUserProfile = { uid: user.uid, ...userDoc.data() };
-                } else {
-                    // Default fallback
-                    window.currentUserProfile = {
-                        uid: user.uid,
-                        email: user.email,
-                        nama: user.email.split('@')[0],
-                        username: user.email.split('@')[0],
-                        role: 'member',
-                        saldo: 0
-                    };
-                }
-                renderAppShell();
-                checkRoute();
-            } else {
-                window.currentUserProfile = null;
-                document.getElementById('view-auth').classList.remove('hidden');
-                document.getElementById('view-app').classList.add('hidden');
-            }
-        });
-
         window.handleLogin = async (e) => {
             e.preventDefault();
+            const alertBox = document.getElementById('auth-alert-box');
+            alertBox.classList.add('hidden');
+
             const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            const btn = document.getElementById('login-btn');
-            
-            btn.disabled = true;
-            btn.innerHTML = `<span>Memverifikasi...</span>`;
+            const password = document.getElementById('login-password').value.trim();
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                showAuthAlert("Login Berhasil!", "success");
             } catch (err) {
-                showAuthAlert("Gagal Login: " + err.message, "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="log-in" class="w-4 h-4"></i><span>Masuk Ke Portal</span>`;
-                lucide.createIcons();
+                alertBox.className = "m-6 mb-0 p-4 rounded-xl text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200";
+                alertBox.textContent = "Login gagal: Email atau kata sandi tidak valid.";
+                alertBox.classList.remove('hidden');
             }
         };
 
         window.handleRegister = async (e) => {
             e.preventDefault();
+            const alertBox = document.getElementById('auth-alert-box');
+            alertBox.classList.add('hidden');
+
             const email = document.getElementById('reg-email').value.trim();
-            const password = document.getElementById('reg-password').value;
+            const password = document.getElementById('reg-password').value.trim();
             const nama = document.getElementById('reg-nama').value.trim();
-            const username = document.getElementById('reg-username').value.trim();
+            const nik = document.getElementById('reg-nik').value.trim();
             const wa = document.getElementById('reg-wa').value.trim();
+            const ttl = document.getElementById('reg-ttl').value.trim();
             const bank = document.getElementById('reg-bank').value;
             const norek = document.getElementById('reg-norek').value.trim();
             const nama_pemilik = document.getElementById('reg-nama-pemilik').value.trim();
 
-            const btn = document.getElementById('reg-btn');
-            btn.disabled = true;
-            btn.innerHTML = `<span>Mendaftarkan...</span>`;
+            const role = email.toLowerCase().includes('admin') ? 'admin' : 'member';
 
             try {
-                const creds = await createUserWithEmailAndPassword(auth, email, password);
-                
-                // Determine initial role (First account or specific email becomes admin)
-                let role = 'member';
-                if (email.toLowerCase().includes('admin') || email.toLowerCase() === 'admin@zhedvator.com') {
-                    role = 'admin';
-                }
-
-                // Save Profile to Firestore
-                await setDoc(doc(USERS_COL, creds.user.uid), {
-                    nama, username, email, wa, bank, norek, nama_pemilik,
-                    role: role,
-                    saldo: 0,
-                    createdAt: new Date().toISOString()
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(USERS_COL, cred.user.uid), {
+                    email, nama, nik, wa, ttl, bank, norek, nama_pemilik,
+                    saldo: 0, role, createdAt: new Date().toISOString()
                 });
-
-                showAuthAlert("Pendaftaran berhasil! Mengalihkan...", "success");
+                window.showToast("Pendaftaran berhasil!");
             } catch (err) {
-                showAuthAlert("Pendaftaran gagal: " + err.message, "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i><span>Daftar Akun Baru</span>`;
-                lucide.createIcons();
+                alertBox.className = "m-6 mb-0 p-4 rounded-xl text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200";
+                alertBox.textContent = "Pendaftaran gagal: " + err.message;
+                alertBox.classList.remove('hidden');
             }
         };
 
-        window.handleLogout = () => {
-            if (confirm("Keluar dari akun Anda?")) {
-                signOut(auth);
+        window.handleLogout = async () => {
+            await signOut(auth);
+            window.location.hash = "";
+            window.location.reload();
+        };
+
+        /* ----------------------------------------------------------------- */
+        /* 2. UI NAVIGATION & ROUTING                                        */
+        /* ----------------------------------------------------------------- */
+        window.showAppSection = (pageId) => {
+            const sections = ['beranda', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
+            const target = sections.includes(pageId) ? pageId : 'beranda';
+
+            // Protect Admin Page
+            if (target === 'admin' && window.currentUserProfile?.role !== 'admin') {
+                window.showToast("Akses ditolak! Halaman ini khusus Admin.");
+                return;
+            }
+
+            sections.forEach(s => {
+                const secEl = document.getElementById(`sec-${s}`);
+                if (secEl) {
+                    if (s === target) secEl.classList.remove('hidden');
+                    else secEl.classList.add('hidden');
+                }
+            });
+
+            if (target === 'ihsg') initIhsgPage();
+            if (target === 'ecomerce') renderStoreProducts();
+
+            safeLucideIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.toggleMenu = () => {
+            const sideMenu = document.getElementById('side-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+            if (sideMenu.classList.contains('translate-x-full')) {
+                sideMenu.classList.remove('translate-x-full');
+                menuOverlay.classList.remove('hidden');
+            } else {
+                sideMenu.classList.add('translate-x-full');
+                menuOverlay.classList.add('hidden');
             }
         };
 
-        // -----------------------------------------------------------------
-        // 2. SHELL RENDERING & ROUTING
-        // -----------------------------------------------------------------
-        function renderAppShell() {
-            const profile = window.currentUserProfile;
-            if (!profile) return;
+        function setupUserDashboardUI() {
+            const u = window.currentUserProfile;
+            if (!u) return;
 
-            document.getElementById('view-auth').classList.add('hidden');
-            document.getElementById('view-app').classList.remove('hidden');
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
 
-            document.getElementById('user-display-nama').textContent = profile.nama || '-';
-            document.getElementById('user-display-username').textContent = '@' + (profile.username || 'member');
-            document.getElementById('user-display-saldo').textContent = formatRupiah(profile.saldo || 0);
-            document.getElementById('user-display-role').textContent = profile.role || 'member';
+            document.getElementById('user-display-nama').textContent = u.nama || 'Member';
+            document.getElementById('user-display-email').textContent = u.email || '-';
+            document.getElementById('user-display-saldo').textContent = formatRupiah(u.saldo || 0);
 
-            document.getElementById('menu-user-name').textContent = profile.nama || '-';
-            document.getElementById('menu-user-email').textContent = profile.email || '-';
-            document.getElementById('menu-role-badge').textContent = profile.role || 'member';
+            document.getElementById('menu-user-name').textContent = u.nama || 'Member';
+            document.getElementById('menu-user-email').textContent = u.email || '-';
+            document.getElementById('menu-user-role').textContent = u.role || 'member';
+            document.getElementById('user-role-badge').textContent = u.role || 'member';
 
-            document.getElementById('info-bank').textContent = profile.bank || '-';
-            document.getElementById('info-norek').textContent = profile.norek || '-';
-            document.getElementById('info-nama-pemilik').textContent = profile.nama_pemilik || '-';
+            document.getElementById('info-nik').textContent = u.nik || '-';
+            document.getElementById('info-wa').textContent = u.wa || '-';
+            document.getElementById('info-ttl').textContent = u.ttl || '-';
+            document.getElementById('info-bank-norek').textContent = `${u.bank || ''} ${u.norek || ''} (a.n ${u.nama_pemilik || ''})`;
+        }
 
-            // Auto fill withdraw input
-            const wdInput = document.getElementById('withdrawDestination');
-            if (wdInput) wdInput.value = `${profile.bank || 'Bank'} ${profile.norek || '-'} a.n ${profile.nama_pemilik || '-'}`;
-
-            // Show Admin Elements if role === 'admin'
-            const adminBtn = document.getElementById('btn-admin-panel');
+        function setupAdminDashboardUI() {
+            const u = window.currentUserProfile;
+            const adminBtn = document.getElementById('admin-badge-btn');
             const adminNavLink = document.getElementById('nav-link-admin');
 
-            if (profile.role === 'admin') {
+            if (u && u.role === 'admin') {
                 adminBtn.classList.remove('hidden');
+                adminBtn.classList.add('flex');
                 adminNavLink.classList.remove('hidden');
+                adminNavLink.classList.add('flex');
             } else {
                 adminBtn.classList.add('hidden');
                 adminNavLink.classList.add('hidden');
             }
         }
 
-        window.reloadUserProfile = async () => {
-            if (!auth.currentUser) return;
-            const docSnap = await getDoc(doc(USERS_COL, auth.currentUser.uid));
-            if (docSnap.exists()) {
-                window.currentUserProfile = { uid: auth.currentUser.uid, ...docSnap.data() };
-                renderAppShell();
-                showToast("Data akun berhasil dikesegarkan!");
-            }
-        };
-
-        function checkRoute() {
-            let hash = window.location.hash.replace('#', '') || 'beranda';
-            const validPages = ['beranda', 'misi', 'transaksi', 'ihsg', 'ecomerce', 'topup', 'admin'];
-            if (!validPages.includes(hash)) hash = 'beranda';
-
-            // Admin Route Guard
-            if (hash === 'admin' && window.currentUserProfile?.role !== 'admin') {
-                showToast("Akses ditolak! Halaman ini khusus Administrator.");
-                window.location.hash = "#beranda";
-                hash = 'beranda';
+        /* ----------------------------------------------------------------- */
+        /* 3. REALTIME FIRESTORE LISTENERS                                   */
+        /* ----------------------------------------------------------------- */
+        function setupRealtimeListeners() {
+            // Realtime Current User Balance Sync
+            if (window.currentUserProfile?.uid) {
+                onSnapshot(doc(USERS_COL, window.currentUserProfile.uid), (docSnap) => {
+                    if (docSnap.exists()) {
+                        window.currentUserProfile = { uid: docSnap.id, ...docSnap.data() };
+                        document.getElementById('user-display-saldo').textContent = formatRupiah(window.currentUserProfile.saldo || 0);
+                    }
+                });
             }
 
-            const sections = validPages;
-            sections.forEach(s => {
-                const el = document.getElementById(`sec-${s}`);
-                if (el) {
-                    if (s === hash) el.classList.remove('hidden');
-                    else el.classList.add('hidden');
-                }
-            });
+            // Realtime Member Missions List
+            onSnapshot(MISSIONS_COL, (snapshot) => {
+                const grid = document.getElementById('member-missions-grid');
+                if (!grid) return;
 
-            // Refresh specific view data
-            if (hash === 'misi') loadMemberMissions();
-            if (hash === 'transaksi') loadMemberTransactions();
-            if (hash === 'admin') loadAdminDashboard();
-            if (hash === 'ihsg') initTradingView();
-            if (hash === 'ecomerce') renderStoreProducts();
-
-            lucide.createIcons();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        window.addEventListener('hashchange', checkRoute);
-
-        // -----------------------------------------------------------------
-        // 3. MEMBER MISSION SYSTEM
-        // -----------------------------------------------------------------
-        window.switchMisiTab = (tab) => {
-            const listBtn = document.getElementById('tab-misi-list-btn');
-            const historyBtn = document.getElementById('tab-misi-history-btn');
-            const listContainer = document.getElementById('misi-list-container');
-            const historyContainer = document.getElementById('misi-history-container');
-
-            if (tab === 'list') {
-                listBtn.className = "px-5 py-3 text-xs font-bold border-b-2 border-slate-900 text-slate-900 transition";
-                historyBtn.className = "px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 transition";
-                listContainer.classList.remove('hidden');
-                historyContainer.classList.add('hidden');
-            } else {
-                historyBtn.className = "px-5 py-3 text-xs font-bold border-b-2 border-slate-900 text-slate-900 transition";
-                listBtn.className = "px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 transition";
-                historyContainer.classList.remove('hidden');
-                listContainer.classList.add('hidden');
-                window.loadMemberMissionClaimsHistory();
-            }
-        };
-
-        window.loadMemberMissions = async () => {
-            const container = document.getElementById('misi-list-container');
-            container.innerHTML = `<p class="col-span-full py-8 text-center text-xs text-slate-400">Memuat misi...</p>`;
-
-            try {
-                const snapshot = await getDocs(MISSIONS_COL);
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-slate-400 bg-white rounded-3xl border">Belum ada misi aktif dari Admin.</div>`;
+                    grid.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-2">Belum ada misi tersedia saat ini.</p>`;
                     return;
                 }
 
                 let html = '';
                 snapshot.forEach(docSnap => {
-                    const m = docSnap.data();
-                    const mId = docSnap.id;
+                    const m = { id: docSnap.id, ...docSnap.data() };
                     html += `
-                        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-600 px-2.5 py-1 rounded-full">MISI RESMI</span>
-                                    <span class="text-xs font-black text-emerald-600">+ ${formatRupiah(m.reward)}</span>
+                                    <h4 class="font-extrabold text-slate-900 text-xs">${m.title}</h4>
+                                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">+${formatRupiah(m.reward)}</span>
                                 </div>
-                                <h3 class="font-extrabold text-slate-900 text-sm mb-1">${m.title}</h3>
-                                <p class="text-xs text-slate-500 mb-3">${m.desc}</p>
-                                ${m.link ? `<a href="${m.link}" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:underline mb-3"><i data-lucide="external-link" class="w-3 h-3"></i> Buka Link Tugas</a>` : ''}
+                                <p class="text-[11px] text-slate-600 mb-3 leading-relaxed">${m.description}</p>
                             </div>
-                            <button onclick="openSubmitMisiModal('${mId}', '${m.title}', ${m.reward})" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 rounded-xl transition flex items-center justify-center gap-1.5">
-                                <i data-lucide="check-circle" class="w-4 h-4"></i> Kerjakan & Kirim Bukti
-                            </button>
+                            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200">
+                                ${m.link ? `<a href="${m.link}" target="_blank" class="text-[11px] font-bold text-slate-700 hover:underline">Buka Link Task &rarr;</a>` : '<span></span>'}
+                                <button onclick="openSubmitMissionModal('${m.id}', '${m.title.replace(/'/g, "\\'")}')" class="bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">
+                                    Kerjakan & Klaim
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            });
+
+            // Realtime Announcements Banner Listener
+            onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
+                const container = document.getElementById('announcement-banner-container');
+                if (!container) return;
+
+                if (snapshot.empty) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const a = docSnap.data();
+                    const badgeStyles = {
+                        info: 'bg-blue-50 text-blue-800 border-blue-200',
+                        warning: 'bg-amber-50 text-amber-800 border-amber-200',
+                        success: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                        urgent: 'bg-rose-50 text-rose-800 border-rose-200'
+                    };
+                    html += `
+                        <div class="p-4 rounded-xl border ${badgeStyles[a.type] || badgeStyles.info} shadow-sm flex items-start gap-3">
+                            <i data-lucide="bell" class="w-5 h-5 shrink-0 mt-0.5"></i>
+                            <div>
+                                <h4 class="font-extrabold text-xs uppercase tracking-wider">${a.title}</h4>
+                                <p class="text-xs mt-0.5 font-medium leading-relaxed">${a.message}</p>
+                            </div>
                         </div>
                     `;
                 });
                 container.innerHTML = html;
-                lucide.createIcons();
-            } catch (err) {
-                container.innerHTML = `<p class="col-span-full py-8 text-center text-xs text-rose-500">Gagal memuat misi.</p>`;
-            }
-        };
+                safeLucideIcons();
+            });
 
-        window.openSubmitMisiModal = (id, title, reward) => {
-            window.selectedSubmitMission = { id, title, reward };
-            document.getElementById('modal-misi-title').textContent = `${title} (+${formatRupiah(reward)})`;
-            document.getElementById('modal-submit-misi').classList.remove('hidden');
-            document.getElementById('modal-submit-misi').classList.add('flex');
-        };
-
-        window.closeSubmitMisiModal = () => {
-            document.getElementById('modal-submit-misi').classList.add('hidden');
-            document.getElementById('modal-submit-misi').classList.remove('flex');
-        };
-
-        window.handleMisiSubmission = async (e) => {
-            e.preventDefault();
-            const link = document.getElementById('misi-proof-link').value.trim();
-            const notes = document.getElementById('misi-proof-notes').value.trim();
-
-            if (!window.selectedSubmitMission || !window.currentUserProfile) return;
-
-            try {
-                await addDoc(CLAIMS_COL, {
-                    missionId: window.selectedSubmitMission.id,
-                    missionTitle: window.selectedSubmitMission.title,
-                    reward: window.selectedSubmitMission.reward,
-                    userId: window.currentUserProfile.uid,
-                    userName: window.currentUserProfile.nama,
-                    userEmail: window.currentUserProfile.email,
-                    proofLink: link,
-                    notes: notes,
-                    status: 'PENDING',
-                    createdAt: new Date().toISOString()
-                });
-
-                window.closeSubmitMisiModal();
-                showToast("Bukti pengerjaan berhasil dikirim ke Admin!");
-                window.switchMisiTab('history');
-            } catch (err) {
-                showToast("Gagal mengirim bukti: " + err.message);
-            }
-        };
-
-        window.loadMemberMissionClaimsHistory = async () => {
-            const container = document.getElementById('misi-history-container');
-            container.innerHTML = `<p class="text-center text-xs text-slate-400 py-4">Memuat riwayat...</p>`;
-
-            try {
-                const snapshot = await getDocs(CLAIMS_COL);
-                let html = '';
-                let count = 0;
-
-                snapshot.forEach(docSnap => {
-                    const c = docSnap.data();
-                    if (c.userId === window.currentUserProfile?.uid) {
-                        count++;
-                        let statusBadge = `<span class="bg-amber-100 text-amber-800 font-bold px-2.5 py-0.5 rounded text-[10px]">VERIFIKASI ADMIN</span>`;
-                        if (c.status === 'APPROVED') statusBadge = `<span class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded text-[10px]">DISETUJUI (+${formatRupiah(c.reward)})</span>`;
-                        if (c.status === 'REJECTED') statusBadge = `<span class="bg-rose-100 text-rose-800 font-bold px-2.5 py-0.5 rounded text-[10px]">DITOLAK</span>`;
-
-                        html += `
-                            <div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between text-xs">
-                                <div>
-                                    <p class="font-bold text-slate-900">${c.missionTitle}</p>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Dikirim: ${new Date(c.createdAt).toLocaleString('id-ID')}</p>
-                                </div>
-                                <div>${statusBadge}</div>
-                            </div>
-                        `;
-                    }
-                });
-
-                if (count === 0) {
-                    container.innerHTML = `<p class="text-center py-8 text-xs font-bold text-slate-400 bg-white rounded-3xl border">Anda belum pernah mengajukan pengerjaan misi.</p>`;
-                } else {
-                    container.innerHTML = html;
-                }
-            } catch (err) {
-                container.innerHTML = `<p class="text-center text-xs text-rose-500 py-4">Gagal memuat riwayat.</p>`;
-            }
-        };
-
-        // -----------------------------------------------------------------
-        // 4. DEPOSIT & WITHDRAWAL LOGIC
-        // -----------------------------------------------------------------
-        window.switchTxTab = (type) => {
-            const depBtn = document.getElementById('tabDepositBtn');
-            const wdBtn = document.getElementById('tabWithdrawBtn');
-            const depForm = document.getElementById('depositFormContainer');
-            const wdForm = document.getElementById('withdrawFormContainer');
-
-            if (type === 'DEPOSIT') {
-                depBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider";
-                wdBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider";
-                depForm.classList.remove('hidden'); wdForm.classList.add('hidden');
-            } else {
-                wdBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider";
-                depBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider";
-                wdForm.classList.remove('hidden'); depForm.classList.add('hidden');
-            }
-        };
-
-        window.handleTxSubmit = async (e, type) => {
-            e.preventDefault();
-            const profile = window.currentUserProfile;
-            if (!profile) return;
-
-            let amount = 0, details = "", notes = "";
-
-            if (type === 'DEPOSIT') {
-                amount = parseFloat(document.getElementById('depositAmount').value);
-                notes = document.getElementById('depositNotes').value || "-";
-                details = "Bank BRI 646801000142569 a.n PT ZHEDVANOIS CREATIVE AGENCY";
-            } else {
-                amount = parseFloat(document.getElementById('withdrawAmount').value);
-                if (amount > (profile.saldo || 0)) {
-                    showToast("Saldo Anda tidak mencukupi untuk penarikan ini!");
-                    return;
-                }
-                details = `${profile.bank} ${profile.norek} a.n ${profile.nama_pemilik}`;
-                notes = "Pengajuan Penarikan";
-            }
-
-            try {
-                await addDoc(TX_COL, {
-                    type,
-                    amount,
-                    details,
-                    notes,
-                    userId: profile.uid,
-                    userName: profile.nama,
-                    userEmail: profile.email,
-                    status: 'PENDING',
-                    createdAt: new Date().toISOString()
-                });
-
-                showToast(`Pengajuan ${type} berhasil dikirim! Silakan tunggu verifikasi admin.`);
-                document.getElementById('depositAmount').value = '';
-                document.getElementById('withdrawAmount').value = '';
-                loadMemberTransactions();
-            } catch (err) {
-                showToast("Gagal mengajukan transaksi: " + err.message);
-            }
-        };
-
-        async function loadMemberTransactions() {
-            const container = document.getElementById('tx-history-container');
-            try {
-                const snapshot = await getDocs(TX_COL);
-                let html = '';
-                let count = 0;
-
-                snapshot.forEach(docSnap => {
-                    const t = docSnap.data();
-                    if (t.userId === window.currentUserProfile?.uid) {
-                        count++;
-                        let statusBadge = `<span class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[10px]">PENDING</span>`;
-                        if (t.status === 'APPROVED') statusBadge = `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">DISETUJUI</span>`;
-                        if (t.status === 'REJECTED') statusBadge = `<span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-[10px]">DITOLAK</span>`;
-
-                        html += `
-                            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
-                                <div>
-                                    <span class="font-bold ${t.type === 'DEPOSIT' ? 'text-emerald-600' : 'text-rose-600'}">${t.type}</span>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">${new Date(t.createdAt).toLocaleString('id-ID')}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-extrabold text-slate-900">${formatRupiah(t.amount)}</p>
-                                    <div class="mt-0.5">${statusBadge}</div>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-
-                if (count === 0) container.innerHTML = `<p class="text-center py-4 text-slate-400">Belum ada transaksi.</p>`;
-                else container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-center py-4 text-rose-500">Gagal memuat transaksi.</p>`;
+            // Listeners for Admin Dashboard
+            if (window.currentUserProfile?.role === 'admin') {
+                listenAdminData();
             }
         }
 
-        // -----------------------------------------------------------------
-        // 5. ADMIN CONTROL PANEL LOGIC
-        // -----------------------------------------------------------------
-        window.switchAdminSubTab = (sub) => {
-            const tabs = ['overview', 'members', 'missions', 'tx'];
+        /* ----------------------------------------------------------------- */
+        /* 4. ADMIN PANEL CORE LOGIC                                         */
+        /* ----------------------------------------------------------------- */
+        window.switchAdminTab = (tab) => {
+            const tabs = ['members', 'missions', 'transactions', 'products', 'announcements'];
             tabs.forEach(t => {
-                const btn = document.getElementById(`admin-tab-${t}`);
-                const view = document.getElementById(`admin-sub-${t}`);
-                if (t === sub) {
-                    btn.className = "px-4 py-2.5 text-xs font-bold rounded-xl bg-slate-900 text-white shadow-sm";
+                const btn = document.getElementById(`admin-tab-btn-${t}`);
+                const view = document.getElementById(`admin-subtab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider";
                     view.classList.remove('hidden');
                 } else {
-                    btn.className = "px-4 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900";
+                    btn.className = "px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider";
                     view.classList.add('hidden');
                 }
             });
-
-            if (sub === 'members') window.loadAdminMembersList();
-            if (sub === 'missions') window.loadAdminMissionClaims();
-            if (sub === 'tx') window.loadAdminTransactions();
         };
 
-        window.loadAdminDashboard = async () => {
-            try {
-                const usersSnap = await getDocs(USERS_COL);
-                const txSnap = await getDocs(TX_COL);
-                const missionsSnap = await getDocs(MISSIONS_COL);
-                const claimsSnap = await getDocs(CLAIMS_COL);
-
-                document.getElementById('stat-total-members').textContent = usersSnap.size;
-                document.getElementById('stat-active-missions').textContent = missionsSnap.size;
-
-                let pendingTxCount = 0;
-                txSnap.forEach(d => { if (d.data().status === 'PENDING') pendingTxCount++; });
-                document.getElementById('stat-pending-tx').textContent = pendingTxCount;
-
-                let pendingClaimsCount = 0;
-                claimsSnap.forEach(d => { if (d.data().status === 'PENDING') pendingClaimsCount++; });
-                document.getElementById('stat-pending-claims').textContent = pendingClaimsCount;
-            } catch (err) {
-                console.error("Admin dash load error:", err);
-            }
-        };
-
-        window.loadAdminMembersList = async () => {
-            const tbody = document.getElementById('admin-members-tbody');
-            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Memuat data member...</td></tr>`;
-
-            try {
-                const snapshot = await getDocs(USERS_COL);
+        function listenAdminData() {
+            // Listen Members
+            onSnapshot(USERS_COL, (snapshot) => {
+                const tbody = document.getElementById('admin-members-table-body');
+                if (!tbody) return;
                 let html = '';
                 snapshot.forEach(docSnap => {
-                    const u = docSnap.data();
-                    const uId = docSnap.id;
-
+                    const u = { uid: docSnap.id, ...docSnap.data() };
                     html += `
-                        <tr class="hover:bg-slate-50/80">
-                            <td class="py-3 px-2">
-                                <p class="font-bold text-slate-900">${u.nama || '-'}</p>
-                                <p class="text-[10px] text-slate-400">${u.email || '-'}</p>
-                            </td>
-                            <td class="py-3 px-2">
-                                <span class="px-2 py-0.5 text-[9px] font-black rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'} uppercase">${u.role || 'member'}</span>
-                            </td>
-                            <td class="py-3 px-2">
-                                <p class="font-bold text-slate-800">${u.bank || '-'} ${u.norek || '-'}</p>
-                                <p class="text-[10px] text-slate-400">a.n ${u.nama_pemilik || '-'}</p>
-                            </td>
-                            <td class="py-3 px-2 font-bold text-slate-900">
-                                ${formatRupiah(u.saldo || 0)}
-                            </td>
-                            <td class="py-3 px-2 text-right space-x-1">
-                                <button onclick="openEditBalanceModal('${uId}', '${u.nama}', ${u.saldo || 0})" class="px-2.5 py-1 bg-slate-900 text-white font-bold rounded-lg text-[10px]">Edit Saldo</button>
-                                <button onclick="toggleUserRole('${uId}', '${u.role}')" class="px-2.5 py-1 bg-slate-200 text-slate-800 font-bold rounded-lg text-[10px]">Ubah Role</button>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50">
+                            <td class="p-3 font-bold">${u.nama || '-'}<br><span class="font-normal text-slate-400">${u.email}</span></td>
+                            <td class="p-3 font-mono">${u.nik || '-'}</td>
+                            <td class="p-3">${u.wa || '-'}</td>
+                            <td class="p-3 font-bold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
+                            <td class="p-3 uppercase font-bold text-[10px]"><span class="px-2 py-0.5 rounded bg-slate-200">${u.role || 'member'}</span></td>
+                            <td class="p-3 text-center">
+                                <button onclick="openEditMemberModal('${u.uid}', '${(u.nama||'').replace(/'/g, "\\'")}', ${u.saldo||0}, '${u.role||'member'}')" class="bg-slate-900 text-white px-2.5 py-1 rounded text-[11px] font-bold">Edit</button>
                             </td>
                         </tr>
                     `;
                 });
                 tbody.innerHTML = html;
-            } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-rose-500">Gagal memuat member.</td></tr>`;
-            }
-        };
+            });
 
-        window.openEditBalanceModal = (uid, nama, currentSaldo) => {
-            window.selectedEditMember = uid;
-            document.getElementById('modal-member-info').textContent = `Member: ${nama}`;
-            document.getElementById('modal-input-saldo').value = currentSaldo;
-            document.getElementById('modal-edit-balance').classList.remove('hidden');
-            document.getElementById('modal-edit-balance').classList.add('flex');
-        };
-
-        window.closeEditBalanceModal = () => {
-            document.getElementById('modal-edit-balance').classList.add('hidden');
-            document.getElementById('modal-edit-balance').classList.remove('flex');
-        };
-
-        window.saveMemberBalance = async () => {
-            const newSaldo = parseFloat(document.getElementById('modal-input-saldo').value) || 0;
-            if (!window.selectedEditMember) return;
-
-            try {
-                await updateDoc(doc(USERS_COL, window.selectedEditMember), { saldo: newSaldo });
-                closeEditBalanceModal();
-                showToast("Saldo member berhasil diperbarui!");
-                loadAdminMembersList();
-            } catch (err) {
-                showToast("Gagal mengubah saldo: " + err.message);
-            }
-        };
-
-        window.toggleUserRole = async (uid, currentRole) => {
-            const nextRole = currentRole === 'admin' ? 'member' : 'admin';
-            if (confirm(`Ubah role pengguna ini menjadi "${nextRole}"?`)) {
-                try {
-                    await updateDoc(doc(USERS_COL, uid), { role: nextRole });
-                    showToast("Role pengguna berhasil diubah!");
-                    loadAdminMembersList();
-                } catch (err) {
-                    showToast("Gagal mengubah role: " + err.message);
-                }
-            }
-        };
-
-        window.handleCreateMission = async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('misi-title').value.trim();
-            const reward = parseFloat(document.getElementById('misi-reward').value) || 0;
-            const desc = document.getElementById('misi-desc').value.trim();
-            const link = document.getElementById('misi-link').value.trim();
-
-            try {
-                await addDoc(MISSIONS_COL, {
-                    title, reward, desc, link,
-                    createdAt: new Date().toISOString()
-                });
-
-                document.getElementById('misi-title').value = '';
-                document.getElementById('misi-reward').value = '';
-                document.getElementById('misi-desc').value = '';
-                document.getElementById('misi-link').value = '';
-
-                showToast("Misi baru berhasil diterbitkan!");
-            } catch (err) {
-                showToast("Gagal menerbitkan misi: " + err.message);
-            }
-        };
-
-        window.loadAdminMissionClaims = async () => {
-            const container = document.getElementById('admin-claims-container');
-            try {
-                const snapshot = await getDocs(CLAIMS_COL);
+            // Listen Missions
+            onSnapshot(MISSIONS_COL, (snapshot) => {
+                const container = document.getElementById('admin-missions-list');
+                if (!container) return;
+                if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-slate-400">Belum ada misi diterbitkan.</p>'; return; }
                 let html = '';
-                let count = 0;
-
                 snapshot.forEach(docSnap => {
-                    const c = docSnap.data();
-                    const claimId = docSnap.id;
+                    const m = { id: docSnap.id, ...docSnap.data() };
+                    html += `
+                        <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                            <div>
+                                <p class="font-bold text-slate-900">${m.title}</p>
+                                <p class="text-slate-500 font-bold text-emerald-600">+${formatRupiah(m.reward)}</p>
+                            </div>
+                            <button onclick="deleteMission('${m.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">
+                                Hapus Misi
+                            </button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
 
-                    if (c.status === 'PENDING') {
-                        count++;
+            // Listen Claims
+            onSnapshot(CLAIMS_COL, (snapshot) => {
+                const container = document.getElementById('admin-claims-list');
+                if (!container) return;
+                if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-slate-400">Belum ada pengajuan klaim misi.</p>'; return; }
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const c = { id: docSnap.id, ...docSnap.data() };
+                    if (c.status === 'pending') {
                         html += `
-                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                            <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-amber-50/50">
                                 <div>
-                                    <p class="font-extrabold text-slate-900">${c.missionTitle} (+${formatRupiah(c.reward)})</p>
-                                    <p class="text-[10px] text-slate-500">Member: <b>${c.userName}</b> (${c.userEmail})</p>
-                                    <p class="text-[10px] text-blue-600 mt-1">Bukti: <a href="${c.proofLink}" target="_blank" class="underline">${c.proofLink}</a></p>
-                                    ${c.notes ? `<p class="text-[10px] text-slate-400 italic">Catatan: "${c.notes}"</p>` : ''}
+                                    <p class="font-bold text-slate-900">${c.userNama} (${c.username})</p>
+                                    <p class="text-slate-600 font-medium">Misi: ${c.missionTitle} (+${formatRupiah(c.reward)})</p>
+                                    <p class="text-slate-400 font-mono text-[10px]">Bukti: ${c.proof}</p>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="approveClaim('${claimId}', '${c.userId}', ${c.reward})" class="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-xl text-xs">Setujui (+Saldo)</button>
-                                    <button onclick="rejectClaim('${claimId}')" class="px-3 py-1.5 bg-rose-600 text-white font-bold rounded-xl text-xs">Tolak</button>
+                                    <button onclick="approveClaim('${c.id}', '${c.userId}', ${c.reward})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
+                                    <button onclick="rejectClaim('${c.id}')" class="bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
                                 </div>
                             </div>
                         `;
                     }
                 });
+                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada pengajuan pending.</p>';
+            });
 
-                if (count === 0) container.innerHTML = `<p class="text-center py-4 text-slate-400">Tidak ada klaim misi pending.</p>`;
-                else container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-center py-4 text-rose-500">Gagal memuat klaim misi.</p>`;
-            }
+            // Listen Transactions
+            onSnapshot(TX_COL, (snapshot) => {
+                const container = document.getElementById('admin-transactions-list');
+                if (!container) return;
+                if (snapshot.empty) { container.innerHTML = '<p class="text-xs text-slate-400">Belum ada pengajuan transaksi.</p>'; return; }
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const tx = { id: docSnap.id, ...docSnap.data() };
+                    if (tx.status === 'pending') {
+                        html += `
+                            <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-slate-50">
+                                <div>
+                                    <span class="font-bold uppercase px-2 py-0.5 rounded text-[10px] ${tx.type === 'DEPOSIT' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${tx.type}</span>
+                                    <p class="font-bold text-slate-900 mt-1">${tx.userNama} - ${formatRupiah(tx.amount)}</p>
+                                    <p class="text-slate-500 font-mono text-[10px]">Detail: ${tx.details}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="approveTransaction('${tx.id}', '${tx.userId}', '${tx.type}', ${tx.amount})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
+                                    <button onclick="rejectTransaction('${tx.id}')" class="bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada transaksi pending.</p>';
+            });
+
+            // Listen Products
+            onSnapshot(PRODUCTS_COL, (snapshot) => {
+                const grid = document.getElementById('admin-products-grid');
+                if (!grid) return;
+                if (snapshot.empty) { grid.innerHTML = '<p class="text-xs text-slate-400">Belum ada produk dinamis di Firestore.</p>'; return; }
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const p = { id: docSnap.id, ...docSnap.data() };
+                    html += `
+                        <div class="p-3 border rounded-xl flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <img src="${p.image}" class="w-10 h-10 rounded object-cover">
+                                <div>
+                                    <p class="font-bold line-clamp-1">${p.name}</p>
+                                    <p class="text-slate-500">${formatRupiah(p.price)}</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteProduct('${p.id}')" class="bg-rose-600 text-white font-bold px-2.5 py-1 rounded text-[11px]">Hapus</button>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            });
+
+            // Listen Announcements
+            onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
+                const list = document.getElementById('admin-announcements-list');
+                if (!list) return;
+                if (snapshot.empty) { list.innerHTML = '<p class="text-xs text-slate-400">Belum ada pengajuan pengumuman.</p>'; return; }
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const a = { id: docSnap.id, ...docSnap.data() };
+                    html += `
+                        <div class="p-3 border rounded-xl flex items-center justify-between text-xs">
+                            <div>
+                                <span class="font-bold uppercase text-[9px] px-2 py-0.5 rounded bg-slate-200">${a.type}</span>
+                                <p class="font-bold text-slate-900 mt-1">${a.title}</p>
+                                <p class="text-slate-500">${a.message}</p>
+                            </div>
+                            <button onclick="deleteAnnouncement('${a.id}')" class="bg-rose-600 text-white font-bold px-2.5 py-1 rounded text-[11px]">Hapus</button>
+                        </div>
+                    `;
+                });
+                list.innerHTML = html;
+            });
+        }
+
+        // Admin Action Handlers
+        window.handleAdminCreateMission = async (e) => {
+            e.preventDefault();
+            await addDoc(MISSIONS_COL, {
+                title: document.getElementById('mission-title').value.trim(),
+                description: document.getElementById('mission-desc').value.trim(),
+                reward: parseFloat(document.getElementById('mission-reward').value),
+                link: document.getElementById('mission-link').value.trim(),
+                createdAt: new Date().toISOString()
+            });
+            window.showToast("Misi berhasil diterbitkan!");
+            e.target.reset();
+        };
+
+        window.deleteMission = async (mId) => {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'missions', mId));
+            window.showToast("Misi berhasil dihapus.");
+        };
+
+        window.handleAdminAddProduct = async (e) => {
+            e.preventDefault();
+            await addDoc(PRODUCTS_COL, {
+                name: document.getElementById('prod-name').value.trim(),
+                price: parseFloat(document.getElementById('prod-price').value),
+                category: document.getElementById('prod-category').value,
+                image: document.getElementById('prod-image').value.trim(),
+                createdAt: new Date().toISOString()
+            });
+            window.showToast("Produk berhasil ditambahkan!");
+            e.target.reset();
+        };
+
+        window.deleteProduct = async (pId) => {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', pId));
+            window.showToast("Produk berhasil dihapus.");
+        };
+
+        window.handleAdminCreateAnnouncement = async (e) => {
+            e.preventDefault();
+            await addDoc(ANNOUNCEMENTS_COL, {
+                title: document.getElementById('announcement-title').value.trim(),
+                message: document.getElementById('announcement-msg').value.trim(),
+                type: document.getElementById('announcement-type').value,
+                createdAt: new Date().toISOString()
+            });
+            window.showToast("Pengumuman berhasil dibroadcast!");
+            e.target.reset();
+        };
+
+        window.deleteAnnouncement = async (aId) => {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'announcements', aId));
+            window.showToast("Pengumuman dihapus.");
         };
 
         window.approveClaim = async (claimId, userId, reward) => {
-            try {
-                // Add reward to member balance
-                const userDoc = await getDoc(doc(USERS_COL, userId));
-                if (userDoc.exists()) {
-                    const currentSaldo = userDoc.data().saldo || 0;
-                    await updateDoc(doc(USERS_COL, userId), { saldo: currentSaldo + reward });
-                }
-                // Update claim status
-                await updateDoc(doc(CLAIMS_COL, claimId), { status: 'APPROVED' });
-                showToast("Klaim disetujui & saldo imbalan ditambahkan ke member!");
-                window.loadAdminMissionClaims();
-            } catch (err) {
-                showToast("Gagal menyetujui klaim: " + err.message);
+            const uDoc = await getDoc(doc(USERS_COL, userId));
+            if (uDoc.exists()) {
+                const currentBalance = uDoc.data().saldo || 0;
+                await updateDoc(doc(USERS_COL, userId), { saldo: currentBalance + reward });
+                await updateDoc(doc(CLAIMS_COL, claimId), { status: 'approved' });
+                window.showToast("Klaim disetujui & saldo member ditambahkan!");
             }
         };
 
         window.rejectClaim = async (claimId) => {
-            try {
-                await updateDoc(doc(CLAIMS_COL, claimId), { status: 'REJECTED' });
-                showToast("Klaim misi ditolak.");
-                window.loadAdminMissionClaims();
-            } catch (err) {
-                showToast("Gagal menolak klaim: " + err.message);
+            await updateDoc(doc(CLAIMS_COL, claimId), { status: 'rejected' });
+            window.showToast("Klaim ditolak.");
+        };
+
+        window.approveTransaction = async (txId, userId, type, amount) => {
+            const uDoc = await getDoc(doc(USERS_COL, userId));
+            if (uDoc.exists()) {
+                const currentBalance = uDoc.data().saldo || 0;
+                const newBalance = type === 'DEPOSIT' ? currentBalance + amount : Math.max(0, currentBalance - amount);
+                await updateDoc(doc(USERS_COL, userId), { saldo: newBalance });
+                await updateDoc(doc(TX_COL, txId), { status: 'approved' });
+                window.showToast(`Transaksi ${type} disetujui!`);
             }
         };
 
-        window.loadAdminTransactions = async () => {
-            const container = document.getElementById('admin-tx-container');
-            try {
-                const snapshot = await getDocs(TX_COL);
-                let html = '';
-                let count = 0;
-
-                snapshot.forEach(docSnap => {
-                    const t = docSnap.data();
-                    const txId = docSnap.id;
-
-                    if (t.status === 'PENDING') {
-                        count++;
-                        html += `
-                            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-black ${t.type === 'DEPOSIT' ? 'text-emerald-600' : 'text-rose-600'}">${t.type}</span>
-                                        <span class="font-extrabold text-slate-900">${formatRupiah(t.amount)}</span>
-                                    </div>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">Member: <b>${t.userName}</b> (${t.userEmail})</p>
-                                    <p class="text-[10px] text-slate-400">Detail: ${t.details}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button onclick="approveTx('${txId}', '${t.userId}', '${t.type}', ${t.amount})" class="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-xl text-xs">Setujui Transaksi</button>
-                                    <button onclick="rejectTx('${txId}')" class="px-3 py-1.5 bg-rose-600 text-white font-bold rounded-xl text-xs">Tolak</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-
-                if (count === 0) container.innerHTML = `<p class="text-center py-4 text-slate-400">Tidak ada transaksi pending.</p>`;
-                else container.innerHTML = html;
-            } catch (err) {
-                container.innerHTML = `<p class="text-center py-4 text-rose-500">Gagal memuat transaksi.</p>`;
-            }
+        window.rejectTransaction = async (txId) => {
+            await updateDoc(doc(TX_COL, txId), { status: 'rejected' });
+            window.showToast("Transaksi ditolak.");
         };
 
-        window.approveTx = async (txId, userId, type, amount) => {
-            try {
-                const userDoc = await getDoc(doc(USERS_COL, userId));
-                if (userDoc.exists()) {
-                    const currentSaldo = userDoc.data().saldo || 0;
-                    let updatedSaldo = currentSaldo;
-
-                    if (type === 'DEPOSIT') {
-                        updatedSaldo += amount;
-                    } else if (type === 'WITHDRAW') {
-                        updatedSaldo = Math.max(0, currentSaldo - amount);
-                    }
-
-                    await updateDoc(doc(USERS_COL, userId), { saldo: updatedSaldo });
-                }
-
-                await updateDoc(doc(TX_COL, txId), { status: 'APPROVED' });
-                showToast(`Transaksi ${type} disetujui & saldo member diperbarui!`);
-                window.loadAdminTransactions();
-            } catch (err) {
-                showToast("Gagal memproses transaksi: " + err.message);
-            }
+        window.openEditMemberModal = (uid, nama, saldo, role) => {
+            window.selectedEditMember = uid;
+            document.getElementById('edit-mem-nama').value = nama;
+            document.getElementById('edit-mem-saldo').value = saldo;
+            document.getElementById('edit-mem-role').value = role;
+            document.getElementById('edit-member-modal').classList.remove('hidden');
+            document.getElementById('edit-member-modal').classList.add('flex');
         };
 
-        window.rejectTx = async (txId) => {
-            try {
-                await updateDoc(doc(TX_COL, txId), { status: 'REJECTED' });
-                showToast("Transaksi ditolak.");
-                window.loadAdminTransactions();
-            } catch (err) {
-                showToast("Gagal menolak transaksi: " + err.message);
-            }
+        window.closeEditMemberModal = () => {
+            document.getElementById('edit-member-modal').classList.add('hidden');
         };
 
-        // -----------------------------------------------------------------
-        // 6. E-COMMERCE & STORE LOGIC
-        // -----------------------------------------------------------------
-        const products = [
-            { id: 1, name: 'BUKU: TAK PERLU TERANG CUKUP REDUP TAPI TAK PADAM', price: 'Rp 85.000', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7jdOSxS902R0P7PWycFb0khgJ0d2WC6-As_XkC2sWODv0rBp9ncaPDjEYejlthwoAtly6Ge489oJqLIjUf-33hMXk4nSHlA3VYBhLUAZK1l2bKP91pK7sHfLr6fLymbg4rYQSpAwOYpS9lJFKywqXeJ-8aQFjqePH9JKZWookOdrOylF7FpKbFCe3AmB8/s1024/IMG_0255.png' },
-            { id: 2, name: 'BUKU: KETIKA AKU TERBANG TINGGI SETINGGI ANGKASA', price: 'Rp 75.000', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEibRWdEOk6Ssi-qKy2AE1ptCvaXFiq_S2hdJEmzWBVfzPJUC21LiarHEyvvPl3G1jJuP7reX56NjcNLbZAqXQrxnmLWQ2wlbli0jXJAZvnJYm49DOihzZw4mn7G8Oi6wOys74EwZfJojyhIMzjIEJi4Pf47diFWNhZkxbFF3FsEJoHljyPnib98upgePC8f' },
-            { id: 7, name: 'REXER PERFUME BUNDLE PACK', price: 'Rp 99.999', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEh2dJv4DnXT0jjH72lP8_bm9OeLPAVZrRL_2ESpWHAVeaY01nCzakyVgur_2AWIzeYQd0BDncmonMi1RKiMn5YCdYzdIry6cfMo0jlB3-7p_B6k2DxUT7kRn8hf3CXXbytlB-oBLWKvymqtgKo4XgN3vPYQpMk5gBQEx0tp8XxwDeQCkNQ6l6yyph6PA7UK' },
-            { id: 8, name: 'REXER PERFUME MOON LIGHT X', price: 'Rp 39.000', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEhEVGQDEMAxc04CaPMpx_nbEtw-znupBD0EZ6mhIVp1466B3EjNVDAbnB1kZygQmB9lRNRTG2OVP3t8OIIoSezQpo0oqyX3y9wuKZlkt_N2un5f9RWM7let9El0e18dxYBAYyG-gFtvmY_59tyiqnP9x3UO67I5TaeeRw8j-vI_oThQYmg5A9r7D-v0Ix9G' }
+        window.saveMemberEdit = async (e) => {
+            e.preventDefault();
+            if (!window.selectedEditMember) return;
+            await updateDoc(doc(USERS_COL, window.selectedEditMember), {
+                nama: document.getElementById('edit-mem-nama').value.trim(),
+                saldo: parseFloat(document.getElementById('edit-mem-saldo').value),
+                role: document.getElementById('edit-mem-role').value
+            });
+            window.showToast("Data member berhasil diperbarui!");
+            closeEditMemberModal();
+        };
+
+        window.openSubmitMissionModal = (mId, mTitle) => {
+            window.selectedSubmitMission = { id: mId, title: mTitle };
+            document.getElementById('submit-misi-title').textContent = `Klaim: ${mTitle}`;
+            document.getElementById('submit-mission-modal').classList.remove('hidden');
+            document.getElementById('submit-mission-modal').classList.add('flex');
+        };
+
+        window.closeSubmitMissionModal = () => {
+            document.getElementById('submit-mission-modal').classList.add('hidden');
+        };
+
+        window.submitMissionClaim = async (e) => {
+            e.preventDefault();
+            const u = window.currentUserProfile;
+            const m = window.selectedSubmitMission;
+            if (!u || !m) return;
+
+            await addDoc(CLAIMS_COL, {
+                missionId: m.id,
+                missionTitle: m.title,
+                userId: u.uid,
+                username: u.email,
+                userNama: u.nama,
+                proof: document.getElementById('claim-proof').value.trim(),
+                status: 'pending',
+                reward: 5000,
+                submittedAt: new Date().toISOString()
+            });
+
+            window.showToast("Pengajuan klaim misi dikirim ke Admin!");
+            closeSubmitMissionModal();
+        };
+
+        window.handleTxSubmit = async (e, type) => {
+            e.preventDefault();
+            const u = window.currentUserProfile;
+            if (!u) return;
+
+            let amount = 0, details = "";
+            if (type === 'DEPOSIT') {
+                amount = parseFloat(document.getElementById('depositAmount').value);
+                details = document.getElementById('depositNotes').value || "Deposit BRI";
+            } else {
+                amount = parseFloat(document.getElementById('withdrawAmount').value);
+                details = document.getElementById('withdrawDestination').value;
+            }
+
+            await addDoc(TX_COL, {
+                userId: u.uid,
+                username: u.email,
+                userNama: u.nama,
+                type, amount, details,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            });
+
+            window.showToast(`Pengajuan ${type} berhasil dikirim ke Admin!`);
+            e.target.reset();
+        };
+
+        function formatRupiah(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
+        }
+    </script>
+
+    <!-- UTILITY & STORE HELPERS (NON-MODULE GLOBAL) -->
+    <script>
+        const defaultProducts = [
+            { id: 'p1', category: 'buku', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7jdOSxS902R0P7PWycFb0khgJ0d2WC6-As_XkC2sWODv0rBp9ncaPDjEYejlthwoAtly6Ge489oJqLIjUf-33hMXk4nSHlA3VYBhLUAZK1l2bKP91pK7sHfLr6fLymbg4rYQSpAwOYpS9lJFKywqXeJ-8aQFjqePH9JKZWookOdrOylF7FpKbFCe3AmB8/s1024/IMG_0255.png', name: 'BUKU: TAK PERLU TERANG CUKUP REDUP TAPI TAK PADAM', price: 85000 },
+            { id: 'p2', category: 'buku', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEibRWdEOk6Ssi-qKy2AE1ptCvaXFiq_S2hdJEmzWBVfzPJUC21LiarHEyvvPl3G1jJuP7reX56NjcNLbZAqXQrxnmLWQ2wlbli0jXJAZvnJYm49DOihzZw4mn7G8Oi6wOys74EwZfJojyhIMzjIEJi4Pf47diFWNhZkxbFF3FsEJoHljyPnib98upgePC8f', name: 'BUKU: KETIKA AKU TERBANG TINGGI SETINGGI ANGKASA', price: 75000 },
+            { id: 'p3', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEh2dJv4DnXT0jjH72lP8_bm9OeLPAVZrRL_2ESpWHAVeaY01nCzakyVgur_2AWIzeYQd0BDncmonMi1RKiMn5YCdYzdIry6cfMo0jlB3-7p_B6k2DxUT7kRn8hf3CXXbytlB-oBLWKvymqtgKo4XgN3vPYQpMk5gBQEx0tp8XxwDeQCkNQ6l6yyph6PA7UK', name: 'REXER PERFUME BUNDLE PACK', price: 99999 },
+            { id: 'p4', category: 'parfum', image: 'https://blogger.googleusercontent.com/img/a/AVvXsEhEVGQDEMAxc04CaPMpx_nbEtw-znupBD0EZ6mhIVp1466B3EjNVDAbnB1kZygQmB9lRNRTG2OVP3t8OIIoSezQpo0oqyX3y9wuKZlkt_N2un5f9RWM7let9El0e18dxYBAYyG-gFtvmY_59tyiqnP9x3UO67I5TaeeRw8j-vI_oThQYmg5A9r7D-v0Ix9G', name: 'REXER PERFUME MOON LIGHT X', price: 39000 }
         ];
 
         let cart = [];
+        let currentStoreCat = 'all';
 
         function renderStoreProducts() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
 
-            grid.innerHTML = products.map(p => `
-                <div class="product-card rounded-2xl overflow-hidden flex flex-col justify-between p-3">
-                    <div class="product-image-container rounded-xl mb-2">
-                        <img src="${p.image}" alt="${p.name}" loading="lazy">
+            const filtered = defaultProducts.filter(p => currentStoreCat === 'all' || p.category === currentStoreCat);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card rounded-xl overflow-hidden flex flex-col justify-between p-3">
+                    <div class="product-image-container rounded-lg mb-2">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/400x400/0f172a/ffffff?text=Produk'">
                     </div>
                     <div>
                         <h3 class="text-xs font-bold text-slate-800 line-clamp-2 leading-snug mb-1">${p.name}</h3>
-                        <p class="text-xs font-black text-slate-900 mb-3">${p.price}</p>
+                        <p class="text-xs font-black text-slate-900 mb-3">Rp ${p.price.toLocaleString('id-ID')}</p>
                     </div>
-                    <button onclick="addToCart(${p.id})" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl text-[11px]">
+                    <button onclick="addToCart('${p.id}', '${p.name.replace(/'/g, "\\'")}', '${p.price}', '${p.image}')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl text-[11px]">
                         + Keranjang
                     </button>
                 </div>
             `).join('');
-            lucide.createIcons();
+
+            if (window.lucide) {
+                try { window.lucide.createIcons(); } catch(e){}
+            }
         }
 
-        window.addToCart = (pId) => {
-            const prod = products.find(p => p.id === pId);
-            if (prod) {
-                cart.push(prod);
-                showToast(`"${prod.name}" masuk keranjang!`);
-                updateCartBadge();
-            }
-        };
+        function setStoreCategory(cat) {
+            currentStoreCat = cat;
+            renderStoreProducts();
+        }
+
+        function addToCart(pId, pName, pPrice, pImage) {
+            cart.push({ id: pId, name: pName, price: pPrice, image: pImage });
+            showToast(`"${pName}" masuk keranjang!`);
+            updateCartBadge();
+        }
 
         function updateCartBadge() {
             const badge = document.getElementById('cart-badge');
@@ -1569,7 +1702,7 @@
             } else badge.classList.add('hidden');
         }
 
-        window.openCartModal = () => {
+        function openCartModal() {
             const container = document.getElementById('cart-items-container');
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-center py-8 text-xs text-slate-400">Keranjang masih kosong.</p>`;
@@ -1579,74 +1712,46 @@
                         <img src="${item.image}" class="w-10 h-10 rounded object-cover">
                         <div class="flex-grow">
                             <p class="font-bold text-slate-900 truncate">${item.name}</p>
-                            <p class="text-slate-500">${item.price}</p>
+                            <p class="text-slate-500">Rp ${parseFloat(item.price).toLocaleString('id-ID')}</p>
                         </div>
                     </div>
                 `).join('');
             }
             document.getElementById('cart-modal').classList.remove('hidden');
             document.getElementById('cart-modal').classList.add('flex');
-        };
+        }
 
-        window.closeCartModal = () => {
+        function closeCartModal() {
             document.getElementById('cart-modal').classList.add('hidden');
-            document.getElementById('cart-modal').classList.remove('flex');
-        };
+        }
 
-        window.submitCartOrder = () => {
+        function proceedToCheckout() {
             if (cart.length === 0) return;
-            let msg = `Halo Admin ZHEDVATOR, saya mau pesan produk:\n`;
-            cart.forEach((c, idx) => { msg += `${idx + 1}. ${c.name} (${c.price})\n`; });
-            window.open(`https://wa.me/6285190002348?text=${encodeURIComponent(msg)}`, '_blank');
-        };
-
-        // -----------------------------------------------------------------
-        // 7. UTILITIES
-        // -----------------------------------------------------------------
-        function formatRupiah(num) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
+            const itemsMsg = cart.map(i => `- ${i.name}`).join('\n');
+            const waMsg = `Halo ZHEDVATOR Store, saya mau pesan:\n${itemsMsg}`;
+            window.open(`https://wa.me/6285190002348?text=${encodeURIComponent(waMsg)}`, '_blank');
         }
 
-        function showAuthAlert(msg, type) {
-            const el = document.getElementById('auth-alert-box');
-            el.classList.remove('hidden', 'bg-rose-50', 'text-rose-700', 'bg-emerald-50', 'text-emerald-700');
-            if (type === 'error') el.classList.add('bg-rose-50', 'text-rose-700');
-            else el.classList.add('bg-emerald-50', 'text-emerald-700');
-            el.textContent = msg;
-        }
+        function switchTxTab(tab) {
+            const depBtn = document.getElementById('tabDepositBtn');
+            const wdBtn = document.getElementById('tabWithdrawBtn');
+            const depForm = document.getElementById('depositFormContainer');
+            const wdForm = document.getElementById('withdrawFormContainer');
 
-        window.showToast = (msg) => {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
-        };
-
-        window.copyToClipboard = (text) => {
-            const tempInput = document.createElement('input');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            showToast("Nomor rekening berhasil disalin!");
-        };
-
-        window.toggleMenu = () => {
-            const sideMenu = document.getElementById('side-menu');
-            const menuOverlay = document.getElementById('menu-overlay');
-            const isOpen = !sideMenu.classList.contains('translate-x-full');
-            if (isOpen) {
-                sideMenu.classList.add('translate-x-full');
-                menuOverlay.classList.add('hidden');
+            if (tab === 'DEPOSIT') {
+                depBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider";
+                wdBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider";
+                depForm.classList.remove('hidden'); wdForm.classList.add('hidden');
             } else {
-                sideMenu.classList.remove('translate-x-full');
-                menuOverlay.classList.remove('hidden');
+                wdBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider";
+                depBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider";
+                wdForm.classList.remove('hidden'); depForm.classList.add('hidden');
             }
-        };
+        }
 
-        function initTradingView() {
-            if (document.getElementById('tradingview_ihsg_chart')?.children.length === 0) {
+        let ihsgChartInitialized = false;
+        function initIhsgPage() {
+            if (!ihsgChartInitialized) {
                 new TradingView.widget({
                     "autosize": true,
                     "symbol": "IDX:COMPOSITE",
@@ -1655,17 +1760,40 @@
                     "theme": "light",
                     "style": "1",
                     "locale": "id",
-                    "toolbar_bg": "#ffffff",
                     "container_id": "tradingview_ihsg_chart"
                 });
+                ihsgChartInitialized = true;
             }
         }
 
-        // Clock Update
-        setInterval(() => {
-            const clock = document.getElementById('clock-time');
-            if (clock) clock.textContent = new Date().toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
-        }, 1000);
+        function switchIhsgTab(tab) {
+            const tvTab = document.getElementById('tab-tradingview');
+            const tickTab = document.getElementById('tab-simulated-tick');
+            if (tab === 'tv') {
+                tvTab.classList.remove('hidden'); tickTab.classList.add('hidden');
+            } else {
+                tvTab.classList.add('hidden'); tickTab.classList.remove('hidden');
+            }
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('input');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast("Nomor rekening berhasil disalin!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
