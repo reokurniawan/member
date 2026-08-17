@@ -69,6 +69,18 @@
             transform: scale(1.05);
         }
 
+        /* Mission Cards */
+        .mission-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.25s ease-in-out;
+        }
+        .mission-card:hover {
+            border-color: #0f172a;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            transform: translateY(-2px);
+        }
+
         /* Toast Notification */
         .toast-notification {
             position: fixed;
@@ -386,7 +398,7 @@
                         </div>
                     </div>
 
-                    <!-- DAFTAR MISI HARI INI -->
+                    <!-- DAFTAR MISI HARI INI (TAMPILAN MODEL KARTU) -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                             <div class="flex items-center gap-2">
@@ -397,7 +409,7 @@
                         </div>
 
                         <div class="p-6">
-                            <div id="member-missions-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div id="member-missions-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <p class="text-xs text-slate-400 text-center py-6 col-span-2">Memuat daftar misi aktif...</p>
                             </div>
                         </div>
@@ -474,7 +486,7 @@
                                 <i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-400"></i>
                                 <span>+38,40 (+0.51%)</span>
                             </span>
-                            <span class="text-[11px] text-slate-400 font-medium">Update: <span id="last-update">-</span></span>
+                            <span class="text-[11px] text-slate-400 font-medium">Update: Live</span>
                         </div>
                     </div>
 
@@ -708,14 +720,14 @@
                     <div>
                         <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-full uppercase tracking-wider">Akses Terotorisasi</span>
                         <h2 class="text-2xl font-black mt-2">Pusat Kendali Admin ZHEDVATOR</h2>
-                        <p class="text-xs text-slate-400 mt-1">Kelola data member, verifikasi transaksi, setujui klaim misi, dan terbitkan pengumuman.</p>
+                        <p class="text-xs text-slate-400 mt-1">Kelola data member lengkap, verifikasi transaksi, setujui klaim video misi, dan terbitkan pengumuman.</p>
                     </div>
                 </div>
 
                 <!-- Admin Tab Switcher -->
                 <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm overflow-x-auto scrollbar-hide">
                     <button id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider">
-                        Daftar Member
+                        Daftar Member (Lengkap)
                     </button>
                     <button id="admin-tab-btn-missions" onclick="switchAdminTab('missions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Kelola Misi & Klaim
@@ -731,23 +743,29 @@
                     </button>
                 </div>
 
-                <!-- ADMIN SUB-TAB 1: KELOLA MEMBER -->
+                <!-- ADMIN SUB-TAB 1: KELOLA MEMBER LENGKAP -->
                 <div id="admin-subtab-members" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Member Terdaftar</h3>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                        <h3 class="font-extrabold text-slate-900 text-base">Seluruh Data Member Terdaftar</h3>
+                        <span class="text-xs text-slate-500 font-medium" id="admin-member-count-badge">Total: 0 Member</span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
-                                    <th class="p-3">Nama / Email</th>
+                                    <th class="p-3">Pengguna & Email</th>
                                     <th class="p-3">NIK</th>
                                     <th class="p-3">WhatsApp</th>
-                                    <th class="p-3">Saldo (Rp)</th>
+                                    <th class="p-3">Tempat, Tgl Lahir</th>
+                                    <th class="p-3">Data Rekening Tujuan</th>
+                                    <th class="p-3">Saldo</th>
                                     <th class="p-3">Role</th>
+                                    <th class="p-3">Tgl Daftar</th>
                                     <th class="p-3 text-center">Aksi Edit</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-members-table-body">
-                                <tr><td colspan="6" class="p-4 text-center text-slate-400">Memuat data member...</td></tr>
+                                <tr><td colspan="9" class="p-4 text-center text-slate-400">Memuat seluruh data member...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -757,15 +775,15 @@
                 <div id="admin-subtab-missions" class="hidden space-y-6">
                     <!-- Form Buat Misi Baru -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                        <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Terbitkan Misi Baru</h3>
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">+ Terbitkan Misi Video Baru</h3>
                         <form onsubmit="handleAdminCreateMission(event)" class="space-y-4 max-w-2xl">
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Judul Misi</label>
-                                <input type="text" id="mission-title" required placeholder="Contoh: Follow Instagram & Share Post" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                <input type="text" id="mission-title" required placeholder="Contoh: Tonton Video Tutorial & Buat Review Konten" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Tugas</label>
-                                <textarea id="mission-desc" required placeholder="Jelaskan langkah-langkah tugas..." rows="2" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Tugas & Instruksi</label>
+                                <textarea id="mission-desc" required placeholder="Jelaskan detail pengerjaan misi dan instruksi pembuatan video konten..." rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"></textarea>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -773,9 +791,14 @@
                                     <input type="number" id="mission-reward" required min="1000" placeholder="5000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Link Tugas (Opsional)</label>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Link Panduan/Referensi (Opsional)</label>
                                     <input type="url" id="mission-link" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
                                 </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">URL / Link Video YouTube (Penyemat Kotak Video)</label>
+                                <input type="text" id="mission-youtube" placeholder="Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ atau ID Video" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                <p class="text-[10px] text-slate-400 mt-1">*Video ini akan ditampilkan dalam bentuk kotak player pada modal detail misi member.</p>
                             </div>
                             <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
                                 Terbitkan Misi
@@ -793,7 +816,7 @@
 
                     <!-- Klaim Misi Masuk -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Klaim Misi dari Member</h3>
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Pengajuan Klaim Misi & Link Video Konten Member</h3>
                         <div id="admin-claims-list" class="space-y-3">
                             <p class="text-xs text-slate-400">Memuat data pengajuan klaim...</p>
                         </div>
@@ -899,48 +922,134 @@
         </footer>
     </div>
 
-    <!-- MODALS GLOBAL -->
-    <!-- Edit Member Modal -->
-    <div id="edit-member-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
-            <h3 class="font-extrabold text-slate-900 text-base mb-4">Edit Data & Saldo Member</h3>
+    <!-- ================================================================= -->
+    <!-- MODALS GLOBAL                                                     -->
+    <!-- ================================================================= -->
+
+    <!-- Modal Edit Member Lengkap (Admin) -->
+    <div id="edit-member-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl p-6 max-w-lg w-full border border-slate-200 shadow-2xl my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="font-extrabold text-slate-900 text-base">Edit Seluruh Data Member</h3>
+                <button type="button" onclick="closeEditMemberModal()" class="text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
             <form onsubmit="saveMemberEdit(event)" class="space-y-3 text-xs">
                 <div>
                     <label class="block font-bold text-slate-700 mb-1">Nama Lengkap</label>
                     <input type="text" id="edit-mem-nama" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
                 </div>
-                <div>
-                    <label class="block font-bold text-slate-700 mb-1">Saldo Member (Rp)</label>
-                    <input type="number" id="edit-mem-saldo" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">NIK (16 Digit)</label>
+                        <input type="text" id="edit-mem-nik" required pattern="[0-9]{16}" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">No. WhatsApp</label>
+                        <input type="tel" id="edit-mem-wa" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                    </div>
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">Role Akun</label>
-                    <select id="edit-mem-role" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
-                        <option value="member">Member</option>
-                        <option value="admin">Administrator</option>
-                    </select>
+                    <label class="block font-bold text-slate-700 mb-1">Tempat, Tanggal Lahir</label>
+                    <input type="text" id="edit-mem-ttl" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeEditMemberModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600">Batal</button>
-                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold">Simpan</button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Bank / E-Wallet</label>
+                        <select id="edit-mem-bank" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                            <option value="BCA">BCA</option>
+                            <option value="MANDIRI">Mandiri</option>
+                            <option value="BRI">BRI</option>
+                            <option value="BNI">BNI</option>
+                            <option value="CIMB">CIMB Niaga</option>
+                            <option value="DANA">DANA</option>
+                            <option value="OVO">OVO</option>
+                            <option value="GOPAY">GOPAY</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">No. Rekening</label>
+                        <input type="text" id="edit-mem-norek" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Atas Nama Pemilik Rekening</label>
+                    <input type="text" id="edit-mem-nama-pemilik" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Saldo Member (Rp)</label>
+                        <input type="number" id="edit-mem-saldo" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Role Akun</label>
+                        <select id="edit-mem-role" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
+                            <option value="member">Member</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeEditMemberModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-50">Batal</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Submit Mission Modal -->
+    <!-- Modal Detail Misi & Pemutar Video YouTube -->
+    <div id="mission-detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl p-6 max-w-xl w-full border border-slate-200 shadow-2xl my-8 relative">
+            <button onclick="closeMissionDetailModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 p-1.5 rounded-full hover:bg-slate-100 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="flex items-center gap-2 mb-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 flex items-center gap-1">
+                    <i data-lucide="youtube" class="w-3 h-3 text-red-600"></i> Misi Video Konten
+                </span>
+                <span id="detail-mission-reward" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">+Rp 0</span>
+            </div>
+
+            <h3 class="font-extrabold text-slate-900 text-lg mb-3" id="detail-mission-title">-</h3>
+
+            <!-- Container Pemutar Video YouTube Box -->
+            <div id="detail-mission-video-container" class="mb-4"></div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-4 text-xs leading-relaxed">
+                <p class="font-bold text-slate-800 mb-1">Instruksi & Deskripsi Tugas:</p>
+                <div id="detail-mission-desc" class="text-slate-600 whitespace-pre-line"></div>
+            </div>
+
+            <div id="detail-mission-link-container" class="mb-5 hidden">
+                <a id="detail-mission-link-btn" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl transition">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    <span>Buka Link Referensi / Tugas</span>
+                </a>
+            </div>
+
+            <div class="flex gap-2 pt-2 border-t border-slate-100">
+                <button onclick="closeMissionDetailModal()" class="flex-1 border py-3 rounded-xl font-bold text-slate-600 text-xs">Tutup</button>
+                <button id="btn-proceed-submit-claim" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2">
+                    <span>Kerjakan & Submit Video Konten</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Mission Claim Modal (Minta Link Video Konten) -->
     <div id="submit-mission-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl">
-            <h3 class="font-extrabold text-slate-900 text-base mb-1" id="submit-misi-title">Kirim Bukti Pengerjaan Misi</h3>
-            <p class="text-xs text-slate-500 mb-4">Pastikan Anda telah menyelesaikan tugas sebelum mengirimkan bukti.</p>
-            <form onsubmit="submitMissionClaim(event)" class="space-y-3 text-xs">
+            <h3 class="font-extrabold text-slate-900 text-base mb-1" id="submit-misi-title">Kirim Link Video Konten</h3>
+            <p class="text-xs text-slate-500 mb-4">Pastikan Anda telah mengunggah video pengerjaan misi Anda ke media sosial sebelum mengirim link.</p>
+            <form onsubmit="submitMissionClaim(event)" class="space-y-4 text-xs">
                 <div>
-                    <label class="block font-bold text-slate-700 mb-1">Link Bukti / Catatan Pengerjaan</label>
-                    <textarea id="claim-proof" required placeholder="Masukkan URL screenshot / username media sosial Anda..." rows="3" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium"></textarea>
+                    <label class="block font-bold text-slate-700 mb-1">Link Video Konten (URL TikTok, YouTube, Shorts, Reels)</label>
+                    <textarea id="claim-proof" required placeholder="Contoh: https://www.youtube.com/watch?v=... atau https://vt.tiktok.com/..." rows="3" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-slate-900"></textarea>
                 </div>
                 <div class="flex gap-2 pt-2">
                     <button type="button" onclick="closeSubmitMissionModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600">Batal</button>
-                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold">Kirim Klaim</button>
+                    <button type="submit" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800">Kirim Klaim</button>
                 </div>
             </form>
         </div>
@@ -1015,6 +1124,8 @@
         window.currentUserProfile = null;
         window.selectedEditMember = null;
         window.selectedSubmitMission = null;
+        window.allMembersMap = {};
+        window.allMissionsMap = {};
 
         // Safe Lucide Loader
         function safeLucideIcons() {
@@ -1024,6 +1135,20 @@
                 } catch(e) {}
             }
         }
+
+        /* Helper URL YouTube Parser */
+        window.getYoutubeEmbedUrl = function(urlOrId) {
+            if (!urlOrId) return '';
+            let videoId = '';
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+            const match = urlOrId.match(regExp);
+            if (match && match[2] && match[2].length === 11) {
+                videoId = match[2];
+            } else if (urlOrId.trim().length === 11 && !urlOrId.includes('/') && !urlOrId.includes('.')) {
+                videoId = urlOrId.trim();
+            }
+            return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+        };
 
         /* ----------------------------------------------------------------- */
         /* 1. AUTHENTICATION & SESSION MANAGEMENT                            */
@@ -1239,38 +1364,53 @@
                 });
             }
 
-            // Realtime Member Missions List
+            // Realtime Member Missions List (KARTU VIEW)
             onSnapshot(MISSIONS_COL, (snapshot) => {
                 const grid = document.getElementById('member-missions-grid');
                 if (!grid) return;
 
+                window.allMissionsMap = {};
+
                 if (snapshot.empty) {
-                    grid.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-2">Belum ada misi tersedia saat ini.</p>`;
+                    grid.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-2">Belum ada misi aktif tersedia saat ini.</p>`;
                     return;
                 }
 
                 let html = '';
                 snapshot.forEach(docSnap => {
                     const m = { id: docSnap.id, ...docSnap.data() };
+                    window.allMissionsMap[m.id] = m;
+
+                    const embedUrl = getYoutubeEmbedUrl(m.youtubeUrl);
+
                     html += `
-                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between">
+                        <div class="mission-card rounded-2xl p-5 flex flex-col justify-between">
                             <div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <h4 class="font-extrabold text-slate-900 text-xs">${m.title}</h4>
-                                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">+${formatRupiah(m.reward)}</span>
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    <span class="px-2.5 py-1 bg-amber-50 text-amber-900 text-[10px] font-black uppercase rounded-lg border border-amber-200 flex items-center gap-1">
+                                        <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-600"></i>
+                                        <span>Video Misi</span>
+                                    </span>
+                                    <span class="text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">+${formatRupiah(m.reward)}</span>
                                 </div>
-                                <p class="text-[11px] text-slate-600 mb-3 leading-relaxed">${m.description}</p>
+                                <h4 class="font-extrabold text-slate-900 text-sm mb-2 line-clamp-2">${m.title}</h4>
+                                <p class="text-xs text-slate-500 mb-4 line-clamp-2 leading-relaxed">${m.description}</p>
                             </div>
-                            <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200">
-                                ${m.link ? `<a href="${m.link}" target="_blank" class="text-[11px] font-bold text-slate-700 hover:underline">Buka Link Task &rarr;</a>` : '<span></span>'}
-                                <button onclick="openSubmitMissionModal('${m.id}', '${m.title.replace(/'/g, "\\'")}')" class="bg-slate-900 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">
-                                    Kerjakan & Klaim
+                            
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                                <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                                    ${embedUrl ? '<i data-lucide="play-circle" class="w-3.5 h-3.5 text-red-500"></i> Video Tersedia' : '<i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-400"></i> Panduan Teks'}
+                                </span>
+                                <button onclick="openMissionDetailModal('${m.id}')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm active:scale-95">
+                                    <span>Selengkapnya</span>
+                                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
                         </div>
                     `;
                 });
                 grid.innerHTML = html;
+                safeLucideIcons();
             });
 
             // Realtime Announcements Banner Listener
@@ -1313,7 +1453,105 @@
         }
 
         /* ----------------------------------------------------------------- */
-        /* 4. ADMIN PANEL CORE LOGIC                                         */
+        /* 4. MISI DETAIL & SUBMISSION LOGIC                                 */
+        /* ----------------------------------------------------------------- */
+        window.openMissionDetailModal = (missionId) => {
+            const m = window.allMissionsMap[missionId];
+            if (!m) return;
+
+            window.selectedSubmitMission = m;
+
+            document.getElementById('detail-mission-title').textContent = m.title;
+            document.getElementById('detail-mission-reward').textContent = `+${formatRupiah(m.reward)}`;
+            document.getElementById('detail-mission-desc').textContent = m.description;
+
+            // Video YouTube Box
+            const videoContainer = document.getElementById('detail-mission-video-container');
+            const embedUrl = getYoutubeEmbedUrl(m.youtubeUrl);
+
+            if (embedUrl) {
+                videoContainer.innerHTML = `
+                    <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 shadow-md">
+                        <iframe src="${embedUrl}" title="Video Misi YouTube" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `;
+            } else {
+                videoContainer.innerHTML = `
+                    <div class="w-full p-6 rounded-xl bg-slate-100 border border-slate-200 text-center text-xs text-slate-500 font-medium flex flex-col items-center justify-center gap-1">
+                        <i data-lucide="video-off" class="w-6 h-6 text-slate-400"></i>
+                        <span>Tidak ada pratinjau video YouTube untuk misi ini.</span>
+                    </div>
+                `;
+            }
+
+            // Link Referensi
+            const linkContainer = document.getElementById('detail-mission-link-container');
+            const linkBtn = document.getElementById('detail-mission-link-btn');
+            if (m.link) {
+                linkBtn.href = m.link;
+                linkContainer.classList.remove('hidden');
+            } else {
+                linkContainer.classList.add('hidden');
+            }
+
+            document.getElementById('btn-proceed-submit-claim').onclick = () => {
+                closeMissionDetailModal();
+                openSubmitMissionModal(m.id, m.title, m.reward);
+            };
+
+            const modal = document.getElementById('mission-detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            safeLucideIcons();
+        };
+
+        window.closeMissionDetailModal = () => {
+            const modal = document.getElementById('mission-detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            // Reset iframe video
+            document.getElementById('detail-mission-video-container').innerHTML = '';
+        };
+
+        window.openSubmitMissionModal = (mId, mTitle, mReward) => {
+            window.selectedSubmitMission = { id: mId, title: mTitle, reward: mReward };
+            document.getElementById('submit-misi-title').textContent = `Klaim: ${mTitle}`;
+            document.getElementById('claim-proof').value = '';
+            document.getElementById('submit-mission-modal').classList.remove('hidden');
+            document.getElementById('submit-mission-modal').classList.add('flex');
+        };
+
+        window.closeSubmitMissionModal = () => {
+            document.getElementById('submit-mission-modal').classList.add('hidden');
+            document.getElementById('submit-mission-modal').classList.remove('flex');
+        };
+
+        window.submitMissionClaim = async (e) => {
+            e.preventDefault();
+            const u = window.currentUserProfile;
+            const m = window.selectedSubmitMission;
+            if (!u || !m) return;
+
+            const proofUrl = document.getElementById('claim-proof').value.trim();
+
+            await addDoc(CLAIMS_COL, {
+                missionId: m.id,
+                missionTitle: m.title,
+                userId: u.uid,
+                username: u.email,
+                userNama: u.nama,
+                proof: proofUrl,
+                status: 'pending',
+                reward: m.reward || 5000,
+                submittedAt: new Date().toISOString()
+            });
+
+            window.showToast("Pengajuan link video konten dikirim ke Admin!");
+            closeSubmitMissionModal();
+        };
+
+        /* ----------------------------------------------------------------- */
+        /* 5. ADMIN PANEL CORE LOGIC & EDIT MEMBER LENGKAP                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
             const tabs = ['members', 'missions', 'transactions', 'products', 'announcements'];
@@ -1331,22 +1569,51 @@
         };
 
         function listenAdminData() {
-            // Listen Members
+            // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI)
             onSnapshot(USERS_COL, (snapshot) => {
                 const tbody = document.getElementById('admin-members-table-body');
+                const badgeCount = document.getElementById('admin-member-count-badge');
                 if (!tbody) return;
+
+                window.allMembersMap = {};
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
+                    if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
+                    return;
+                }
+
+                if (badgeCount) badgeCount.textContent = `Total: ${snapshot.size} Member`;
+
                 let html = '';
                 snapshot.forEach(docSnap => {
                     const u = { uid: docSnap.id, ...docSnap.data() };
+                    window.allMembersMap[u.uid] = u;
+
+                    const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+
                     html += `
-                        <tr class="border-b border-slate-100 hover:bg-slate-50">
-                            <td class="p-3 font-bold">${u.nama || '-'}<br><span class="font-normal text-slate-400">${u.email}</span></td>
-                            <td class="p-3 font-mono">${u.nik || '-'}</td>
-                            <td class="p-3">${u.wa || '-'}</td>
-                            <td class="p-3 font-bold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
-                            <td class="p-3 uppercase font-bold text-[10px]"><span class="px-2 py-0.5 rounded bg-slate-200">${u.role || 'member'}</span></td>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition text-xs">
+                            <td class="p-3 font-bold text-slate-900">
+                                ${u.nama || '-'}<br>
+                                <span class="font-normal text-slate-400 text-[11px]">${u.email}</span>
+                            </td>
+                            <td class="p-3 font-mono text-slate-700">${u.nik || '-'}</td>
+                            <td class="p-3 font-medium text-slate-700">${u.wa || '-'}</td>
+                            <td class="p-3 text-slate-700">${u.ttl || '-'}</td>
+                            <td class="p-3 text-slate-700">
+                                <span class="font-bold text-slate-900">${u.bank || '-'}</span>: ${u.norek || '-'}<br>
+                                <span class="text-[10px] text-slate-400 uppercase">a.n ${u.nama_pemilik || '-'}</span>
+                            </td>
+                            <td class="p-3 font-extrabold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
+                            <td class="p-3 uppercase font-bold text-[10px]">
+                                <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-800'}">${u.role || 'member'}</span>
+                            </td>
+                            <td class="p-3 text-slate-400 font-mono text-[10px]">${dateStr}</td>
                             <td class="p-3 text-center">
-                                <button onclick="openEditMemberModal('${u.uid}', '${(u.nama||'').replace(/'/g, "\\'")}', ${u.saldo||0}, '${u.role||'member'}')" class="bg-slate-900 text-white px-2.5 py-1 rounded text-[11px] font-bold">Edit</button>
+                                <button onclick="openEditMemberModal('${u.uid}')" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition">
+                                    Edit Data
+                                </button>
                             </td>
                         </tr>
                     `;
@@ -1363,12 +1630,13 @@
                 snapshot.forEach(docSnap => {
                     const m = { id: docSnap.id, ...docSnap.data() };
                     html += `
-                        <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                        <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-slate-50">
                             <div>
-                                <p class="font-bold text-slate-900">${m.title}</p>
-                                <p class="text-slate-500 font-bold text-emerald-600">+${formatRupiah(m.reward)}</p>
+                                <p class="font-bold text-slate-900 text-sm">${m.title}</p>
+                                <p class="text-slate-500 mt-0.5">${m.description}</p>
+                                <p class="text-emerald-700 font-bold mt-1">Hadiah: +${formatRupiah(m.reward)} ${m.youtubeUrl ? '| Video YouTube Terpasang' : ''}</p>
                             </div>
-                            <button onclick="deleteMission('${m.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">
+                            <button onclick="deleteMission('${m.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px] shrink-0">
                                 Hapus Misi
                             </button>
                         </div>
@@ -1387,21 +1655,24 @@
                     const c = { id: docSnap.id, ...docSnap.data() };
                     if (c.status === 'pending') {
                         html += `
-                            <div class="p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-amber-50/50">
+                            <div class="p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-amber-50/50">
                                 <div>
-                                    <p class="font-bold text-slate-900">${c.userNama} (${c.username})</p>
-                                    <p class="text-slate-600 font-medium">Misi: ${c.missionTitle} (+${formatRupiah(c.reward)})</p>
-                                    <p class="text-slate-400 font-mono text-[10px]">Bukti: ${c.proof}</p>
+                                    <p class="font-extrabold text-slate-900">${c.userNama} (${c.username})</p>
+                                    <p class="text-slate-700 font-bold">Misi: ${c.missionTitle} (+${formatRupiah(c.reward)})</p>
+                                    <p class="text-slate-500 mt-1">
+                                        <span class="font-bold text-slate-700">Link Video Konten:</span> 
+                                        <a href="${c.proof}" target="_blank" class="text-blue-600 font-medium underline break-all">${c.proof}</a>
+                                    </p>
                                 </div>
-                                <div class="flex gap-2">
-                                    <button onclick="approveClaim('${c.id}', '${c.userId}', ${c.reward})" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Setujui</button>
-                                    <button onclick="rejectClaim('${c.id}')" class="bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tolak</button>
+                                <div class="flex gap-2 shrink-0">
+                                    <button onclick="approveClaim('${c.id}', '${c.userId}', ${c.reward})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-[11px]">Setujui</button>
+                                    <button onclick="rejectClaim('${c.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-[11px]">Tolak</button>
                                 </div>
                             </div>
                         `;
                     }
                 });
-                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada pengajuan pending.</p>';
+                container.innerHTML = html || '<p class="text-xs text-slate-400">Tidak ada pengajuan klaim pending.</p>';
             });
 
             // Listen Transactions
@@ -1486,9 +1757,10 @@
                 description: document.getElementById('mission-desc').value.trim(),
                 reward: parseFloat(document.getElementById('mission-reward').value),
                 link: document.getElementById('mission-link').value.trim(),
+                youtubeUrl: document.getElementById('mission-youtube').value.trim(),
                 createdAt: new Date().toISOString()
             });
-            window.showToast("Misi berhasil diterbitkan!");
+            window.showToast("Misi video berhasil diterbitkan!");
             e.target.reset();
         };
 
@@ -1563,62 +1835,51 @@
             window.showToast("Transaksi ditolak.");
         };
 
-        window.openEditMemberModal = (uid, nama, saldo, role) => {
+        // Open Modal Edit Member Lengkap
+        window.openEditMemberModal = (uid) => {
+            const u = window.allMembersMap[uid];
+            if (!u) return;
+
             window.selectedEditMember = uid;
-            document.getElementById('edit-mem-nama').value = nama;
-            document.getElementById('edit-mem-saldo').value = saldo;
-            document.getElementById('edit-mem-role').value = role;
-            document.getElementById('edit-member-modal').classList.remove('hidden');
-            document.getElementById('edit-member-modal').classList.add('flex');
+            document.getElementById('edit-mem-nama').value = u.nama || '';
+            document.getElementById('edit-mem-nik').value = u.nik || '';
+            document.getElementById('edit-mem-wa').value = u.wa || '';
+            document.getElementById('edit-mem-ttl').value = u.ttl || '';
+            document.getElementById('edit-mem-bank').value = u.bank || 'BCA';
+            document.getElementById('edit-mem-norek').value = u.norek || '';
+            document.getElementById('edit-mem-nama-pemilik').value = u.nama_pemilik || '';
+            document.getElementById('edit-mem-saldo').value = u.saldo || 0;
+            document.getElementById('edit-mem-role').value = u.role || 'member';
+
+            const modal = document.getElementById('edit-member-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         };
 
         window.closeEditMemberModal = () => {
-            document.getElementById('edit-member-modal').classList.add('hidden');
+            const modal = document.getElementById('edit-member-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         };
 
         window.saveMemberEdit = async (e) => {
             e.preventDefault();
             if (!window.selectedEditMember) return;
+
             await updateDoc(doc(USERS_COL, window.selectedEditMember), {
                 nama: document.getElementById('edit-mem-nama').value.trim(),
-                saldo: parseFloat(document.getElementById('edit-mem-saldo').value),
+                nik: document.getElementById('edit-mem-nik').value.trim(),
+                wa: document.getElementById('edit-mem-wa').value.trim(),
+                ttl: document.getElementById('edit-mem-ttl').value.trim(),
+                bank: document.getElementById('edit-mem-bank').value,
+                norek: document.getElementById('edit-mem-norek').value.trim(),
+                nama_pemilik: document.getElementById('edit-mem-nama-pemilik').value.trim(),
+                saldo: parseFloat(document.getElementById('edit-mem-saldo').value) || 0,
                 role: document.getElementById('edit-mem-role').value
             });
-            window.showToast("Data member berhasil diperbarui!");
+
+            window.showToast("Seluruh data member berhasil diperbarui!");
             closeEditMemberModal();
-        };
-
-        window.openSubmitMissionModal = (mId, mTitle) => {
-            window.selectedSubmitMission = { id: mId, title: mTitle };
-            document.getElementById('submit-misi-title').textContent = `Klaim: ${mTitle}`;
-            document.getElementById('submit-mission-modal').classList.remove('hidden');
-            document.getElementById('submit-mission-modal').classList.add('flex');
-        };
-
-        window.closeSubmitMissionModal = () => {
-            document.getElementById('submit-mission-modal').classList.add('hidden');
-        };
-
-        window.submitMissionClaim = async (e) => {
-            e.preventDefault();
-            const u = window.currentUserProfile;
-            const m = window.selectedSubmitMission;
-            if (!u || !m) return;
-
-            await addDoc(CLAIMS_COL, {
-                missionId: m.id,
-                missionTitle: m.title,
-                userId: u.uid,
-                username: u.email,
-                userNama: u.nama,
-                proof: document.getElementById('claim-proof').value.trim(),
-                status: 'pending',
-                reward: 5000,
-                submittedAt: new Date().toISOString()
-            });
-
-            window.showToast("Pengajuan klaim misi dikirim ke Admin!");
-            closeSubmitMissionModal();
         };
 
         window.handleTxSubmit = async (e, type) => {
@@ -1731,6 +1992,7 @@
 
         function closeCartModal() {
             document.getElementById('cart-modal').classList.add('hidden');
+            document.getElementById('cart-modal').classList.remove('flex');
         }
 
         function proceedToCheckout() {
@@ -1758,6 +2020,9 @@
         }
 
         let ihsgChartInitialized = false;
+        let tickChartInstance = null;
+        let tickTimer = null;
+
         function initIhsgPage() {
             if (!ihsgChartInitialized) {
                 new TradingView.widget({
@@ -1772,15 +2037,96 @@
                 });
                 ihsgChartInitialized = true;
             }
+            initTickChart();
+        }
+
+        function initTickChart() {
+            const ctx = document.getElementById('ihsgTickChart');
+            if (!ctx) return;
+
+            if (tickChartInstance) {
+                tickChartInstance.destroy();
+            }
+
+            const labels = [];
+            const data = [];
+            let basePrice = 7534.80;
+
+            const now = new Date();
+            for (let i = 20; i >= 0; i--) {
+                const timeStr = new Date(now.getTime() - i * 3000).toLocaleTimeString('id-ID');
+                labels.push(timeStr);
+                basePrice += (Math.random() - 0.48) * 2;
+                data.push(parseFloat(basePrice.toFixed(2)));
+            }
+
+            tickChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'IHSG Live Tick',
+                        data: data,
+                        borderColor: '#0f172a',
+                        backgroundColor: 'rgba(15, 23, 42, 0.05)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            if (tickTimer) clearInterval(tickTimer);
+            tickTimer = setInterval(() => {
+                if (!tickChartInstance) return;
+                const lastVal = tickChartInstance.data.datasets[0].data.slice(-1)[0] || 7534.80;
+                const newVal = parseFloat((lastVal + (Math.random() - 0.48) * 1.5).toFixed(2));
+                const timeStr = new Date().toLocaleTimeString('id-ID');
+
+                tickChartInstance.data.labels.push(timeStr);
+                tickChartInstance.data.datasets[0].data.push(newVal);
+
+                if (tickChartInstance.data.labels.length > 25) {
+                    tickChartInstance.data.labels.shift();
+                    tickChartInstance.data.datasets[0].data.shift();
+                }
+
+                tickChartInstance.update('none');
+
+                const priceEl = document.getElementById('ihsg-price');
+                if (priceEl) priceEl.textContent = newVal.toLocaleString('id-ID', { minimumFractionDigits: 2 });
+            }, 3000);
+        }
+
+        function resetTickChart() {
+            initTickChart();
+            showToast("Grafik live tick direset!");
         }
 
         function switchIhsgTab(tab) {
             const tvTab = document.getElementById('tab-tradingview');
             const tickTab = document.getElementById('tab-simulated-tick');
+            const tvBtn = document.getElementById('btn-tab-tv');
+            const tickBtn = document.getElementById('btn-tab-tick');
+
             if (tab === 'tv') {
                 tvTab.classList.remove('hidden'); tickTab.classList.add('hidden');
+                tvBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm";
+                tickBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
             } else {
                 tvTab.classList.add('hidden'); tickTab.classList.remove('hidden');
+                tickBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm";
+                tvBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
             }
         }
 
@@ -1805,3 +2151,4 @@
     </script>
 </body>
 </html>
+
