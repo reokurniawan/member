@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHEDVATOR - Admin & Member Portal</title>
+    <title>ZHEDVATOR - Member Portal</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -236,7 +236,7 @@
         <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <a href="#beranda" class="flex items-center gap-2">
+                    <a href="#beranda" onclick="showAppSection('beranda')" class="flex items-center gap-2">
                         <div class="w-9 h-9 bg-slate-900 text-white font-black rounded-xl flex items-center justify-center text-lg tracking-wider shadow-sm">
                             Z
                         </div>
@@ -296,32 +296,32 @@
 
                 <!-- Link Navigasi Internal -->
                 <nav class="p-4 space-y-1.5">
-                    <a href="#beranda" onclick="toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-900 bg-slate-100 rounded-xl transition">
+                    <a href="#beranda" onclick="showAppSection('beranda'); toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-900 bg-slate-100 rounded-xl transition">
                         <i data-lucide="home" class="w-5 h-5 text-slate-900"></i>
                         <span>Beranda & Misi</span>
                     </a>
 
-                    <a href="#ihsg" onclick="toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                    <a href="#ihsg" onclick="showAppSection('ihsg'); toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="trending-up" class="w-5 h-5 text-slate-500"></i>
                         <span>IHSG Monitor</span>
                     </a>
                     
-                    <a href="#transaksi" onclick="toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                    <a href="#transaksi" onclick="showAppSection('transaksi'); toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="arrow-left-right" class="w-5 h-5 text-slate-500"></i>
                         <span>Deposit / Withdraw</span>
                     </a>
 
-                    <a href="#ecomerce" onclick="toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                    <a href="#ecomerce" onclick="showAppSection('ecomerce'); toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="shopping-bag" class="w-5 h-5 text-slate-500"></i>
                         <span>Store Produk</span>
                     </a>
 
-                    <a href="#topup" onclick="toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                    <a href="#topup" onclick="showAppSection('topup'); toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="zap" class="w-5 h-5 text-slate-500"></i>
                         <span>Top Up Service</span>
                     </a>
 
-                    <a href="#admin" onclick="toggleMenu()" id="nav-link-admin" class="hidden items-center gap-3 px-4 py-3 text-sm font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition">
+                    <a href="#admin" onclick="showAppSection('admin'); toggleMenu()" id="nav-link-admin" class="hidden items-center gap-3 px-4 py-3 text-sm font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition">
                         <i data-lucide="shield-check" class="w-5 h-5 text-amber-700"></i>
                         <span>PANEL KELOLA ADMIN</span>
                     </a>
@@ -1166,6 +1166,14 @@
             safeLucideIcons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
+
+        // Realtime hash change listener for seamless URL navigation
+        window.addEventListener('hashchange', () => {
+            if (window.currentUserProfile) {
+                const page = window.location.hash.replace('#', '') || 'beranda';
+                window.showAppSection(page);
+            }
+        });
 
         window.toggleMenu = () => {
             const sideMenu = document.getElementById('side-menu');
