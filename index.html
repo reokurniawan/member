@@ -391,6 +391,16 @@
                         <span>Pusat Bantuan</span>
                     </a>
 
+                    <a href="#blog" onclick="showAppSection('blog'); toggleMenu()" id="nav-link-blog" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="newspaper" class="w-5 h-5 text-slate-500"></i>
+                        <span>Blog</span>
+                    </a>
+
+                    <a href="#aboutus" onclick="showAppSection('aboutus'); toggleMenu()" id="nav-link-aboutus" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="info" class="w-5 h-5 text-slate-500"></i>
+                        <span>About Us</span>
+                    </a>
+
                     <a href="#admin" onclick="showAppSection('admin'); toggleMenu()" id="nav-link-admin" class="hidden items-center gap-3 px-4 py-3 text-sm font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition">
                         <i data-lucide="shield-check" class="w-5 h-5 text-amber-700"></i>
                         <span>PANEL KELOLA ADMIN</span>
@@ -963,6 +973,108 @@
             </section>
 
             <!-- ========================================================= -->
+            <!-- SUB-HALAMAN 5C: BLOG (ZHEDVANOIS.ID)                       -->
+            <!-- ========================================================= -->
+            <section id="sec-blog" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+                            <i data-lucide="newspaper" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-black text-base text-slate-900">BLOG ZHEDVANOIS</h2>
+                            <p class="text-xs text-slate-500 font-medium">Berita, artikel, dan update terbaru dari zhedvanois.id.</p>
+                        </div>
+                    </div>
+                    <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition flex items-center gap-1.5 uppercase tracking-wider shrink-0">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        <span>Buka Tab Baru</span>
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative min-h-[75vh]">
+                    <iframe
+                        id="blogIframe"
+                        src="https://zhedvanois.id"
+                        title="Blog ZHEDVANOIS"
+                        class="w-full h-[80vh] min-h-[650px] border-0"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN 5D: ABOUT US                                   -->
+            <!-- ========================================================= -->
+            <section id="sec-aboutus" class="hidden max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="text-center mb-2">
+                    <span class="px-3 py-1 bg-slate-900 text-white font-black text-[10px] rounded-full uppercase tracking-wider">Tentang Kami</span>
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mt-3 mb-2">PT ZHEDVANOIS CREATIVE AGENCY</h2>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+                    <div class="p-6 sm:p-8 space-y-6 text-sm text-slate-600 leading-relaxed">
+                        <p>PT Zhedvanois Creative Agency adalah agensi digital progresif yang berfokus pada inovasi konten media dan distribusi visual. Kami hadir untuk mendefinisikan ulang cara informasi dan hiburan dikonsumsi di era digital, menghubungkan audiens dengan konten yang relevan, cepat, dan berdampak tinggi.</p>
+                        <p>Sebagai payung kreatif yang adaptif, kami mengintegrasikan jurnalistik digital dengan strategi kurasi konten multimedia untuk menjawab tingginya kebutuhan konsumsi informasi instan masyarakat modern.</p>
+
+                        <div class="pt-2">
+                            <h3 class="font-extrabold text-slate-900 text-base mb-3 flex items-center gap-2">
+                                <i data-lucide="target" class="w-5 h-5 text-slate-700"></i>
+                                Fokus Utama Kami
+                            </h3>
+                            <ul class="space-y-3">
+                                <li class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                    <p class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">Platform Media Berita Digital</p>
+                                    <p class="text-xs text-slate-600">Menghadirkan portal berita terkurasi, aktual, dan kredibel dengan penyajian yang dinamis dan relevan bagi audiens masa kini.</p>
+                                </li>
+                                <li class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                    <p class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">Platform & Layanan Video Clipping</p>
+                                    <p class="text-xs text-slate-600">Mengolah dan mengkurasi video panjang menjadi konten pendek (short-form content) bernilai tinggi—memaksimalkan engagement, reach, serta virality di berbagai platform sosial media seperti TikTok, Instagram Reels, dan YouTube Shorts.</p>
+                                </li>
+                                <li class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                    <p class="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">Distribusi & Strategi Konten</p>
+                                    <p class="text-xs text-slate-600">Membangun alur distribusi konten berbasis data untuk membantu kreator, brand, dan entitas media mencapai keterlibatan audiens yang maksimal.</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-2">
+                            <h3 class="font-extrabold text-slate-900 text-base mb-3 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-5 h-5 text-slate-700"></i>
+                                Visi
+                            </h3>
+                            <p>Menjadi pelopor ekosistem media digital terdepan di Indonesia yang menginspirasi, mengedukasi, dan menghibur melalui konten berkualitas tinggi serta distribusi visual yang inovatif.</p>
+                        </div>
+
+                        <div class="pt-2">
+                            <h3 class="font-extrabold text-slate-900 text-base mb-3 flex items-center gap-2">
+                                <i data-lucide="flag" class="w-5 h-5 text-slate-700"></i>
+                                Misi
+                            </h3>
+                            <ul class="space-y-2 list-none">
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-900 mt-0.5 shrink-0"></i>
+                                    <span>Menyajikan informasi digital yang akurat, cepat, dan mudah diakses oleh berbagai lapisan masyarakat.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-900 mt-0.5 shrink-0"></i>
+                                    <span>Mengembangkan ekosistem kliping video (video clipping) kreatif yang memaksimalkan potensi konten audio-visual di ranah digital.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-900 mt-0.5 shrink-0"></i>
+                                    <span>Menerapkan teknologi dan strategi berbasis data untuk mengoptimalkan jangkauan serta keterlibatan audiens.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-900 mt-0.5 shrink-0"></i>
+                                    <span>Membangun kemitraan strategis dengan kreator, pelaku industri, dan pemegang merek untuk menciptakan dampak media yang berkelanjutan.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
             <!-- SUB-HALAMAN 6: KONTROL PANEL ADMIN (KHUSUS ROLE ADMIN)     -->
             <!-- ========================================================= -->
             <section id="sec-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
@@ -1000,6 +1112,9 @@
                     <button id="admin-tab-btn-bantuan" onclick="switchAdminTab('bantuan')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
                         Pusat Bantuan
                         <span id="admin-complaint-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
+                    </button>
+                    <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Dashboard Toko Topup
                     </button>
                 </div>
 
@@ -1277,6 +1392,29 @@
 
                     <div id="admin-complaint-list" class="space-y-3">
                         <p class="text-xs text-slate-400">Memuat daftar keluhan...</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 8: DASHBOARD TOKO TOPUP -->
+                <div id="admin-subtab-tokotopup" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-6 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">Dashboard Toko Topup</h3>
+                            <p class="text-xs text-slate-500">Akses langsung dashboard pengelolaan lite.tokotopup.id dari Panel Admin.</p>
+                        </div>
+                        <a href="https://lite.tokotopup.id/dashboard" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition flex items-center gap-1.5 uppercase tracking-wider shrink-0">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            <span>Buka Tab Baru</span>
+                        </a>
+                    </div>
+                    <div class="relative min-h-[75vh]">
+                        <iframe
+                            id="tokotopupIframe"
+                            src="https://lite.tokotopup.id/dashboard"
+                            title="Dashboard Toko Topup"
+                            class="w-full h-[80vh] min-h-[650px] border-0"
+                            loading="lazy"
+                        ></iframe>
                     </div>
                 </div>
             </section>
@@ -1992,7 +2130,7 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'blog', 'aboutus', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page
@@ -2519,7 +2657,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan'];
+            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
