@@ -21,6 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
+    <!-- EmailJS (Untuk Notifikasi Email Otomatis Pusat Bantuan & Transaksi/Misi) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
     <style>
         body {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -269,7 +272,7 @@
 
             <!-- Footer Auth -->
             <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
-                &copy; 2026 ZHEDVATOR Portal. Protected by Firebase Auth.
+                &copy; 2026 ZHEDVANOIS Portal. Protected by Firebase Auth.
             </div>
         </div>
     </div>
@@ -288,7 +291,7 @@
                             Z
                         </div>
                         <div>
-                            <h1 class="text-lg font-black tracking-wider text-slate-900 leading-tight">ZHEDVATOR</h1>
+                            <h1 class="text-lg font-black tracking-wider text-slate-900 leading-tight">ZHEDVANOIS</h1>
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest" id="app-header-page-title">PORTAL ANGGOTA</p>
                         </div>
                     </a>
@@ -381,6 +384,11 @@
                     <a href="#topup" onclick="showAppSection('topup'); toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="zap" class="w-5 h-5 text-slate-500"></i>
                         <span>Top Up Service</span>
+                    </a>
+
+                    <a href="#bantuan" onclick="showAppSection('bantuan'); toggleMenu()" id="nav-link-bantuan" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                        <i data-lucide="life-buoy" class="w-5 h-5 text-slate-500"></i>
+                        <span>Pusat Bantuan</span>
                     </a>
 
                     <a href="#admin" onclick="showAppSection('admin'); toggleMenu()" id="nav-link-admin" class="hidden items-center gap-3 px-4 py-3 text-sm font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 rounded-xl transition">
@@ -831,7 +839,7 @@
                 <section class="mb-10 rounded-2xl bg-slate-900 text-white p-6 sm:p-10 relative overflow-hidden shadow-xl">
                     <div class="relative z-10 max-w-2xl">
                         <span class="inline-block px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-[10px] font-bold tracking-wider uppercase mb-3 border border-slate-700">
-                            Official Store ZHEDVATOR
+                            Official Store ZHEDVANOIS
                         </span>
                         <h1 class="text-2xl sm:text-4xl font-black tracking-tight mb-3 leading-tight">
                             Buku Inspiratif & Koleksi Parfum Premium Rexer
@@ -873,7 +881,7 @@
                             <i data-lucide="zap" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <h2 class="font-black text-base text-slate-900">ZHEDVATOR TOP UP SERVICE</h2>
+                            <h2 class="font-black text-base text-slate-900">ZHEDVANOIS TOP UP SERVICE</h2>
                             <p class="text-xs text-slate-500 font-medium">Layanan Top Up Game Terpercaya via Toko VIP.</p>
                         </div>
                     </div>
@@ -891,13 +899,77 @@
             </section>
 
             <!-- ========================================================= -->
+            <!-- SUB-HALAMAN 5B: PUSAT BANTUAN (HELP CENTER / KELUHAN)      -->
+            <!-- ========================================================= -->
+            <section id="sec-bantuan" class="hidden max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="text-center mb-2">
+                    <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mb-2">Pusat Bantuan</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto font-medium">Sampaikan kendala atau keluhan Anda. Tim kami akan menerima notifikasi dan menindaklanjuti pengajuan Anda secepatnya.</p>
+                </div>
+
+                <!-- Form Pengajuan Keluhan -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden max-w-xl mx-auto">
+                    <div class="p-6 sm:p-8 space-y-5">
+                        <div class="flex items-center gap-3 pb-4 border-b border-slate-100">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center">
+                                <i data-lucide="life-buoy" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 text-sm">Ajukan Keluhan / Kendala</h3>
+                                <p class="text-[11px] text-slate-500">Keluhan akan langsung terkirim ke tim Customer Service.</p>
+                            </div>
+                        </div>
+
+                        <form onsubmit="submitComplaint(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Kategori Keluhan</label>
+                                <select id="complaint-category" required class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 bg-slate-50 transition">
+                                    <option value="Transaksi (Deposit/Withdraw)">Transaksi (Deposit / Withdraw)</option>
+                                    <option value="Misi & Klaim Video">Misi & Klaim Video</option>
+                                    <option value="Akun & Data Member">Akun & Data Member</option>
+                                    <option value="Produk Store">Produk Store</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Subjek Keluhan</label>
+                                <input type="text" id="complaint-subject" required placeholder="Contoh: Saldo deposit belum masuk" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 focus:bg-white transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Detail Keluhan</label>
+                                <textarea id="complaint-message" required rows="4" placeholder="Jelaskan kendala Anda secara detail agar dapat kami proses dengan cepat..." class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 focus:bg-white transition"></textarea>
+                            </div>
+
+                            <button type="submit" id="btnSubmitComplaint" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-200 shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                                <span>Kirim Keluhan ke CS</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                            <p class="text-[10px] text-slate-400 text-center">Keluhan akan dikirim ke email cs@zhedvanois.id</p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Riwayat Pengajuan Bantuan Milik User -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden max-w-xl mx-auto">
+                    <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                        <h3 class="font-extrabold text-slate-900 text-sm">Riwayat Pengajuan Bantuan Saya</h3>
+                    </div>
+                    <div id="user-complaint-list" class="p-5 space-y-3">
+                        <p class="text-xs text-slate-400 text-center py-4">Memuat riwayat pengajuan bantuan...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
             <!-- SUB-HALAMAN 6: KONTROL PANEL ADMIN (KHUSUS ROLE ADMIN)     -->
             <!-- ========================================================= -->
             <section id="sec-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
                 <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <span class="px-3 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-full uppercase tracking-wider">Akses Terotorisasi</span>
-                        <h2 class="text-2xl font-black mt-2">Pusat Kendali Admin ZHEDVATOR</h2>
+                        <h2 class="text-2xl font-black mt-2">Pusat Kendali Admin ZHEDVANOIS</h2>
                         <p class="text-xs text-slate-400 mt-1">Kelola data member lengkap, verifikasi transaksi, setujui klaim video misi, serta edit & hapus riwayat/tracker secara langsung.</p>
                     </div>
                 </div>
@@ -924,6 +996,10 @@
                     </button>
                     <button id="admin-tab-btn-announcements" onclick="switchAdminTab('announcements')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Pengumuman Member
+                    </button>
+                    <button id="admin-tab-btn-bantuan" onclick="switchAdminTab('bantuan')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
+                        Pusat Bantuan
+                        <span id="admin-complaint-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
                     </button>
                 </div>
 
@@ -1186,6 +1262,21 @@
                         <div id="admin-announcements-list" class="space-y-3">
                             <p class="text-xs text-slate-400">Memuat pengumuman...</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 7: PUSAT BANTUAN (KELUHAN MEMBER) -->
+                <div id="admin-subtab-bantuan" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">Daftar Keluhan / Kendala Member</h3>
+                            <p class="text-xs text-slate-500">Seluruh pengajuan bantuan dari member. Tandai status penanganan setelah ditindaklanjuti.</p>
+                        </div>
+                        <span class="text-xs text-slate-500 font-medium" id="admin-complaint-count-badge">Total: 0 Pengajuan</span>
+                    </div>
+
+                    <div id="admin-complaint-list" class="space-y-3">
+                        <p class="text-xs text-slate-400">Memuat daftar keluhan...</p>
                     </div>
                 </div>
             </section>
@@ -1603,6 +1694,7 @@
         const TX_COL = collection(db, 'artifacts', appId, 'public', 'data', 'transactions');
         const PRODUCTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'products');
         const ANNOUNCEMENTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
+        const COMPLAINTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
 
         // Global State
         window.currentUserProfile = null;
@@ -1615,6 +1707,50 @@
         window.allMissionsMap = {};
         window.allTrackersMap = {};
         window.allTxMap = {};
+        window.allComplaintsMap = {};
+
+        /* ================================================================= */
+        /* KONFIGURASI EMAILJS (NOTIFIKASI EMAIL OTOMATIS)                   */
+        /* -------------------------------------------------------------------
+           PENTING: Agar notifikasi email benar-benar terkirim (Pusat Bantuan
+           ke cs@zhedvanois.id, serta notifikasi status transaksi & misi ke
+           member), Anda WAJIB mendaftar akun GRATIS di https://www.emailjs.com,
+           membuat 1 Email Service + 1 Email Template (dengan variabel
+           {{to_email}}, {{subject}}, {{message}}), lalu isi 3 nilai di bawah
+           ini dengan Public Key, Service ID, dan Template ID milik Anda.
+           Selama nilai di bawah masih placeholder, seluruh fitur lain (data
+           tersimpan ke Firestore, tampil di Panel Admin, dsb) tetap berjalan
+           normal — hanya pengiriman email yang akan dilewati (skip).
+        ------------------------------------------------------------------- */
+        const EMAILJS_PUBLIC_KEY = 'oxLPSSuolADq6N0WK';
+        const EMAILJS_SERVICE_ID = 'service_9pb5bp2';
+        const EMAILJS_TEMPLATE_ID = 'template_5mwoafp';
+        const CS_EMAIL = 'cs@zhedvanois.id';
+        const EMAILJS_READY = EMAILJS_PUBLIC_KEY !== 'ISI_PUBLIC_KEY_EMAILJS_ANDA'
+            && EMAILJS_SERVICE_ID !== 'ISI_SERVICE_ID_EMAILJS_ANDA'
+            && EMAILJS_TEMPLATE_ID !== 'ISI_TEMPLATE_ID_EMAILJS_ANDA'
+            && !!window.emailjs;
+
+        try {
+            if (EMAILJS_READY) {
+                window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+            }
+        } catch (err) {
+            console.warn('EmailJS gagal diinisialisasi:', err);
+        }
+
+        // Helper Universal Kirim Notifikasi Email (aman dipanggil kapan saja, tidak akan menghentikan alur aplikasi jika gagal)
+        window.sendEmailNotification = async function(templateParams) {
+            try {
+                if (!EMAILJS_READY || !window.emailjs) {
+                    console.warn('EmailJS belum dikonfigurasi, notifikasi email dilewati:', templateParams);
+                    return;
+                }
+                await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            } catch (err) {
+                console.error('Gagal mengirim notifikasi email:', err);
+            }
+        };
 
         // Safe Lucide Loader
         function safeLucideIcons() {
@@ -1856,7 +1992,7 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page
@@ -2147,6 +2283,56 @@
                 safeLucideIcons();
             }, (err) => console.error("Error tx:", err));
 
+            // Realtime Pusat Bantuan (Keluhan/Kendala Member)
+            onSnapshot(COMPLAINTS_COL, (snapshot) => {
+                const userComplaintContainer = document.getElementById('user-complaint-list');
+                window.allComplaintsMap = {};
+
+                let userComplaints = [];
+                snapshot.forEach(docSnap => {
+                    const c = { id: docSnap.id, ...docSnap.data() };
+                    window.allComplaintsMap[c.id] = c;
+                    if (c.userId === uid) userComplaints.push(c);
+                });
+
+                if (userComplaintContainer) {
+                    if (userComplaints.length === 0) {
+                        userComplaintContainer.innerHTML = `
+                            <div class="text-center py-6 text-slate-400 text-xs">
+                                <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                                <p>Anda belum pernah mengajukan keluhan ke Pusat Bantuan.</p>
+                            </div>
+                        `;
+                    } else {
+                        userComplaints.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                        userComplaintContainer.innerHTML = userComplaints.map(c => {
+                            const isHandled = c.status === 'sudah';
+                            const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleString('id-ID') : '-';
+                            return `
+                                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5 text-xs">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] border ${isHandled ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-amber-100 text-amber-900 border-amber-200'}">
+                                            ${isHandled ? 'Sudah Ditangani' : 'Belum Ditangani'}
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[9px] uppercase">${c.category || 'Lainnya'}</span>
+                                        <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                                    </div>
+                                    <h4 class="font-extrabold text-slate-900 text-sm">${c.subject}</h4>
+                                    <p class="text-slate-600">${c.message}</p>
+                                    ${c.adminReply ? `<p class="text-xs text-emerald-900 bg-emerald-50 p-2 rounded-lg border border-emerald-200 mt-1"><strong>Balasan Admin:</strong> ${c.adminReply}</p>` : ''}
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                // Render ke Admin Subtab Jika Admin
+                if (window.currentUserProfile?.role === 'admin') {
+                    renderAdminComplaintList();
+                }
+                safeLucideIcons();
+            }, (err) => console.error("Error complaints:", err));
+
             // Realtime Announcements Banner Listener
             onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
                 const container = document.getElementById('announcement-banner-container');
@@ -2286,13 +2472,54 @@
 
             window.showToast("Pengajuan link video konten dikirim ke Admin!");
             closeSubmitMissionModal();
+
+            // Notifikasi Email: Status PENDING ke Member
+            window.sendEmailNotification({
+                to_email: u.email,
+                subject: `Klaim Misi "${m.title}" Sedang Diverifikasi (PENDING)`,
+                message: `Halo ${u.nama},\n\nKlaim video konten untuk misi "${m.title}" telah kami terima dan sedang menunggu verifikasi Admin ZHEDVANOIS.\n\nLink Video: ${proofUrl}\n\nTerima kasih.`
+            });
+        };
+
+        /* ----------------------------------------------------------------- */
+        /* 4B. PUSAT BANTUAN (HELP CENTER) - SUBMIT KELUHAN MEMBER           */
+        /* ----------------------------------------------------------------- */
+        window.submitComplaint = async (e) => {
+            e.preventDefault();
+            const u = window.currentUserProfile;
+            if (!u) return;
+
+            const category = document.getElementById('complaint-category').value;
+            const subject = document.getElementById('complaint-subject').value.trim();
+            const message = document.getElementById('complaint-message').value.trim();
+
+            await addDoc(COMPLAINTS_COL, {
+                userId: u.uid,
+                username: u.email,
+                userNama: u.nama,
+                userWa: u.wa || '',
+                category, subject, message,
+                status: 'belum',
+                adminReply: '',
+                createdAt: new Date().toISOString()
+            });
+
+            window.showToast("Keluhan Anda berhasil dikirim ke Pusat Bantuan!");
+            e.target.reset();
+
+            // Notifikasi Email ke Customer Service
+            window.sendEmailNotification({
+                to_email: CS_EMAIL,
+                subject: `[Pusat Bantuan ZHEDVANOIS] Keluhan Baru: ${subject}`,
+                message: `Kategori: ${category}\nDari: ${u.nama} (${u.email})\nWhatsApp: ${u.wa || '-'}\n\nIsi Keluhan:\n${message}`
+            });
         };
 
         /* ----------------------------------------------------------------- */
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements'];
+            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -2531,6 +2758,63 @@
             safeLucideIcons();
         }
 
+        // Render Daftar Keluhan Pusat Bantuan (Admin Subtab "Pusat Bantuan")
+        function renderAdminComplaintList() {
+            const container = document.getElementById('admin-complaint-list');
+            const countBadge = document.getElementById('admin-complaint-count-badge');
+            const tabBadge = document.getElementById('admin-complaint-badge');
+            if (!container) return;
+
+            const complaints = Object.values(window.allComplaintsMap || {});
+            const belumCount = complaints.filter(c => c.status !== 'sudah').length;
+
+            if (countBadge) countBadge.textContent = `Total: ${complaints.length} Pengajuan`;
+            if (tabBadge) {
+                if (belumCount > 0) {
+                    tabBadge.textContent = belumCount;
+                    tabBadge.classList.remove('hidden');
+                } else {
+                    tabBadge.classList.add('hidden');
+                }
+            }
+
+            if (complaints.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Belum ada pengajuan keluhan dari member.</p>';
+                return;
+            }
+
+            complaints.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+            container.innerHTML = complaints.map(c => {
+                const isHandled = c.status === 'sudah';
+                const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleString('id-ID') : '-';
+
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-start justify-between gap-3 text-xs">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[9px] border ${isHandled ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-amber-100 text-amber-900 border-amber-200'}">${isHandled ? 'Sudah Ditangani' : 'Belum Ditangani'}</span>
+                                <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[9px] uppercase">${c.category || 'Lainnya'}</span>
+                                <span class="font-extrabold text-slate-900">${c.userNama} (${c.username})</span>
+                                <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                            </div>
+                            <p class="font-bold text-slate-800">${c.subject}</p>
+                            <p class="text-slate-600">${c.message}</p>
+                            ${c.userWa ? `<p class="text-slate-500 text-[11px]">WhatsApp: ${c.userWa}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            ${isHandled
+                                ? `<button onclick="markComplaintPending('${c.id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold px-3 py-1.5 rounded-lg text-[11px]">Tandai Belum</button>`
+                                : `<button onclick="markComplaintHandled('${c.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tandai Sudah Ditangani</button>`
+                            }
+                            <button onclick="deleteComplaint('${c.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-2.5 py-1.5 rounded-lg text-[11px]">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            safeLucideIcons();
+        }
+
         function listenAdminData() {
             // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI)
             onSnapshot(USERS_COL, (snapshot) => {
@@ -2713,21 +2997,54 @@
         window.approveClaim = async (claimId, userId, reward) => {
             const uDoc = await getDoc(doc(USERS_COL, userId));
             if (uDoc.exists()) {
-                const currentBalance = uDoc.data().saldo || 0;
+                const uData = uDoc.data();
+                const c = window.allTrackersMap[claimId];
+                const currentBalance = uData.saldo || 0;
                 await updateDoc(doc(USERS_COL, userId), { saldo: currentBalance + reward });
                 await updateDoc(doc(CLAIMS_COL, claimId), { status: 'approved' });
                 window.showToast("Klaim disetujui & saldo member ditambahkan!");
+
+                window.sendEmailNotification({
+                    to_email: uData.email,
+                    subject: `Klaim Misi Anda telah DISETUJUI (+${formatRupiah(reward)})`,
+                    message: `Halo ${uData.nama},\n\nKlaim video konten untuk misi "${c ? c.missionTitle : ''}" telah DISETUJUI oleh Admin. Saldo sebesar ${formatRupiah(reward)} telah ditambahkan ke dompet Anda.\n\nTerima kasih.`
+                });
             }
         };
 
         window.rejectClaim = async (claimId) => {
+            const c = window.allTrackersMap[claimId];
             await updateDoc(doc(CLAIMS_COL, claimId), { status: 'rejected' });
             window.showToast("Klaim ditolak.");
+
+            if (c) {
+                window.sendEmailNotification({
+                    to_email: c.username,
+                    subject: `Klaim Misi Anda DITOLAK`,
+                    message: `Halo ${c.userNama},\n\nMohon maaf, klaim video konten untuk misi "${c.missionTitle}" Anda ditolak oleh Admin.\n\nSilakan kunjungi menu Pusat Bantuan jika Anda memerlukan penjelasan lebih lanjut.`
+                });
+            }
         };
 
         window.deleteTracker = async (claimId) => {
             await deleteDoc(doc(CLAIMS_COL, claimId));
             window.showToast("Tracker misi berhasil dihapus.");
+        };
+
+        // Aksi Admin - Pusat Bantuan (Keluhan Member)
+        window.markComplaintHandled = async (complaintId) => {
+            await updateDoc(doc(COMPLAINTS_COL, complaintId), { status: 'sudah' });
+            window.showToast("Keluhan ditandai Sudah Ditangani.");
+        };
+
+        window.markComplaintPending = async (complaintId) => {
+            await updateDoc(doc(COMPLAINTS_COL, complaintId), { status: 'belum' });
+            window.showToast("Keluhan ditandai Belum Ditangani.");
+        };
+
+        window.deleteComplaint = async (complaintId) => {
+            await deleteDoc(doc(COMPLAINTS_COL, complaintId));
+            window.showToast("Data keluhan berhasil dihapus.");
         };
 
         window.openEditTrackerModal = (claimId) => {
@@ -2788,22 +3105,49 @@
 
             window.showToast("Tracker misi member berhasil diperbarui!");
             closeEditTrackerModal();
+
+            // Notifikasi Email jika status berubah (approved/rejected)
+            if (newStatus !== c.status && (newStatus === 'approved' || newStatus === 'rejected')) {
+                window.sendEmailNotification({
+                    to_email: c.username,
+                    subject: newStatus === 'approved' ? `Klaim Misi Anda telah DISETUJUI (+${formatRupiah(newReward)})` : `Klaim Misi Anda DITOLAK`,
+                    message: newStatus === 'approved'
+                        ? `Halo ${c.userNama},\n\nKlaim video konten untuk misi "${c.missionTitle}" telah DISETUJUI oleh Admin. Saldo sebesar ${formatRupiah(newReward)} telah ditambahkan ke dompet Anda.\n\nTerima kasih.`
+                        : `Halo ${c.userNama},\n\nMohon maaf, klaim video konten untuk misi "${c.missionTitle}" Anda ditolak oleh Admin.\n\nSilakan kunjungi menu Pusat Bantuan jika Anda memerlukan penjelasan lebih lanjut.`
+                });
+            }
         };
 
         window.approveTransaction = async (txId, userId, type, amount) => {
             const uDoc = await getDoc(doc(USERS_COL, userId));
             if (uDoc.exists()) {
-                const currentBalance = uDoc.data().saldo || 0;
+                const uData = uDoc.data();
+                const currentBalance = uData.saldo || 0;
                 const newBalance = type === 'DEPOSIT' ? currentBalance + amount : Math.max(0, currentBalance - amount);
                 await updateDoc(doc(USERS_COL, userId), { saldo: newBalance });
                 await updateDoc(doc(TX_COL, txId), { status: 'approved' });
                 window.showToast(`Transaksi ${type} disetujui!`);
+
+                window.sendEmailNotification({
+                    to_email: uData.email,
+                    subject: `Transaksi ${type} Anda telah DISETUJUI`,
+                    message: `Halo ${uData.nama},\n\nTransaksi ${type} sebesar ${formatRupiah(amount)} telah DISETUJUI oleh Admin dan saldo Anda telah diperbarui.\n\nTerima kasih.`
+                });
             }
         };
 
         window.rejectTransaction = async (txId) => {
+            const tx = window.allTxMap[txId];
             await updateDoc(doc(TX_COL, txId), { status: 'rejected' });
             window.showToast("Transaksi ditolak.");
+
+            if (tx) {
+                window.sendEmailNotification({
+                    to_email: tx.username,
+                    subject: `Transaksi ${tx.type} Anda DITOLAK`,
+                    message: `Halo ${tx.userNama},\n\nMohon maaf, transaksi ${tx.type} sebesar ${formatRupiah(tx.amount)} Anda ditolak oleh Admin.\n\nSilakan kunjungi menu Pusat Bantuan jika Anda memerlukan penjelasan lebih lanjut.`
+                });
+            }
         };
 
         window.deleteTransaction = async (txId) => {
@@ -2862,6 +3206,17 @@
 
             window.showToast("Data transaksi berhasil diperbarui!");
             closeEditTxModal();
+
+            // Notifikasi Email jika status berubah (approved/rejected)
+            if (newStatus !== tx.status && (newStatus === 'approved' || newStatus === 'rejected')) {
+                window.sendEmailNotification({
+                    to_email: tx.username,
+                    subject: newStatus === 'approved' ? `Transaksi ${newType} Anda telah DISETUJUI` : `Transaksi ${newType} Anda DITOLAK`,
+                    message: newStatus === 'approved'
+                        ? `Halo ${tx.userNama},\n\nTransaksi ${newType} sebesar ${formatRupiah(newAmount)} telah DISETUJUI oleh Admin dan saldo Anda telah diperbarui.\n\nTerima kasih.`
+                        : `Halo ${tx.userNama},\n\nMohon maaf, transaksi ${newType} sebesar ${formatRupiah(newAmount)} Anda ditolak oleh Admin.\n\nSilakan kunjungi menu Pusat Bantuan jika Anda memerlukan penjelasan lebih lanjut.`
+                });
+            }
         };
 
         // Open Modal Edit Member Lengkap
@@ -2936,6 +3291,13 @@
 
             window.showToast(`Pengajuan ${type} berhasil dikirim ke Admin!`);
             e.target.reset();
+
+            // Notifikasi Email: Status PENDING ke Member
+            window.sendEmailNotification({
+                to_email: u.email,
+                subject: `Transaksi ${type} Anda Sedang Diproses (PENDING)`,
+                message: `Halo ${u.nama},\n\nPengajuan ${type} sebesar ${formatRupiah(amount)} telah kami terima dan sedang menunggu verifikasi Admin ZHEDVANOIS.\n\nDetail: ${details}\n\nTerima kasih.`
+            });
         };
 
         function formatRupiah(num) {
@@ -3034,7 +3396,7 @@
         function proceedToCheckout() {
             if (cart.length === 0) return;
             const itemsMsg = cart.map(i => `- ${i.name}`).join('\n');
-            const waMsg = `Halo ZHEDVATOR Store, saya mau pesan:\n${itemsMsg}`;
+            const waMsg = `Halo ZHEDVANOIS Store, saya mau pesan:\n${itemsMsg}`;
             window.open(`https://wa.me/6285190002348?text=${encodeURIComponent(waMsg)}`, '_blank');
         }
 
