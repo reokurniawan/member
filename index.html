@@ -344,58 +344,89 @@
                     <p id="menu-user-email" class="text-xs text-slate-500 truncate">-</p>
                 </div>
 
-                <!-- Link Navigasi Internal -->
+                <!-- Link Navigasi Internal (Dropdown Grup) -->
                 <nav class="p-4 space-y-1.5">
-                    <a href="#beranda" onclick="showAppSection('beranda'); toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-900 bg-slate-100 rounded-xl transition">
-                        <i data-lucide="home" class="w-5 h-5 text-slate-900"></i>
-                        <span>Beranda & Misi</span>
-                    </a>
 
-                    <a href="#trackermisi" onclick="showAppSection('trackermisi'); toggleMenu()" id="nav-link-trackermisi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="list-checks" class="w-5 h-5 text-slate-500"></i>
-                        <span>Tracker Status Misi</span>
-                    </a>
+                    <!-- GRUP 1: Beranda & Misi -->
+                    <div class="rounded-xl overflow-hidden">
+                        <button type="button" onclick="toggleSubmenu('grp-beranda')" id="submenu-toggle-grp-beranda" class="w-full flex items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="home" class="w-5 h-5 text-slate-900"></i>
+                                <span>Beranda & Misi</span>
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200 rotate-180" id="chevron-grp-beranda"></i>
+                        </button>
+                        <div id="submenu-grp-beranda" class="pl-4 pr-1 pt-1 pb-1 space-y-1">
+                            <a href="#beranda" onclick="showAppSection('beranda'); toggleMenu()" id="nav-link-beranda" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-900 bg-slate-100 rounded-lg transition">
+                                <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-900"></i>
+                                <span>Beranda Utama</span>
+                            </a>
+                            <a href="#trackermisi" onclick="showAppSection('trackermisi'); toggleMenu()" id="nav-link-trackermisi" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="list-checks" class="w-4 h-4 text-slate-500"></i>
+                                <span>Tracker Misi</span>
+                            </a>
+                            <a href="#analitik" onclick="showAppSection('analitik'); toggleMenu()" id="nav-link-analitik" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500"></i>
+                                <span>Analitik Video</span>
+                            </a>
+                            <a href="#ihsg" onclick="showAppSection('ihsg'); toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-slate-500"></i>
+                                <span>IHSG</span>
+                            </a>
+                        </div>
+                    </div>
 
-                    <a href="#analitik" onclick="showAppSection('analitik'); toggleMenu()" id="nav-link-analitik" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-500"></i>
-                        <span>Analitik Video</span>
-                    </a>
+                    <!-- GRUP 2: Deposit & Withdraw -->
+                    <div class="rounded-xl overflow-hidden">
+                        <button type="button" onclick="toggleSubmenu('grp-transaksi')" id="submenu-toggle-grp-transaksi" class="w-full flex items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="arrow-left-right" class="w-5 h-5 text-slate-500"></i>
+                                <span>Deposit & Withdraw</span>
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200" id="chevron-grp-transaksi"></i>
+                        </button>
+                        <div id="submenu-grp-transaksi" class="hidden pl-4 pr-1 pt-1 pb-1 space-y-1">
+                            <a href="#transaksi" onclick="showAppSection('transaksi'); toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="wallet" class="w-4 h-4 text-slate-500"></i>
+                                <span>Deposit / Withdraw</span>
+                            </a>
+                            <a href="#riwayat" onclick="showAppSection('riwayat'); toggleMenu()" id="nav-link-riwayat" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="history" class="w-4 h-4 text-slate-500"></i>
+                                <span>History Transaksi</span>
+                            </a>
+                        </div>
+                    </div>
 
-                    <a href="#riwayat" onclick="showAppSection('riwayat'); toggleMenu()" id="nav-link-riwayat" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="history" class="w-5 h-5 text-slate-500"></i>
-                        <span>Riwayat Transaksi</span>
-                    </a>
+                    <!-- GRUP 3: Service -->
+                    <div class="rounded-xl overflow-hidden">
+                        <button type="button" onclick="toggleSubmenu('grp-service')" id="submenu-toggle-grp-service" class="w-full flex items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
+                            <span class="flex items-center gap-3">
+                                <i data-lucide="grid-2x2" class="w-5 h-5 text-slate-500"></i>
+                                <span>Service</span>
+                            </span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200" id="chevron-grp-service"></i>
+                        </button>
+                        <div id="submenu-grp-service" class="hidden pl-4 pr-1 pt-1 pb-1 space-y-1">
+                            <a href="#ecomerce" onclick="showAppSection('ecomerce'); toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="shopping-bag" class="w-4 h-4 text-slate-500"></i>
+                                <span>Store Produk</span>
+                            </a>
+                            <a href="#topup" onclick="showAppSection('topup'); toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="zap" class="w-4 h-4 text-slate-500"></i>
+                                <span>Top Up Service</span>
+                            </a>
+                            <a href="#blog" onclick="showAppSection('blog'); toggleMenu()" id="nav-link-blog" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="newspaper" class="w-4 h-4 text-slate-500"></i>
+                                <span>Blog</span>
+                            </a>
+                            <a href="#bantuan" onclick="showAppSection('bantuan'); toggleMenu()" id="nav-link-bantuan" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="life-buoy" class="w-4 h-4 text-slate-500"></i>
+                                <span>Pusat Bantuan</span>
+                            </a>
+                        </div>
+                    </div>
 
-                    <a href="#ihsg" onclick="showAppSection('ihsg'); toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="trending-up" class="w-5 h-5 text-slate-500"></i>
-                        <span>IHSG Monitor</span>
-                    </a>
-                    
-                    <a href="#transaksi" onclick="showAppSection('transaksi'); toggleMenu()" id="nav-link-transaksi" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="arrow-left-right" class="w-5 h-5 text-slate-500"></i>
-                        <span>Deposit / Withdraw</span>
-                    </a>
-
-                    <a href="#ecomerce" onclick="showAppSection('ecomerce'); toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="shopping-bag" class="w-5 h-5 text-slate-500"></i>
-                        <span>Store Produk</span>
-                    </a>
-
-                    <a href="#topup" onclick="showAppSection('topup'); toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="zap" class="w-5 h-5 text-slate-500"></i>
-                        <span>Top Up Service</span>
-                    </a>
-
-                    <a href="#bantuan" onclick="showAppSection('bantuan'); toggleMenu()" id="nav-link-bantuan" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="life-buoy" class="w-5 h-5 text-slate-500"></i>
-                        <span>Pusat Bantuan</span>
-                    </a>
-
-                    <a href="#blog" onclick="showAppSection('blog'); toggleMenu()" id="nav-link-blog" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
-                        <i data-lucide="newspaper" class="w-5 h-5 text-slate-500"></i>
-                        <span>Blog</span>
-                    </a>
-
+                    <!-- About Us (link tunggal, tanpa dropdown) -->
                     <a href="#aboutus" onclick="showAppSection('aboutus'); toggleMenu()" id="nav-link-aboutus" class="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition">
                         <i data-lucide="info" class="w-5 h-5 text-slate-500"></i>
                         <span>About Us</span>
@@ -2171,6 +2202,31 @@
             } else {
                 sideMenu.classList.add('translate-x-full');
                 menuOverlay.classList.add('hidden');
+            }
+        };
+
+        // Dropdown/Accordion untuk Grup Menu Navigasi (Sidebar)
+        window.toggleSubmenu = (groupId) => {
+            const submenu = document.getElementById(`submenu-${groupId}`);
+            const chevron = document.getElementById(`chevron-${groupId}`);
+            if (!submenu) return;
+
+            const isOpen = !submenu.classList.contains('hidden');
+
+            // Tutup semua grup lain agar menu tetap ringkas (accordion style)
+            document.querySelectorAll('[id^="submenu-grp-"]').forEach(el => {
+                if (el.id !== submenu.id) el.classList.add('hidden');
+            });
+            document.querySelectorAll('[id^="chevron-grp-"]').forEach(el => {
+                if (el.id !== chevron.id) el.classList.remove('rotate-180');
+            });
+
+            if (isOpen) {
+                submenu.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            } else {
+                submenu.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
             }
         };
 
