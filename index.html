@@ -2161,7 +2161,9 @@
                     window.switchAdminTab('missions');
                 }
             } else {
+                // Role admin (atau lainnya): pastikan tab & fitur Daftar Member kembali tampil normal
                 if (membersTabBtn) membersTabBtn.classList.remove('hidden');
+                if (membersSubtab) membersSubtab.classList.remove('hidden');
             }
         }
 
@@ -2907,7 +2909,7 @@
         }
 
         function listenAdminData() {
-            // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI)
+            // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI - HANYA UNTUK ROLE ADMIN)
             onSnapshot(USERS_COL, (snapshot) => {
                 const tbody = document.getElementById('admin-members-table-body');
                 const badgeCount = document.getElementById('admin-member-count-badge');
@@ -2917,13 +2919,20 @@
 
                 const isOps = window.currentUserProfile?.role === 'ops';
 
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
-                    if (badgeCount) badgeCount.textContent = isOps ? '' : 'Total: 0 Member';
+                // Fitur "Daftar Member (Lengkap)" dikosongkan untuk role Ops
+                if (isOps) {
+                    tbody.innerHTML = '';
+                    if (badgeCount) badgeCount.textContent = '';
                     return;
                 }
 
-                if (badgeCount) badgeCount.textContent = isOps ? '' : `Total: ${snapshot.size} Member`;
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
+                    if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
+                    return;
+                }
+
+                if (badgeCount) badgeCount.textContent = `Total: ${snapshot.size} Member`;
 
                 let html = '';
                 snapshot.forEach(docSnap => {
