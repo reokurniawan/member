@@ -25,10 +25,32 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
+        :root {
+            --neon-blue: #22d3ee;
+            --neon-blue-2: #3b82f6;
+            --neon-glow: rgba(34, 211, 238, 0.55);
+            --neon-glow-soft: rgba(59, 130, 246, 0.25);
+            --bg-deep-1: #050914;
+            --bg-deep-2: #0a1330;
+            --bg-deep-3: #0d1b3d;
+            --card-glass: rgba(13, 25, 61, 0.65);
+            --card-glass-hover: rgba(17, 34, 78, 0.8);
+            --border-glass: rgba(56, 189, 248, 0.25);
+            --border-glass-strong: rgba(34, 211, 238, 0.6);
+            --text-primary: #e7f3ff;
+            --text-muted: #93b4d6;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
+            background-color: var(--bg-deep-1);
+            background-image:
+                radial-gradient(circle at 12% 0%, rgba(34, 211, 238, 0.16), transparent 42%),
+                radial-gradient(circle at 88% 8%, rgba(59, 130, 246, 0.18), transparent 45%),
+                radial-gradient(circle at 50% 100%, rgba(14, 165, 233, 0.12), transparent 55%),
+                linear-gradient(180deg, #050914 0%, #071026 40%, #0a1633 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
         }
 
         .font-heading {
@@ -37,30 +59,32 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
         }
-        ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep-1); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--neon-blue), var(--neon-blue-2)); border-radius: 9999px; box-shadow: 0 0 8px var(--neon-glow); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Product Cards */
         .product-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             transition: all 0.25s ease-in-out;
         }
         .product-card:hover {
-            border-color: #0f172a;
+            border-color: var(--border-glass-strong);
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 10px 30px -5px var(--neon-glow-soft), 0 0 18px -2px var(--neon-glow);
         }
         .product-image-container {
             aspect-ratio: 1 / 1;
             overflow: hidden;
-            background-color: #f1f5f9;
+            background-color: rgba(10, 22, 51, 0.9);
         }
         .product-image-container img {
             width: 100%;
@@ -74,13 +98,15 @@
 
         /* Mission Cards */
         .mission-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             transition: all 0.25s ease-in-out;
         }
         .mission-card:hover {
-            border-color: #0f172a;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            border-color: var(--border-glass-strong);
+            box-shadow: 0 10px 30px -5px var(--neon-glow-soft), 0 0 18px -2px var(--neon-glow);
             transform: translateY(-2px);
         }
 
@@ -95,9 +121,10 @@
             gap: 12px;
             padding: 14px 20px;
             border-radius: 14px;
-            background: #0f172a;
+            background: linear-gradient(135deg, #0d1b3d, #0a1330);
+            border: 1px solid var(--border-glass-strong);
             color: #ffffff;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 24px -4px var(--neon-glow);
             max-width: calc(100vw - 48px);
         }
 
@@ -105,9 +132,79 @@
             height: 520px;
             width: 100%;
         }
+
+        /* ============================================================= */
+        /* OVERRIDE TEMA GLOBAL — BIRU NEON                               */
+        /* Menimpa warna Tailwind di seluruh halaman tanpa mengubah       */
+        /* struktur, class, ataupun fungsi JavaScript yang sudah ada.     */
+        /* ============================================================= */
+
+        /* Latar putih / terang -> kaca gelap neon */
+        [class*="bg-white"] {
+            background-color: var(--card-glass) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        [class~="bg-slate-50"], [class~="bg-slate-100"] {
+            background-color: rgba(10, 20, 45, 0.85) !important;
+        }
+        [class*="hover\:bg-slate-50"]:hover, [class*="hover\:bg-slate-100"]:hover {
+            background-color: rgba(20, 40, 90, 0.85) !important;
+        }
+
+        /* Kotak ikon / badge solid gelap */
+        [class*="bg-slate-800"] {
+            background-color: #0d1b3d !important;
+        }
+
+        /* Elemen gelap solid (tombol utama, header, dsb) -> gradasi neon.
+           Diletakkan setelah aturan bg-slate-800 agar tombol yang memakai
+           kombinasi "bg-slate-900 hover:bg-slate-800" tetap bergradasi. */
+        [class*="bg-slate-900"] {
+            background: linear-gradient(135deg, #0891b2, #2563eb) !important;
+            box-shadow: 0 4px 18px -4px var(--neon-glow);
+        }
+        [class*="bg-slate-900"]:hover, [class*="hover\:bg-slate-800"]:hover {
+            background: linear-gradient(135deg, #22d3ee, #3b82f6) !important;
+            box-shadow: 0 6px 24px -4px var(--neon-glow);
+        }
+
+        /* Teks */
+        [class*="text-slate-900"] { color: var(--text-primary) !important; }
+        [class*="text-slate-800"], [class*="text-slate-700"] { color: #cfe4ff !important; }
+        [class*="text-slate-600"] { color: var(--text-muted) !important; }
+        [class*="text-slate-500"], [class*="text-slate-400"] { color: #6f8fb8 !important; }
+        [class*="hover\:text-slate-900"]:hover, [class*="hover\:text-slate-700"]:hover { color: var(--neon-blue) !important; }
+
+        /* Border */
+        [class*="border-slate-200"], [class*="border-slate-100"], [class*="border-slate-300"], [class*="border-slate-700"] { border-color: var(--border-glass) !important; }
+        [class*="border-slate-900"] { border-color: var(--border-glass-strong) !important; }
+        [class*="bg-slate-300"] { background-color: #16264f !important; }
+        [class*="text-slate-300"] { color: #9db8de !important; }
+        [class*="focus\:ring-slate-900"]:focus { --tw-ring-color: var(--neon-blue) !important; }
+        [class*="focus\:border-slate-900"]:focus { border-color: var(--neon-blue) !important; }
+
+        /* Input & field gelap */
+        input, textarea, select {
+            color: var(--text-primary) !important;
+        }
+        input::placeholder, textarea::placeholder { color: #5c7ba3 !important; }
+
+        /* Shadow bawaan Tailwind diberi sentuhan glow tipis */
+        [class*="shadow-xl"], [class*="shadow-lg"], [class*="shadow-md"], [class*="shadow-sm"] {
+            box-shadow: 0 8px 24px -8px rgba(0,0,0,0.6), 0 0 14px -6px var(--neon-glow) !important;
+        }
+
+        /* Divider tipis */
+        [class*="bg-slate-200"] { background-color: var(--border-glass) !important; }
+
+        /* Judul dengan sedikit efek glow supaya lebih estetik */
+        h1, h2.font-heading, h1.font-heading {
+            text-shadow: 0 0 18px var(--neon-glow-soft);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
 
     <!-- ================================================================= -->
     <!-- SECTION 1: AUTENTIKASI (LOG IN & PENDAFTARAN)                     -->
@@ -3622,7 +3719,7 @@
                     "symbol": "IDX:COMPOSITE",
                     "interval": "D",
                     "timezone": "Asia/Jakarta",
-                    "theme": "light",
+                    "theme": "dark",
                     "style": "1",
                     "locale": "id",
                     "container_id": "tradingview_ihsg_chart"
@@ -3659,12 +3756,13 @@
                     datasets: [{
                         label: 'IHSG Live Tick',
                         data: data,
-                        borderColor: '#0f172a',
-                        backgroundColor: 'rgba(15, 23, 42, 0.05)',
+                        borderColor: '#22d3ee',
+                        backgroundColor: 'rgba(34, 211, 238, 0.12)',
                         borderWidth: 2,
                         fill: true,
                         tension: 0.3,
-                        pointRadius: 2
+                        pointRadius: 2,
+                        pointBackgroundColor: '#22d3ee'
                     }]
                 },
                 options: {
@@ -3672,8 +3770,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-                        y: { ticks: { font: { size: 10 } } }
+                        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#93b4d6' } },
+                        y: { grid: { color: 'rgba(56, 189, 248, 0.12)' }, ticks: { font: { size: 10 }, color: '#93b4d6' } }
                     }
                 }
             });
