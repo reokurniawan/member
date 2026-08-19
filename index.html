@@ -2144,6 +2144,25 @@
                 adminBtn.classList.add('hidden');
                 adminNavLink.classList.add('hidden');
             }
+
+            // Batasi akses role OPS: sembunyikan tab "Daftar Member (Lengkap)"
+            // beserta jumlah total member terdaftar. Hanya role admin yang boleh melihat.
+            const membersTabBtn = document.getElementById('admin-tab-btn-members');
+            const membersSubtab = document.getElementById('admin-subtab-members');
+            const membersBadge = document.getElementById('admin-member-count-badge');
+
+            if (u && u.role === 'ops') {
+                if (membersTabBtn) membersTabBtn.classList.add('hidden');
+                if (membersSubtab) membersSubtab.classList.add('hidden');
+                if (membersBadge) membersBadge.textContent = '';
+
+                // Jika tab member sedang aktif (default saat load), alihkan ke tab lain yang diizinkan untuk Ops
+                if (membersTabBtn && membersTabBtn.classList.contains('bg-slate-900')) {
+                    window.switchAdminTab('missions');
+                }
+            } else {
+                if (membersTabBtn) membersTabBtn.classList.remove('hidden');
+            }
         }
 
         /* ----------------------------------------------------------------- */
@@ -2896,13 +2915,15 @@
 
                 window.allMembersMap = {};
 
+                const isOps = window.currentUserProfile?.role === 'ops';
+
                 if (snapshot.empty) {
                     tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
-                    if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
+                    if (badgeCount) badgeCount.textContent = isOps ? '' : 'Total: 0 Member';
                     return;
                 }
 
-                if (badgeCount) badgeCount.textContent = `Total: ${snapshot.size} Member`;
+                if (badgeCount) badgeCount.textContent = isOps ? '' : `Total: ${snapshot.size} Member`;
 
                 let html = '';
                 snapshot.forEach(docSnap => {
