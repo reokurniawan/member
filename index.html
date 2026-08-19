@@ -17,9 +17,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Chart.js & TradingView JS -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
     <!-- EmailJS (Untuk Notifikasi Email Otomatis Pusat Bantuan & Transaksi/Misi) -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -101,10 +100,6 @@
             max-width: calc(100vw - 48px);
         }
 
-        .tradingview-widget-container {
-            height: 520px;
-            width: 100%;
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
@@ -368,10 +363,6 @@
                             <a href="#analitik" onclick="showAppSection('analitik'); toggleMenu()" id="nav-link-analitik" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
                                 <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500"></i>
                                 <span>Analitik Video</span>
-                            </a>
-                            <a href="#ihsg" onclick="showAppSection('ihsg'); toggleMenu()" id="nav-link-ihsg" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
-                                <i data-lucide="trending-up" class="w-4 h-4 text-slate-500"></i>
-                                <span>IHSG</span>
                             </a>
                         </div>
                     </div>
@@ -671,119 +662,6 @@
                         <p class="text-xs text-slate-400 text-center py-8">Memuat riwayat transaksi...</p>
                     </div>
                 </div>
-            </section>
-
-            <!-- ========================================================= -->
-            <!-- SUB-HALAMAN 2: MONITOR IHSG REAL-TIME                     -->
-            <!-- ========================================================= -->
-            <section id="sec-ihsg" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-                <!-- Banner Branding -->
-                <div class="mb-6 bg-slate-900 text-white rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2.5 bg-slate-800 rounded-xl">
-                            <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <div>
-                            <h2 class="font-bold text-sm sm:text-base">IHSG Financial Terminal</h2>
-                            <p class="text-xs text-slate-400">Analisis Pergerakan Saham & Pasar Modal Terpadu.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div id="market-status" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span id="market-text" class="text-slate-200">PASAR BUKA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Panel Ringkasan Performa IHSG -->
-                <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                    <div class="col-span-2 md:col-span-3 lg:col-span-2 bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Indeks Utama IHSG</span>
-                                <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">REAL-TIME</span>
-                            </div>
-                            <div class="flex items-baseline gap-3">
-                                <span id="ihsg-price" class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900">7.534,80</span>
-                            </div>
-                        </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span id="ihsg-change-badge" class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-900 text-white">
-                                <i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-400"></i>
-                                <span>+38,40 (+0.51%)</span>
-                            </span>
-                            <span class="text-[11px] text-slate-400 font-medium">Update: Live</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center gap-2 text-slate-400 mb-2">
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-700"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Tertinggi</span>
-                        </div>
-                        <div>
-                            <span id="ihsg-high" class="text-xl font-bold text-slate-800">7.552,10</span>
-                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Sesi Hari Ini</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center gap-2 text-slate-400 mb-2">
-                            <i data-lucide="arrow-down-right" class="w-4 h-4 text-slate-700"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Terendah</span>
-                        </div>
-                        <div>
-                            <span id="ihsg-low" class="text-xl font-bold text-slate-800">7.488,30</span>
-                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Sesi Hari Ini</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center gap-2 text-slate-400 mb-2">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-slate-700"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Volume</span>
-                        </div>
-                        <div>
-                            <span id="ihsg-volume" class="text-xl font-bold text-slate-800">18,24 B</span>
-                            <p class="text-[11px] text-slate-400 font-medium mt-0.5">Lembar Saham</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Navigasi Mode Grafik -->
-                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <div class="bg-slate-200/80 p-1 rounded-xl flex items-center gap-1">
-                        <button id="btn-tab-tv" onclick="switchIhsgTab('tv')" class="px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm">
-                            TradingView Interactive
-                        </button>
-                        <button id="btn-tab-tick" onclick="switchIhsgTab('tick')" class="px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900">
-                            Live Tick Stream
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Container Grafik -->
-                <section class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm mb-8 relative overflow-hidden">
-                    <div id="tab-tradingview" class="w-full rounded-xl overflow-hidden">
-                        <div class="tradingview-widget-container">
-                            <div id="tradingview_ihsg_chart" style="height:100%;width:100%;"></div>
-                        </div>
-                    </div>
-
-                    <div id="tab-simulated-tick" class="hidden w-full">
-                        <div class="flex items-center justify-between mb-4 px-2">
-                            <h3 class="font-bold text-sm text-slate-800">Simulasi Stream Detik</h3>
-                            <button onclick="resetTickChart()" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 hover:bg-slate-900 hover:text-white font-semibold transition flex items-center gap-1">
-                                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
-                                <span>Reset Grafik</span>
-                            </button>
-                        </div>
-                        <div class="relative h-[450px] w-full">
-                            <canvas id="ihsgTickChart"></canvas>
-                        </div>
-                    </div>
-                </section>
             </section>
 
             <!-- ========================================================= -->
@@ -1526,6 +1404,7 @@
                         <label class="block font-bold text-slate-700 mb-1">Role Akun</label>
                         <select id="edit-mem-role" class="w-full p-2.5 bg-slate-50 border rounded-xl font-medium">
                             <option value="member">Member</option>
+                            <option value="ops">Ops</option>
                             <option value="admin">Administrator</option>
                         </select>
                     </div>
@@ -2161,11 +2040,11 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'ihsg', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'blog', 'aboutus', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'blog', 'aboutus', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
-            // Protect Admin Page
-            if (target === 'admin' && window.currentUserProfile?.role !== 'admin') {
+            // Protect Admin Page (izinkan role admin & ops)
+            if (target === 'admin' && !['admin', 'ops'].includes(window.currentUserProfile?.role)) {
                 window.showToast("Akses ditolak! Halaman ini khusus Admin.");
                 return;
             }
@@ -2178,7 +2057,6 @@
                 }
             });
 
-            if (target === 'ihsg') initIhsgPage();
             if (target === 'ecomerce') renderStoreProducts();
 
             safeLucideIcons();
@@ -2257,7 +2135,7 @@
             const adminBtn = document.getElementById('admin-badge-btn');
             const adminNavLink = document.getElementById('nav-link-admin');
 
-            if (u && u.role === 'admin') {
+            if (u && (u.role === 'admin' || u.role === 'ops')) {
                 adminBtn.classList.remove('hidden');
                 adminBtn.classList.add('flex');
                 adminNavLink.classList.remove('hidden');
@@ -2409,7 +2287,7 @@
                 renderUserAnalitikList(userClaims);
 
                 // Render ke Admin Subtab Jika Admin
-                if (window.currentUserProfile?.role === 'admin') {
+                if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                     renderAdminTrackersList();
                     renderAdminAnalitikList();
                 }
@@ -2471,7 +2349,7 @@
                 }
 
                 // Render ke Admin Subtab Jika Admin
-                if (window.currentUserProfile?.role === 'admin') {
+                if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                     renderAdminTxList();
                 }
                 safeLucideIcons();
@@ -2521,7 +2399,7 @@
                 }
 
                 // Render ke Admin Subtab Jika Admin
-                if (window.currentUserProfile?.role === 'admin') {
+                if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                     renderAdminComplaintList();
                 }
                 safeLucideIcons();
@@ -2561,7 +2439,7 @@
             });
 
             // Listeners for Admin Dashboard
-            if (window.currentUserProfile?.role === 'admin') {
+            if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                 listenAdminData();
             }
         }
@@ -3048,13 +2926,13 @@
                             </td>
                             <td class="p-3 font-extrabold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
                             <td class="p-3 uppercase font-bold text-[10px]">
-                                <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-800'}">${u.role || 'member'}</span>
+                                <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : (u.role === 'ops' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-800')}">${u.role || 'member'}</span>
                             </td>
                             <td class="p-3 text-slate-400 font-mono text-[10px]">${dateStr}</td>
                             <td class="p-3 text-center">
-                                <button onclick="openEditMemberModal('${u.uid}')" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition">
-                                    Edit Data
-                                </button>
+                                ${window.currentUserProfile?.role === 'admin'
+                                    ? `<button onclick="openEditMemberModal('${u.uid}')" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition">Edit Data</button>`
+                                    : `<span class="text-slate-300 text-[10px] font-bold uppercase">Tidak Ada Akses</span>`}
                             </td>
                         </tr>
                     `;
@@ -3413,8 +3291,13 @@
             }
         };
 
-        // Open Modal Edit Member Lengkap
+        // Open Modal Edit Member Lengkap (Khusus Role Admin)
         window.openEditMemberModal = (uid) => {
+            if (window.currentUserProfile?.role !== 'admin') {
+                window.showToast("Akses ditolak! Hanya Admin yang dapat mengedit data member.");
+                return;
+            }
+
             const u = window.allMembersMap[uid];
             if (!u) return;
 
@@ -3442,6 +3325,10 @@
 
         window.saveMemberEdit = async (e) => {
             e.preventDefault();
+            if (window.currentUserProfile?.role !== 'admin') {
+                window.showToast("Akses ditolak! Hanya Admin yang dapat mengedit data member.");
+                return;
+            }
             if (!window.selectedEditMember) return;
 
             await updateDoc(doc(USERS_COL, window.selectedEditMember), {
@@ -3608,117 +3495,6 @@
                 wdBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition flex items-center justify-center gap-2 uppercase tracking-wider";
                 depBtn.className = "w-1/2 py-4 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-900 bg-slate-50 transition flex items-center justify-center gap-2 uppercase tracking-wider";
                 wdForm.classList.remove('hidden'); depForm.classList.add('hidden');
-            }
-        }
-
-        let ihsgChartInitialized = false;
-        let tickChartInstance = null;
-        let tickTimer = null;
-
-        function initIhsgPage() {
-            if (!ihsgChartInitialized) {
-                new TradingView.widget({
-                    "autosize": true,
-                    "symbol": "IDX:COMPOSITE",
-                    "interval": "D",
-                    "timezone": "Asia/Jakarta",
-                    "theme": "light",
-                    "style": "1",
-                    "locale": "id",
-                    "container_id": "tradingview_ihsg_chart"
-                });
-                ihsgChartInitialized = true;
-            }
-            initTickChart();
-        }
-
-        function initTickChart() {
-            const ctx = document.getElementById('ihsgTickChart');
-            if (!ctx) return;
-
-            if (tickChartInstance) {
-                tickChartInstance.destroy();
-            }
-
-            const labels = [];
-            const data = [];
-            let basePrice = 7534.80;
-
-            const now = new Date();
-            for (let i = 20; i >= 0; i--) {
-                const timeStr = new Date(now.getTime() - i * 3000).toLocaleTimeString('id-ID');
-                labels.push(timeStr);
-                basePrice += (Math.random() - 0.48) * 2;
-                data.push(parseFloat(basePrice.toFixed(2)));
-            }
-
-            tickChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'IHSG Live Tick',
-                        data: data,
-                        borderColor: '#0f172a',
-                        backgroundColor: 'rgba(15, 23, 42, 0.05)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { font: { size: 10 } } },
-                        y: { ticks: { font: { size: 10 } } }
-                    }
-                }
-            });
-
-            if (tickTimer) clearInterval(tickTimer);
-            tickTimer = setInterval(() => {
-                if (!tickChartInstance) return;
-                const lastVal = tickChartInstance.data.datasets[0].data.slice(-1)[0] || 7534.80;
-                const newVal = parseFloat((lastVal + (Math.random() - 0.48) * 1.5).toFixed(2));
-                const timeStr = new Date().toLocaleTimeString('id-ID');
-
-                tickChartInstance.data.labels.push(timeStr);
-                tickChartInstance.data.datasets[0].data.push(newVal);
-
-                if (tickChartInstance.data.labels.length > 25) {
-                    tickChartInstance.data.labels.shift();
-                    tickChartInstance.data.datasets[0].data.shift();
-                }
-
-                tickChartInstance.update('none');
-
-                const priceEl = document.getElementById('ihsg-price');
-                if (priceEl) priceEl.textContent = newVal.toLocaleString('id-ID', { minimumFractionDigits: 2 });
-            }, 3000);
-        }
-
-        function resetTickChart() {
-            initTickChart();
-            showToast("Grafik live tick direset!");
-        }
-
-        function switchIhsgTab(tab) {
-            const tvTab = document.getElementById('tab-tradingview');
-            const tickTab = document.getElementById('tab-simulated-tick');
-            const tvBtn = document.getElementById('btn-tab-tv');
-            const tickBtn = document.getElementById('btn-tab-tick');
-
-            if (tab === 'tv') {
-                tvTab.classList.remove('hidden'); tickTab.classList.add('hidden');
-                tvBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm";
-                tickBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
-            } else {
-                tvTab.classList.add('hidden'); tickTab.classList.remove('hidden');
-                tickBtn.className = "px-4 py-2 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm";
-                tvBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg transition-all text-slate-600 hover:text-slate-900";
             }
         }
 
