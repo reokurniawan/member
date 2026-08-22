@@ -107,8 +107,38 @@
     <!-- ================================================================= -->
     <!-- SECTION 1: AUTENTIKASI (LOG IN & PENDAFTARAN)                     -->
     <!-- ================================================================= -->
-    <div id="view-auth" class="min-h-screen flex flex-col items-center justify-center p-4 bg-slate-100 w-full">
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden my-8">
+    <div id="view-auth" class="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 p-4 bg-slate-100 w-full">
+
+        <!-- Panel Preview Blog ZHEDVANOIS.ID (Agar Member Bisa Baca Berita Sebelum Masuk/Daftar) -->
+        <div class="w-full max-w-md lg:max-w-xl order-2 lg:order-1 my-4 lg:my-8">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
+                            <i data-lucide="newspaper" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h2 class="font-black text-sm text-slate-900 leading-tight">BLOG ZHEDVANOIS</h2>
+                            <p class="text-[11px] text-slate-500 font-medium truncate">Baca berita & artikel terbaru sebelum Masuk/Daftar</p>
+                        </div>
+                    </div>
+                    <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="hidden sm:flex px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition items-center gap-1.5 uppercase tracking-wider shrink-0">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        <span>Tab Baru</span>
+                    </a>
+                </div>
+                <div class="relative flex-grow">
+                    <iframe
+                        src="https://zhedvanois.id"
+                        title="Blog ZHEDVANOIS - Preview Sebelum Login"
+                        class="w-full h-[420px] lg:h-[600px] border-0"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden my-4 lg:my-8 order-1 lg:order-2">
             
             <!-- Header Branding -->
             <div class="bg-white p-6 border-b border-slate-100 text-center">
@@ -1033,6 +1063,17 @@
                         <h3 class="font-extrabold text-slate-900 text-base">Seluruh Data Member Terdaftar</h3>
                         <span class="text-xs text-slate-500 font-medium" id="admin-member-count-badge">Total: 0 Member</span>
                     </div>
+
+                    <!-- Fitur Cari & Filter Member Berdasarkan Email -->
+                    <div class="relative max-w-sm mb-4">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        <input type="text" id="admin-member-search-input" oninput="renderAdminMembersTable()" placeholder="Cari member berdasarkan email..."
+                            class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition">
+                        <button type="button" onclick="document.getElementById('admin-member-search-input').value=''; renderAdminMembersTable();" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-600 transition" title="Bersihkan pencarian">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
@@ -1084,6 +1125,34 @@
                                 <input type="text" id="mission-youtube" placeholder="Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ atau ID Video" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
                                 <p class="text-[10px] text-slate-400 mt-1">*Video ini akan ditampilkan dalam bentuk kotak player pada modal detail misi member.</p>
                             </div>
+
+                            <!-- Fitur Bagikan Misi: Semua Member / Member Terpilih -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-2">Target Penerima Misi</label>
+                                <div class="flex flex-wrap gap-4 mb-3">
+                                    <label class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+                                        <input type="radio" name="mission-visibility" value="all" checked onchange="toggleMissionTargetSelector()" class="accent-slate-900 w-3.5 h-3.5">
+                                        Bagikan ke Semua Member
+                                    </label>
+                                    <label class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 cursor-pointer">
+                                        <input type="radio" name="mission-visibility" value="selected" onchange="toggleMissionTargetSelector()" class="accent-slate-900 w-3.5 h-3.5">
+                                        Bagikan ke Member Terpilih
+                                    </label>
+                                </div>
+
+                                <div id="mission-target-selector-wrap" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3">
+                                    <div class="relative mb-2">
+                                        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                                        <input type="text" id="mission-target-search" oninput="renderMissionTargetMemberList()" placeholder="Cari member berdasarkan nama/email..."
+                                            class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-slate-900">
+                                    </div>
+                                    <div id="mission-target-member-list" class="max-h-48 overflow-y-auto space-y-0.5 bg-white border border-slate-200 rounded-lg p-1.5">
+                                        <p class="text-[11px] text-slate-400 p-1">Memuat data member...</p>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mt-1.5 font-medium"><span id="mission-target-selected-count">0</span> member terpilih.</p>
+                                </div>
+                            </div>
+
                             <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
                                 Terbitkan Misi
                             </button>
@@ -2206,6 +2275,7 @@
                 if (!grid) return;
 
                 window.allMissionsMap = {};
+                const myUid = window.currentUserProfile?.uid;
 
                 if (snapshot.empty) {
                     grid.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 col-span-2">Belum ada misi aktif tersedia saat ini.</p>`;
@@ -2213,8 +2283,16 @@
                 }
 
                 let html = '';
+                let visibleCount = 0;
                 snapshot.forEach(docSnap => {
                     const m = { id: docSnap.id, ...docSnap.data() };
+
+                    // Fitur Bagikan Misi: hanya tampilkan misi khusus jika member termasuk yang dipilih
+                    const isTargeted = m.visibility === 'selected';
+                    const isVisibleToMe = !isTargeted || (Array.isArray(m.targetUserIds) && myUid && m.targetUserIds.includes(myUid));
+                    if (!isVisibleToMe) return;
+
+                    visibleCount++;
                     window.allMissionsMap[m.id] = m;
 
                     const embedUrl = getYoutubeEmbedUrl(m.youtubeUrl);
@@ -2229,6 +2307,7 @@
                                     </span>
                                     <span class="text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">+${formatRupiah(m.reward)}</span>
                                 </div>
+                                ${isTargeted ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 mb-2 bg-purple-50 text-purple-800 text-[9px] font-black uppercase rounded-full border border-purple-200"><i data-lucide="star" class="w-3 h-3"></i> Misi Khusus Untukmu</span>` : ''}
                                 <h4 class="font-extrabold text-slate-900 text-sm mb-2 line-clamp-2">${m.title}</h4>
                                 <p class="text-xs text-slate-500 mb-4 line-clamp-2 leading-relaxed">${m.description}</p>
                             </div>
@@ -2245,7 +2324,7 @@
                         </div>
                     `;
                 });
-                grid.innerHTML = html;
+                grid.innerHTML = visibleCount > 0 ? html : `<p class="text-xs text-slate-400 text-center py-6 col-span-2">Belum ada misi aktif tersedia saat ini.</p>`;
                 safeLucideIcons();
             }, (err) => console.error("Error missions:", err));
 
@@ -2908,6 +2987,70 @@
             safeLucideIcons();
         }
 
+        // Render (& Filter Pencarian Email) Tabel Daftar Member Admin
+        window.renderAdminMembersTable = () => {
+            const tbody = document.getElementById('admin-members-table-body');
+            const badgeCount = document.getElementById('admin-member-count-badge');
+            if (!tbody) return;
+
+            if (window.currentUserProfile?.role === 'ops') return;
+
+            const searchInput = document.getElementById('admin-member-search-input');
+            const searchTerm = (searchInput?.value || '').trim().toLowerCase();
+            const rawList = window.allMembersRaw || [];
+
+            const list = searchTerm
+                ? rawList.filter(u => (u.email || '').toLowerCase().includes(searchTerm))
+                : rawList;
+
+            if (!rawList.length) {
+                tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
+                if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
+                return;
+            }
+
+            if (!list.length) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-slate-400">Tidak ada member dengan email "${searchInput.value}".</td></tr>`;
+                if (badgeCount) badgeCount.textContent = `Ditemukan: 0 dari ${rawList.length} Member`;
+                return;
+            }
+
+            if (badgeCount) badgeCount.textContent = searchTerm ? `Ditemukan: ${list.length} dari ${rawList.length} Member` : `Total: ${rawList.length} Member`;
+
+            let html = '';
+            list.forEach(u => {
+                const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+
+                html += `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50 transition text-xs">
+                        <td class="p-3 font-bold text-slate-900">
+                            ${u.nama || '-'}<br>
+                            <span class="font-normal text-slate-400 text-[11px]">${u.email}</span>
+                        </td>
+                        <td class="p-3 font-mono text-slate-700">${u.nik || '-'}</td>
+                        <td class="p-3 font-medium text-slate-700">${u.wa || '-'}</td>
+                        <td class="p-3 text-slate-700">${u.ttl || '-'}</td>
+                        <td class="p-3 text-slate-700">
+                            <span class="font-bold text-slate-900">${u.bank || '-'}</span>: ${u.norek || '-'}<br>
+                            <span class="text-[10px] text-slate-400 uppercase">a.n ${u.nama_pemilik || '-'}</span>
+                        </td>
+                        <td class="p-3 font-extrabold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
+                        <td class="p-3 uppercase font-bold text-[10px]">
+                            <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : (u.role === 'ops' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-800')}">${u.role || 'member'}</span>
+                        </td>
+                        <td class="p-3 text-slate-400 font-mono text-[10px]">${dateStr}</td>
+                        <td class="p-3 text-center">
+                            ${window.currentUserProfile?.role === 'admin'
+                                ? `<button onclick="openEditMemberModal('${u.uid}')" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition">Edit Data</button>`
+                                : `<span class="text-slate-300 text-[10px] font-bold uppercase">Tidak Ada Akses</span>`}
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            safeLucideIcons();
+        };
+
         function listenAdminData() {
             // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI - HANYA UNTUK ROLE ADMIN)
             onSnapshot(USERS_COL, (snapshot) => {
@@ -2916,6 +3059,7 @@
                 if (!tbody) return;
 
                 window.allMembersMap = {};
+                window.allMembersRaw = [];
 
                 const isOps = window.currentUserProfile?.role === 'ops';
 
@@ -2926,48 +3070,18 @@
                     return;
                 }
 
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
-                    if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
-                    return;
-                }
-
-                if (badgeCount) badgeCount.textContent = `Total: ${snapshot.size} Member`;
-
-                let html = '';
                 snapshot.forEach(docSnap => {
                     const u = { uid: docSnap.id, ...docSnap.data() };
                     window.allMembersMap[u.uid] = u;
-
-                    const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
-
-                    html += `
-                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition text-xs">
-                            <td class="p-3 font-bold text-slate-900">
-                                ${u.nama || '-'}<br>
-                                <span class="font-normal text-slate-400 text-[11px]">${u.email}</span>
-                            </td>
-                            <td class="p-3 font-mono text-slate-700">${u.nik || '-'}</td>
-                            <td class="p-3 font-medium text-slate-700">${u.wa || '-'}</td>
-                            <td class="p-3 text-slate-700">${u.ttl || '-'}</td>
-                            <td class="p-3 text-slate-700">
-                                <span class="font-bold text-slate-900">${u.bank || '-'}</span>: ${u.norek || '-'}<br>
-                                <span class="text-[10px] text-slate-400 uppercase">a.n ${u.nama_pemilik || '-'}</span>
-                            </td>
-                            <td class="p-3 font-extrabold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
-                            <td class="p-3 uppercase font-bold text-[10px]">
-                                <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : (u.role === 'ops' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-800')}">${u.role || 'member'}</span>
-                            </td>
-                            <td class="p-3 text-slate-400 font-mono text-[10px]">${dateStr}</td>
-                            <td class="p-3 text-center">
-                                ${window.currentUserProfile?.role === 'admin'
-                                    ? `<button onclick="openEditMemberModal('${u.uid}')" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm transition">Edit Data</button>`
-                                    : `<span class="text-slate-300 text-[10px] font-bold uppercase">Tidak Ada Akses</span>`}
-                            </td>
-                        </tr>
-                    `;
+                    window.allMembersRaw.push(u);
                 });
-                tbody.innerHTML = html;
+
+                renderAdminMembersTable();
+
+                // Perbarui juga daftar checklist target misi (jika sedang terbuka)
+                if (document.getElementById('mission-target-member-list')) {
+                    window.renderMissionTargetMemberList();
+                }
             });
 
             // Listen Missions
@@ -2978,12 +3092,22 @@
                 let html = '';
                 snapshot.forEach(docSnap => {
                     const m = { id: docSnap.id, ...docSnap.data() };
+                    const isTargeted = m.visibility === 'selected';
+                    const targetNames = isTargeted
+                        ? (m.targetUserIds || []).map(uid => (window.allMembersMap && window.allMembersMap[uid]) ? (window.allMembersMap[uid].nama || window.allMembersMap[uid].email) : 'Member').join(', ')
+                        : '';
                     html += `
-                        <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-slate-50">
-                            <div>
-                                <p class="font-bold text-slate-900 text-sm">${m.title}</p>
+                        <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between text-xs bg-slate-50 gap-3">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap mb-1">
+                                    <p class="font-bold text-slate-900 text-sm">${m.title}</p>
+                                    ${isTargeted
+                                        ? `<span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[9px] font-black uppercase rounded-full border border-purple-200 shrink-0">Khusus ${(m.targetUserIds || []).length} Member</span>`
+                                        : `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase rounded-full border border-emerald-200 shrink-0">Semua Member</span>`}
+                                </div>
                                 <p class="text-slate-500 mt-0.5">${m.description}</p>
                                 <p class="text-emerald-700 font-bold mt-1">Hadiah: +${formatRupiah(m.reward)} ${m.youtubeUrl ? '| Video YouTube Terpasang' : ''}</p>
+                                ${isTargeted && targetNames ? `<p class="text-[10px] text-slate-400 mt-1 truncate" title="${targetNames}">Penerima: ${targetNames}</p>` : ''}
                             </div>
                             <button onclick="deleteMission('${m.id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px] shrink-0">
                                 Hapus Misi
@@ -2992,6 +3116,7 @@
                     `;
                 });
                 container.innerHTML = html;
+                safeLucideIcons();
             });
 
             // Listen Products
@@ -3042,18 +3167,93 @@
         }
 
         // Admin Action Handlers
+
+        // Fitur Bagikan Misi ke Member Terpilih: State & Helper Checklist Member
+        window.missionTargetSelectedUids = window.missionTargetSelectedUids || new Set();
+
+        window.toggleMissionTargetSelector = () => {
+            const val = document.querySelector('input[name="mission-visibility"]:checked')?.value;
+            const wrap = document.getElementById('mission-target-selector-wrap');
+            if (!wrap) return;
+            if (val === 'selected') {
+                wrap.classList.remove('hidden');
+                window.renderMissionTargetMemberList();
+            } else {
+                wrap.classList.add('hidden');
+            }
+        };
+
+        window.renderMissionTargetMemberList = () => {
+            const container = document.getElementById('mission-target-member-list');
+            if (!container) return;
+
+            const members = Object.values(window.allMembersMap || {}).filter(u => u.role !== 'admin' && u.role !== 'ops');
+            const searchTerm = (document.getElementById('mission-target-search')?.value || '').trim().toLowerCase();
+            const filtered = searchTerm
+                ? members.filter(u => (u.nama || '').toLowerCase().includes(searchTerm) || (u.email || '').toLowerCase().includes(searchTerm))
+                : members;
+
+            if (!members.length) {
+                container.innerHTML = `<p class="text-[11px] text-slate-400 p-1">Belum ada data member.</p>`;
+                return;
+            }
+            if (!filtered.length) {
+                container.innerHTML = `<p class="text-[11px] text-slate-400 p-1">Member tidak ditemukan.</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(u => `
+                <label class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
+                    <input type="checkbox" value="${u.uid}" ${window.missionTargetSelectedUids.has(u.uid) ? 'checked' : ''} onchange="toggleMissionTargetMember('${u.uid}', this.checked)" class="accent-slate-900 w-3.5 h-3.5 shrink-0">
+                    <span class="flex-grow truncate"><span class="font-bold text-slate-800">${u.nama || '-'}</span> <span class="text-slate-400">- ${u.email || '-'}</span></span>
+                </label>
+            `).join('');
+
+            updateMissionTargetSelectedCount();
+            safeLucideIcons();
+        };
+
+        window.toggleMissionTargetMember = (uid, checked) => {
+            if (checked) window.missionTargetSelectedUids.add(uid);
+            else window.missionTargetSelectedUids.delete(uid);
+            updateMissionTargetSelectedCount();
+        };
+
+        function updateMissionTargetSelectedCount() {
+            const el = document.getElementById('mission-target-selected-count');
+            if (el) el.textContent = window.missionTargetSelectedUids.size;
+        }
+
         window.handleAdminCreateMission = async (e) => {
             e.preventDefault();
+
+            const visibility = document.querySelector('input[name="mission-visibility"]:checked')?.value || 'all';
+            const targetUserIds = visibility === 'selected' ? Array.from(window.missionTargetSelectedUids) : [];
+
+            if (visibility === 'selected' && targetUserIds.length === 0) {
+                window.showToast("Pilih minimal 1 member untuk misi khusus terlebih dahulu.");
+                return;
+            }
+
             await addDoc(MISSIONS_COL, {
                 title: document.getElementById('mission-title').value.trim(),
                 description: document.getElementById('mission-desc').value.trim(),
                 reward: parseFloat(document.getElementById('mission-reward').value),
                 link: document.getElementById('mission-link').value.trim(),
                 youtubeUrl: document.getElementById('mission-youtube').value.trim(),
+                visibility: visibility,
+                targetUserIds: targetUserIds,
                 createdAt: new Date().toISOString()
             });
-            window.showToast("Misi video berhasil diterbitkan!");
+
+            window.showToast(visibility === 'selected'
+                ? `Misi khusus berhasil dibagikan ke ${targetUserIds.length} member terpilih!`
+                : "Misi video berhasil diterbitkan ke semua member!");
+
             e.target.reset();
+            window.missionTargetSelectedUids = new Set();
+            document.getElementById('mission-target-selector-wrap')?.classList.add('hidden');
+            window.renderMissionTargetMemberList();
         };
 
         window.deleteMission = async (mId) => {
