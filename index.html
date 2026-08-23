@@ -1027,6 +1027,9 @@
 
                 <!-- Admin Tab Switcher -->
                 <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm overflow-x-auto scrollbar-hide">
+                    <button id="admin-tab-btn-visitors" onclick="switchAdminTab('visitors')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Statistik Pengunjung
+                    </button>
                     <button id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider">
                         Daftar Member (Lengkap)
                     </button>
@@ -1055,6 +1058,62 @@
                     <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Dashboard Toko Topup
                     </button>
+                </div>
+
+                <!-- ADMIN SUB-TAB 0: STATISTIK PENGUNJUNG & PENDAFTARAN WEBSITE -->
+                <div id="admin-subtab-visitors" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 text-base">Statistik Pengunjung & Pendaftaran Website</h3>
+                                <p class="text-xs text-slate-500">Pantau jumlah pengunjung yang membuka website & jumlah member baru yang mendaftar, termasuk histori beberapa bulan ke belakang.</p>
+                            </div>
+                        </div>
+
+                        <!-- Ringkasan Kartu Statistik -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="users" class="w-4 h-4 text-blue-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pengunjung Hari Ini</span>
+                                </div>
+                                <p id="admin-visitors-today" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="user-plus" class="w-4 h-4 text-emerald-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pendaftar Hari Ini</span>
+                                </div>
+                                <p id="admin-registrations-today" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="trending-up" class="w-4 h-4 text-amber-500"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Pengunjung 30 Hari</span>
+                                </div>
+                                <p id="admin-visitors-30d" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="user-check" class="w-4 h-4 text-slate-700"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Member Terdaftar</span>
+                                </div>
+                                <p id="admin-members-total" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Grafik Pengunjung Harian -->
+                        <h4 class="font-extrabold text-slate-900 text-sm mb-3">Grafik Pengunjung Harian (30 Hari Terakhir)</h4>
+                        <div class="mb-8" style="height: 260px;">
+                            <canvas id="chart-visitors-daily"></canvas>
+                        </div>
+
+                        <!-- Grafik Pendaftar Bulanan -->
+                        <h4 class="font-extrabold text-slate-900 text-sm mb-3">Grafik Pendaftar Baru per Bulan (12 Bulan Terakhir)</h4>
+                        <div style="height: 260px;">
+                            <canvas id="chart-registrations-monthly"></canvas>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ADMIN SUB-TAB 1: KELOLA MEMBER LENGKAP -->
@@ -1782,7 +1841,7 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, doc, getDoc, setDoc, updateDoc, 
-            collection, getDocs, onSnapshot, addDoc, deleteDoc 
+            collection, getDocs, onSnapshot, addDoc, deleteDoc, increment 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Application ID & Firebase Configuration
@@ -1812,6 +1871,8 @@
         const PRODUCTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'products');
         const ANNOUNCEMENTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
         const COMPLAINTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
+        // Koleksi khusus untuk menyimpan statistik jumlah pengunjung harian website
+        const VISITS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_visits');
 
         // Global State
         window.currentUserProfile = null;
@@ -1891,6 +1952,54 @@
             }
             return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
         };
+
+        /* ----------------------------------------------------------------- */
+        /* 0. PELACAK STATISTIK PENGUNJUNG WEBSITE (VISITOR ANALYTICS)       */
+        /* -------------------------------------------------------------------
+           Setiap kali website dibuka (baik oleh member yang sudah login
+           maupun tamu yang belum daftar), 1 kunjungan dicatat ke Firestore
+           pada dokumen harian (format ID: YYYY-MM-DD) di koleksi
+           'site_visits'. Dipakai untuk hitung "Pengunjung Hari Ini" dan
+           grafik histori bulanan di Panel Admin > tab "Statistik Pengunjung".
+
+           Dibatasi 1x hitungan per sesi browser (via sessionStorage) supaya
+           refresh halaman berulang kali tidak menggelembungkan angka.
+
+           PENTING: Agar fungsi ini berhasil menulis data, pastikan Firestore
+           Security Rules Anda mengizinkan write ke path
+           artifacts/{appId}/public/data/site_visits untuk semua pengunjung
+           (termasuk yang belum login), misalnya:
+             match /artifacts/{appId}/public/data/site_visits/{docId} {
+               allow read: if request.auth != null;
+               allow write: if true;
+             }
+        ------------------------------------------------------------------- */
+        function todayKeyJakarta() {
+            // Pakai zona waktu Asia/Jakarta (WIB) supaya pergantian "hari" konsisten
+            const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit'
+            }).formatToParts(new Date());
+            const map = {};
+            parts.forEach(p => map[p.type] = p.value);
+            return `${map.year}-${map.month}-${map.day}`; // format: YYYY-MM-DD
+        }
+        window.todayKeyJakarta = todayKeyJakarta;
+
+        async function trackVisit() {
+            try {
+                if (sessionStorage.getItem('zv_visit_logged')) return; // Sudah dihitung sesi ini
+                const dateKey = todayKeyJakarta();
+                await setDoc(doc(VISITS_COL, dateKey), {
+                    date: dateKey,
+                    count: increment(1),
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                sessionStorage.setItem('zv_visit_logged', '1');
+            } catch (err) {
+                console.warn('Gagal mencatat statistik pengunjung (cek Firestore Security Rules):', err);
+            }
+        }
+        trackVisit(); // Jalankan langsung saat script dimuat, tidak perlu menunggu login
 
         /* ----------------------------------------------------------------- */
         /* 1. AUTHENTICATION & SESSION MANAGEMENT                            */
@@ -2691,7 +2800,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan', 'tokotopup'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -2703,6 +2812,12 @@
                     view.classList.add('hidden');
                 }
             });
+
+            // Render ulang grafik pengunjung setiap kali tab ini dibuka, supaya Chart.js
+            // menghitung ukuran kanvas dengan benar (kanvas di tab tersembunyi punya lebar 0).
+            if (tab === 'visitors' && typeof renderVisitorAnalytics === 'function') {
+                setTimeout(renderVisitorAnalytics, 50);
+            }
         };
 
         function renderAdminTrackersList() {
@@ -3051,6 +3166,117 @@
             safeLucideIcons();
         };
 
+        /* ----------------------------------------------------------------- */
+        /* STATISTIK PENGUNJUNG & PENDAFTARAN (Kartu Ringkasan + Grafik)     */
+        /* ----------------------------------------------------------------- */
+        window.chartVisitorsDailyInstance = null;
+        window.chartRegistrationsMonthlyInstance = null;
+
+        function renderVisitorAnalytics() {
+            // Elemen kartu belum ada di DOM (tab belum pernah dibuka / user bukan admin) -> skip aman
+            if (!document.getElementById('admin-visitors-today')) return;
+
+            const visitsMap = window.allVisitsMap || {};
+            const members = window.allMembersRaw || [];
+            const todayKey = todayKeyJakarta();
+
+            // --- Kartu: Pengunjung Hari Ini ---
+            const visitorsToday = visitsMap[todayKey]?.count || 0;
+            document.getElementById('admin-visitors-today').textContent = visitorsToday.toLocaleString('id-ID');
+
+            // --- Kartu: Pendaftar Hari Ini (dari createdAt member, dicocokkan dgn zona waktu Jakarta) ---
+            const registrationsToday = members.filter(m => {
+                if (!m.createdAt) return false;
+                const d = new Date(m.createdAt);
+                const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+                return key === todayKey;
+            }).length;
+            document.getElementById('admin-registrations-today').textContent = registrationsToday.toLocaleString('id-ID');
+
+            // --- Kartu: Total Member Terdaftar (all-time) ---
+            document.getElementById('admin-members-total').textContent = members.length.toLocaleString('id-ID');
+
+            // --- Siapkan 30 hari terakhir (label + data pengunjung) ---
+            const dayLabels = [];
+            const dayData = [];
+            let visitors30d = 0;
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+                const count = visitsMap[key]?.count || 0;
+                dayLabels.push(new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' }).format(d));
+                dayData.push(count);
+                visitors30d += count;
+            }
+            document.getElementById('admin-visitors-30d').textContent = visitors30d.toLocaleString('id-ID');
+
+            // --- Siapkan 12 bulan terakhir (label + data pendaftar baru) ---
+            const monthLabels = [];
+            const monthKeys = [];
+            for (let i = 11; i >= 0; i--) {
+                const d = new Date();
+                d.setMonth(d.getMonth() - i);
+                const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                monthKeys.push(key);
+                monthLabels.push(d.toLocaleDateString('id-ID', { month: 'short', year: '2-digit' }));
+            }
+            const monthData = monthKeys.map(key => members.filter(m => (m.createdAt || '').startsWith(key)).length);
+
+            // --- Render Grafik Pengunjung Harian (Line Chart) ---
+            const ctxDaily = document.getElementById('chart-visitors-daily');
+            if (ctxDaily && window.Chart) {
+                if (window.chartVisitorsDailyInstance) window.chartVisitorsDailyInstance.destroy();
+                window.chartVisitorsDailyInstance = new Chart(ctxDaily, {
+                    type: 'line',
+                    data: {
+                        labels: dayLabels,
+                        datasets: [{
+                            label: 'Pengunjung',
+                            data: dayData,
+                            borderColor: '#0f172a',
+                            backgroundColor: 'rgba(15, 23, 42, 0.08)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                    }
+                });
+            }
+
+            // --- Render Grafik Pendaftar Bulanan (Bar Chart) ---
+            const ctxMonthly = document.getElementById('chart-registrations-monthly');
+            if (ctxMonthly && window.Chart) {
+                if (window.chartRegistrationsMonthlyInstance) window.chartRegistrationsMonthlyInstance.destroy();
+                window.chartRegistrationsMonthlyInstance = new Chart(ctxMonthly, {
+                    type: 'bar',
+                    data: {
+                        labels: monthLabels,
+                        datasets: [{
+                            label: 'Pendaftar Baru',
+                            data: monthData,
+                            backgroundColor: '#0f172a',
+                            borderRadius: 4,
+                            maxBarThickness: 36
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                    }
+                });
+            }
+        }
+        window.renderVisitorAnalytics = renderVisitorAnalytics;
+
         function listenAdminData() {
             // Listen Members (TAMPILKAN SELURUH DATA MEMBER REGISTRASI - HANYA UNTUK ROLE ADMIN)
             onSnapshot(USERS_COL, (snapshot) => {
@@ -3077,12 +3303,22 @@
                 });
 
                 renderAdminMembersTable();
+                renderVisitorAnalytics();
 
                 // Perbarui juga daftar checklist target misi (jika sedang terbuka)
                 if (document.getElementById('mission-target-member-list')) {
                     window.renderMissionTargetMemberList();
                 }
             });
+
+            // Listen Statistik Pengunjung (site_visits) - untuk kartu & grafik di tab "Statistik Pengunjung"
+            onSnapshot(VISITS_COL, (snapshot) => {
+                window.allVisitsMap = {};
+                snapshot.forEach(docSnap => {
+                    window.allVisitsMap[docSnap.id] = docSnap.data();
+                });
+                renderVisitorAnalytics();
+            }, (err) => console.error("Error loading visitor stats:", err));
 
             // Listen Missions
             onSnapshot(MISSIONS_COL, (snapshot) => {
