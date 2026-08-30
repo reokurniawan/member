@@ -486,6 +486,9 @@
                     <!-- Banner Pengumuman Admin -->
                     <div id="announcement-banner-container" class="space-y-3"></div>
 
+                    <!-- Banner Iklan / Sponsor -->
+                    <div id="ads-banner-container" class="space-y-3"></div>
+
                     <!-- Card Ucapan & Saldo Utama -->
                     <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
                         <div>
@@ -1049,6 +1052,9 @@
                     <button id="admin-tab-btn-products" onclick="switchAdminTab('products')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Kelola Produk Store
                     </button>
+                    <button id="admin-tab-btn-ads" onclick="switchAdminTab('ads')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Kelola Iklan
+                    </button>
                     <button id="admin-tab-btn-announcements" onclick="switchAdminTab('announcements')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Pengumuman Member
                     </button>
@@ -1378,6 +1384,72 @@
                         <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Produk Store Sekarang</h3>
                         <div id="admin-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <p class="text-xs text-slate-400">Memuat produk...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 5B: KELOLA IKLAN (FOTO UPLOAD / KODE IKLAN ADSVANTERA) -->
+                <div id="admin-subtab-ads" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-1">+ Pasang Iklan Baru</h3>
+                        <p class="text-xs text-slate-500 mb-4">Iklan akan tampil otomatis di halaman Beranda member. Pilih salah satu sumber iklan: unggah foto sendiri, atau tempel kode iklan dari Adsvantera.</p>
+
+                        <!-- Pilihan Tipe Iklan -->
+                        <div class="flex gap-2 mb-5 p-1 bg-slate-100 rounded-xl w-fit">
+                            <button type="button" id="ad-type-btn-image" onclick="setAdFormType('image')" class="px-4 py-2 text-xs font-bold rounded-lg bg-slate-900 text-white transition uppercase tracking-wider">
+                                Foto Upload
+                            </button>
+                            <button type="button" id="ad-type-btn-code" onclick="setAdFormType('code')" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-200 transition uppercase tracking-wider">
+                                Kode Iklan Adsvantera
+                            </button>
+                        </div>
+
+                        <form onsubmit="handleAdminAddAd(event)" class="space-y-4 max-w-2xl">
+                            <input type="hidden" id="ad-type" value="image">
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Iklan (Internal, tidak tampil ke member)</label>
+                                <input type="text" id="ad-title" required placeholder="Contoh: Banner Promo Agustus" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            </div>
+
+                            <!-- Form Bagian: Upload Foto -->
+                            <div id="ad-form-image" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Upload Foto Iklan</label>
+                                    <input type="file" id="ad-image-file" accept="image/*" onchange="previewAdImage(event)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                    <p class="text-[10px] text-slate-400 mt-1">Gambar akan otomatis dikompres. Disarankan ukuran file di bawah 2MB.</p>
+                                    <img id="ad-image-preview" class="hidden mt-2 max-h-40 rounded-lg border border-slate-200 object-contain">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Link Tujuan Saat Diklik (Opsional)</label>
+                                    <input type="url" id="ad-link" placeholder="https://wa.me/62... atau https://tokoanda.com" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                </div>
+                            </div>
+
+                            <!-- Form Bagian: Kode Iklan Adsvantera -->
+                            <div id="ad-form-code" class="hidden space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tempel Kode Iklan dari Adsvantera</label>
+                                    <textarea id="ad-code" rows="5" placeholder="Tempelkan potongan kode/script iklan dari dashboard Adsvantera di sini..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono"></textarea>
+                                    <p class="text-[10px] text-slate-400 mt-1">Salin persis dari dashboard Adsvantera, termasuk tag &lt;script&gt; jika ada.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="ad-active" checked class="accent-slate-900 w-4 h-4">
+                                <label for="ad-active" class="text-xs font-bold text-slate-700">Aktifkan iklan ini sekarang</label>
+                            </div>
+
+                            <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                                Simpan & Tayangkan Iklan
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Iklan Terpasang</h3>
+                        <div id="admin-ads-list" class="space-y-3">
+                            <p class="text-xs text-slate-400">Memuat daftar iklan...</p>
                         </div>
                     </div>
                 </div>
@@ -1871,6 +1943,7 @@
         const TX_COL = collection(db, 'artifacts', appId, 'public', 'data', 'transactions');
         const PRODUCTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'products');
         const ANNOUNCEMENTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
+        const ADS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
         const COMPLAINTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
         // Koleksi khusus untuk menyimpan statistik jumlah pengunjung harian website
         const VISITS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_visits');
@@ -2648,6 +2721,49 @@
                 safeLucideIcons();
             });
 
+            // Realtime Ads (Iklan) Banner Listener
+            onSnapshot(ADS_COL, (snapshot) => {
+                const container = document.getElementById('ads-banner-container');
+                if (!container) return;
+
+                const activeAds = [];
+                snapshot.forEach(docSnap => {
+                    const a = docSnap.data();
+                    if (a.active) activeAds.push(a);
+                });
+
+                if (activeAds.length === 0) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = '';
+                activeAds.forEach(a => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white';
+
+                    if (a.adType === 'image') {
+                        const imgHtml = `<img src="${a.imageData}" alt="Iklan" class="w-full h-auto block">`;
+                        wrapper.innerHTML = a.link
+                            ? `<a href="${a.link}" target="_blank" rel="noopener noreferrer sponsored">${imgHtml}</a>`
+                            : imgHtml;
+                    } else if (a.adType === 'code') {
+                        // Kode iklan pihak ketiga (mis. Adsvantera) bisa berisi <script>,
+                        // dan tag <script> yang disisipkan lewat innerHTML tidak otomatis
+                        // dieksekusi browser, sehingga perlu dibuat ulang secara manual.
+                        wrapper.innerHTML = a.adCode || '';
+                        wrapper.querySelectorAll('script').forEach(oldScript => {
+                            const newScript = document.createElement('script');
+                            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.textContent = oldScript.textContent;
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+                    }
+
+                    container.appendChild(wrapper);
+                });
+            });
+
             // Listeners for Admin Dashboard
             if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                 listenAdminData();
@@ -2801,7 +2917,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'announcements', 'bantuan', 'tokotopup'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -3380,6 +3496,37 @@
                 grid.innerHTML = html;
             });
 
+            // Listen Ads (Iklan)
+            onSnapshot(ADS_COL, (snapshot) => {
+                const list = document.getElementById('admin-ads-list');
+                if (!list) return;
+                if (snapshot.empty) { list.innerHTML = '<p class="text-xs text-slate-400">Belum ada iklan yang dipasang.</p>'; return; }
+                let html = '';
+                snapshot.forEach(docSnap => {
+                    const a = { id: docSnap.id, ...docSnap.data() };
+                    const preview = a.adType === 'image'
+                        ? `<img src="${a.imageData}" class="w-14 h-14 rounded object-cover border border-slate-200">`
+                        : `<div class="w-14 h-14 rounded bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400"><i data-lucide="code-2" class="w-5 h-5"></i></div>`;
+                    html += `
+                        <div class="p-3 border rounded-xl flex items-center justify-between text-xs gap-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                ${preview}
+                                <div class="min-w-0">
+                                    <p class="font-bold text-slate-900 truncate">${a.title || '-'}</p>
+                                    <p class="text-slate-500">${a.adType === 'image' ? 'Foto Upload' : 'Kode Adsvantera'} &bull; ${a.active ? '<span class="text-emerald-700 font-bold">Aktif</span>' : '<span class="text-slate-400 font-bold">Nonaktif</span>'}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <button onclick="toggleAdActive('${a.id}', ${!a.active})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded text-[11px]">${a.active ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                                <button onclick="deleteAd('${a.id}')" class="bg-rose-600 text-white font-bold px-2.5 py-1 rounded text-[11px]">Hapus</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                list.innerHTML = html;
+                safeLucideIcons();
+            });
+
             // Listen Announcements
             onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
                 const list = document.getElementById('admin-announcements-list');
@@ -3514,6 +3661,121 @@
         window.deleteProduct = async (pId) => {
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', pId));
             window.showToast("Produk berhasil dihapus.");
+        };
+
+        // ------------------------------------------------------------------
+        // KELOLA IKLAN (Upload Foto atau Kode Iklan Adsvantera)
+        // ------------------------------------------------------------------
+        window.setAdFormType = (type) => {
+            document.getElementById('ad-type').value = type;
+
+            const btnImage = document.getElementById('ad-type-btn-image');
+            const btnCode = document.getElementById('ad-type-btn-code');
+            const formImage = document.getElementById('ad-form-image');
+            const formCode = document.getElementById('ad-form-code');
+
+            const activeCls = "px-4 py-2 text-xs font-bold rounded-lg bg-slate-900 text-white transition uppercase tracking-wider";
+            const inactiveCls = "px-4 py-2 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-200 transition uppercase tracking-wider";
+
+            if (type === 'image') {
+                btnImage.className = activeCls;
+                btnCode.className = inactiveCls;
+                formImage.classList.remove('hidden');
+                formCode.classList.add('hidden');
+            } else {
+                btnCode.className = activeCls;
+                btnImage.className = inactiveCls;
+                formCode.classList.remove('hidden');
+                formImage.classList.add('hidden');
+            }
+        };
+
+        // Menyimpan hasil kompresi foto (base64) sementara sebelum form disubmit
+        window.pendingAdImageData = null;
+
+        window.previewAdImage = (e) => {
+            const file = e.target.files && e.target.files[0];
+            const preview = document.getElementById('ad-image-preview');
+            if (!file) {
+                window.pendingAdImageData = null;
+                preview.classList.add('hidden');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Kompres & resize foto agar ukuran data tidak terlalu besar untuk disimpan
+                    const MAX_WIDTH = 1280;
+                    const scale = Math.min(1, MAX_WIDTH / img.width);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    const compressedData = canvas.toDataURL('image/jpeg', 0.8);
+                    window.pendingAdImageData = compressedData;
+
+                    preview.src = compressedData;
+                    preview.classList.remove('hidden');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.handleAdminAddAd = async (e) => {
+            e.preventDefault();
+
+            const adType = document.getElementById('ad-type').value;
+            const title = document.getElementById('ad-title').value.trim();
+            const active = document.getElementById('ad-active').checked;
+
+            if (adType === 'image') {
+                if (!window.pendingAdImageData) {
+                    window.showToast("Silakan pilih foto iklan terlebih dahulu.");
+                    return;
+                }
+                await addDoc(ADS_COL, {
+                    adType: 'image',
+                    title,
+                    imageData: window.pendingAdImageData,
+                    link: document.getElementById('ad-link').value.trim(),
+                    active,
+                    createdAt: new Date().toISOString()
+                });
+            } else {
+                const adCode = document.getElementById('ad-code').value.trim();
+                if (!adCode) {
+                    window.showToast("Silakan tempel kode iklan Adsvantera terlebih dahulu.");
+                    return;
+                }
+                await addDoc(ADS_COL, {
+                    adType: 'code',
+                    title,
+                    adCode,
+                    active,
+                    createdAt: new Date().toISOString()
+                });
+            }
+
+            window.showToast("Iklan berhasil disimpan & ditayangkan!");
+            e.target.reset();
+            window.pendingAdImageData = null;
+            document.getElementById('ad-image-preview').classList.add('hidden');
+            window.setAdFormType('image');
+        };
+
+        window.toggleAdActive = async (adId, newActive) => {
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', adId), { active: newActive });
+            window.showToast(newActive ? "Iklan diaktifkan." : "Iklan dinonaktifkan.");
+        };
+
+        window.deleteAd = async (adId) => {
+            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', adId));
+            window.showToast("Iklan berhasil dihapus.");
         };
 
         window.handleAdminCreateAnnouncement = async (e) => {
