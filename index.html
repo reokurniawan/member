@@ -495,11 +495,16 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">Status Aktif</span>
                                 <span id="user-role-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-800">Member</span>
+                                <span id="user-level-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-800">Level 1</span>
                             </div>
                             <h2 id="user-display-nama" class="text-2xl md:text-3xl font-black text-slate-900 mb-1">-</h2>
                             <p class="text-xs text-slate-500 flex items-center gap-1.5 font-medium">
                                 <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
                                 <span id="user-display-email">-</span>
+                            </p>
+                            <p class="text-xs text-rose-600 flex items-center gap-1.5 font-bold mt-1.5">
+                                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-500"></i>
+                                <span>Poin Pinalti: <span id="user-display-pinalti">0</span></span>
                             </p>
                         </div>
 
@@ -593,6 +598,14 @@
                             <div class="space-y-1">
                                 <p class="text-[10px] font-bold uppercase text-slate-400">Rekening Tujuan Pencairan</p>
                                 <p id="info-bank-norek" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">-</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Level Member</p>
+                                <p id="info-level" class="font-bold text-slate-900 bg-slate-50 p-3 rounded-xl border border-slate-100">Level 1</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Poin Pinalti</p>
+                                <p id="info-pinalti" class="font-bold text-rose-700 bg-rose-50 p-3 rounded-xl border border-rose-100">0</p>
                             </div>
                         </div>
                     </div>
@@ -1150,13 +1163,15 @@
                                     <th class="p-3">Tempat, Tgl Lahir</th>
                                     <th class="p-3">Data Rekening Tujuan</th>
                                     <th class="p-3">Saldo</th>
+                                    <th class="p-3">Level</th>
+                                    <th class="p-3">Poin Pinalti</th>
                                     <th class="p-3">Role</th>
                                     <th class="p-3">Tgl Daftar</th>
                                     <th class="p-3 text-center">Aksi Edit</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-members-table-body">
-                                <tr><td colspan="9" class="p-4 text-center text-slate-400">Memuat seluruh data member...</td></tr>
+                                <tr><td colspan="11" class="p-4 text-center text-slate-400">Memuat seluruh data member...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1608,6 +1623,16 @@
                             <option value="ops">Ops</option>
                             <option value="admin">Administrator</option>
                         </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Level Member</label>
+                        <input type="number" id="edit-mem-level" min="1" step="1" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">Poin Pinalti</label>
+                        <input type="number" id="edit-mem-pinalti" min="0" step="1" required class="w-full p-2.5 bg-slate-50 border rounded-xl font-bold">
                     </div>
                 </div>
                 <div class="flex gap-2 pt-3">
@@ -2119,7 +2144,9 @@
                             email: user.email,
                             nama: 'Member',
                             role: user.email.includes('admin') ? 'admin' : 'member',
-                            saldo: 0
+                            saldo: 0,
+                            level: 1,
+                            pinaltyPoin: 0
                         };
 
                         viewAuth.classList.add('hidden');
@@ -2202,7 +2229,7 @@
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 await setDoc(doc(USERS_COL, cred.user.uid), {
                     email, nama, nik, wa, ttl, bank, norek, nama_pemilik,
-                    saldo: 0, role, createdAt: new Date().toISOString()
+                    saldo: 0, level: 1, pinaltyPoin: 0, role, createdAt: new Date().toISOString()
                 });
                 window.showToast("Pendaftaran berhasil!");
             } catch (err) {
@@ -2257,14 +2284,14 @@
             try {
                 await setDoc(doc(USERS_COL, user.uid), {
                     email, nama, nik, wa, ttl, bank, norek, nama_pemilik,
-                    saldo: 0, role, createdAt: new Date().toISOString(), authProvider: 'google'
+                    saldo: 0, level: 1, pinaltyPoin: 0, role, createdAt: new Date().toISOString(), authProvider: 'google'
                 });
 
                 window.pendingGoogleUser = null;
                 document.getElementById('google-profile-modal').classList.add('hidden');
                 document.getElementById('google-profile-modal').classList.remove('flex');
 
-                window.currentUserProfile = { uid: user.uid, email, nama, nik, wa, ttl, bank, norek, nama_pemilik, saldo: 0, role };
+                window.currentUserProfile = { uid: user.uid, email, nama, nik, wa, ttl, bank, norek, nama_pemilik, saldo: 0, level: 1, pinaltyPoin: 0, role };
 
                 document.getElementById('view-auth').classList.add('hidden');
                 document.getElementById('view-app').classList.remove('hidden');
@@ -2370,6 +2397,8 @@
             document.getElementById('user-display-nama').textContent = u.nama || 'Member';
             document.getElementById('user-display-email').textContent = u.email || '-';
             document.getElementById('user-display-saldo').textContent = formatRupiah(u.saldo || 0);
+            document.getElementById('user-level-badge').textContent = `Level ${u.level || 1}`;
+            document.getElementById('user-display-pinalti').textContent = u.pinaltyPoin || 0;
 
             document.getElementById('menu-user-name').textContent = u.nama || 'Member';
             document.getElementById('menu-user-email').textContent = u.email || '-';
@@ -2380,6 +2409,8 @@
             document.getElementById('info-wa').textContent = u.wa || '-';
             document.getElementById('info-ttl').textContent = u.ttl || '-';
             document.getElementById('info-bank-norek').textContent = `${u.bank || ''} ${u.norek || ''} (a.n ${u.nama_pemilik || ''})`;
+            document.getElementById('info-level').textContent = `Level ${u.level || 1}`;
+            document.getElementById('info-pinalti').textContent = u.pinaltyPoin || 0;
         }
 
         function setupAdminDashboardUI() {
@@ -2448,6 +2479,10 @@
                     if (docSnap.exists()) {
                         window.currentUserProfile = { uid: docSnap.id, ...docSnap.data() };
                         document.getElementById('user-display-saldo').textContent = formatRupiah(window.currentUserProfile.saldo || 0);
+                        document.getElementById('user-level-badge').textContent = `Level ${window.currentUserProfile.level || 1}`;
+                        document.getElementById('user-display-pinalti').textContent = window.currentUserProfile.pinaltyPoin || 0;
+                        document.getElementById('info-level').textContent = `Level ${window.currentUserProfile.level || 1}`;
+                        document.getElementById('info-pinalti').textContent = window.currentUserProfile.pinaltyPoin || 0;
                     }
                 }, (err) => console.error("Error balance:", err));
             }
@@ -3236,13 +3271,13 @@
                 : rawList;
 
             if (!rawList.length) {
-                tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="11" class="p-4 text-center text-slate-400">Belum ada member terdaftar.</td></tr>';
                 if (badgeCount) badgeCount.textContent = 'Total: 0 Member';
                 return;
             }
 
             if (!list.length) {
-                tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-slate-400">Tidak ada member dengan email "${searchInput.value}".</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="11" class="p-4 text-center text-slate-400">Tidak ada member dengan email "${searchInput.value}".</td></tr>`;
                 if (badgeCount) badgeCount.textContent = `Ditemukan: 0 dari ${rawList.length} Member`;
                 return;
             }
@@ -3267,6 +3302,8 @@
                             <span class="text-[10px] text-slate-400 uppercase">a.n ${u.nama_pemilik || '-'}</span>
                         </td>
                         <td class="p-3 font-extrabold text-emerald-700">${formatRupiah(u.saldo || 0)}</td>
+                        <td class="p-3 font-bold text-indigo-700">Level ${u.level || 1}</td>
+                        <td class="p-3 font-bold ${(u.pinaltyPoin || 0) > 0 ? 'text-rose-700' : 'text-slate-500'}">${u.pinaltyPoin || 0}</td>
                         <td class="p-3 uppercase font-bold text-[10px]">
                             <span class="px-2 py-0.5 rounded ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : (u.role === 'ops' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-800')}">${u.role || 'member'}</span>
                         </td>
@@ -4039,6 +4076,8 @@
             document.getElementById('edit-mem-norek').value = u.norek || '';
             document.getElementById('edit-mem-nama-pemilik').value = u.nama_pemilik || '';
             document.getElementById('edit-mem-saldo').value = u.saldo || 0;
+            document.getElementById('edit-mem-level').value = u.level || 1;
+            document.getElementById('edit-mem-pinalti').value = u.pinaltyPoin || 0;
             document.getElementById('edit-mem-role').value = u.role || 'member';
 
             const modal = document.getElementById('edit-member-modal');
@@ -4069,6 +4108,8 @@
                 norek: document.getElementById('edit-mem-norek').value.trim(),
                 nama_pemilik: document.getElementById('edit-mem-nama-pemilik').value.trim(),
                 saldo: parseFloat(document.getElementById('edit-mem-saldo').value) || 0,
+                level: parseInt(document.getElementById('edit-mem-level').value) || 1,
+                pinaltyPoin: parseInt(document.getElementById('edit-mem-pinalti').value) || 0,
                 role: document.getElementById('edit-mem-role').value
             });
 
