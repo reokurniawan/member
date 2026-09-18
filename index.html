@@ -101,102 +101,6 @@
             max-width: calc(100vw - 48px);
         }
 
-        /* ================================================================= */
-        /* SISTEM TEMA WEBSITE (dikontrol dari Panel Admin > "Desain Web")    */
-        /* Tema "default"          : tampilan asli (terang, slate & putih)   */
-        /* Tema "dark-neon"        : hitam pekat dengan aksen biru tua neon  */
-        /* Tema "modern-minimalist": netral, flat, modern & minimalis        */
-        /* Diterapkan lewat atribut [data-theme] pada <html>, disinkron      */
-        /* realtime dari Firestore. Begitu admin menyimpan pilihan tema,     */
-        /* seluruh pengunjung (member maupun tamu/publik) otomatis melihat   */
-        /* tampilan baru tanpa perlu refresh manual.                         */
-        /* ================================================================= */
-        html, body { transition: background-color .3s ease, color .3s ease; }
-        .product-card, .mission-card, .toast-notification, [class*="border-slate-"] {
-            transition: background-color .3s ease, color .3s ease, border-color .3s ease, box-shadow .3s ease;
-        }
-
-        /* --- TEMA 2: HITAM + BIRU TUA NEON --- */
-        html[data-theme="dark-neon"] { color-scheme: dark; }
-        html[data-theme="dark-neon"] body { background-color: #05070d !important; color: #dbe4f3 !important; }
-        html[data-theme="dark-neon"] .bg-white { background-color: #0b101c !important; }
-        html[data-theme="dark-neon"] .bg-slate-50 { background-color: #080c15 !important; }
-        html[data-theme="dark-neon"] .bg-slate-100 { background-color: #10182a !important; }
-        html[data-theme="dark-neon"] .bg-slate-200 { background-color: #172238 !important; }
-        html[data-theme="dark-neon"] .bg-slate-300 { background-color: #223154 !important; }
-        html[data-theme="dark-neon"] .bg-slate-800 { background-color: #0e3a8f !important; }
-        html[data-theme="dark-neon"] .bg-slate-900 { background-color: #0a2a6e !important; box-shadow: 0 0 0 1px rgba(37,99,255,0.25), 0 0 18px -4px rgba(37,99,255,0.65); }
-        html[data-theme="dark-neon"] .bg-slate-950 { background-color: #040814 !important; }
-        html[data-theme="dark-neon"] .hover\:bg-slate-50:hover { background-color: #10182a !important; }
-        html[data-theme="dark-neon"] .hover\:bg-slate-100:hover { background-color: #172238 !important; }
-        html[data-theme="dark-neon"] .hover\:bg-slate-200:hover { background-color: #223154 !important; }
-        html[data-theme="dark-neon"] .hover\:bg-slate-800:hover { background-color: #123fa8 !important; }
-        html[data-theme="dark-neon"] .border-slate-100 { border-color: #131c30 !important; }
-        html[data-theme="dark-neon"] .border-slate-200 { border-color: #1c2942 !important; }
-        html[data-theme="dark-neon"] .border-slate-300 { border-color: #2a3b5e !important; }
-        html[data-theme="dark-neon"] .border-slate-700 { border-color: #2563eb !important; }
-        html[data-theme="dark-neon"] .border-slate-800 { border-color: #1e3a8a !important; }
-        html[data-theme="dark-neon"] .border-slate-900 { border-color: #3b82f6 !important; }
-        html[data-theme="dark-neon"] .text-slate-900 { color: #eef3ff !important; }
-        html[data-theme="dark-neon"] .text-slate-950 { color: #ffffff !important; }
-        html[data-theme="dark-neon"] .text-slate-800 { color: #dbe4f8 !important; }
-        html[data-theme="dark-neon"] .text-slate-700 { color: #b9c7e6 !important; }
-        html[data-theme="dark-neon"] .text-slate-600 { color: #96abd6 !important; }
-        html[data-theme="dark-neon"] .text-slate-500 { color: #7189bd !important; }
-        html[data-theme="dark-neon"] .text-slate-400 { color: #5a72a3 !important; }
-        html[data-theme="dark-neon"] .text-slate-300 { color: #8fa3cc !important; }
-        html[data-theme="dark-neon"] ::-webkit-scrollbar-track { background: #05070d; }
-        html[data-theme="dark-neon"] ::-webkit-scrollbar-thumb { background: #1e3a8a; }
-        html[data-theme="dark-neon"] ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
-        html[data-theme="dark-neon"] .product-card,
-        html[data-theme="dark-neon"] .mission-card { background: #0b101c; border-color: #1c2942; }
-        html[data-theme="dark-neon"] .product-card:hover,
-        html[data-theme="dark-neon"] .mission-card:hover { border-color: #3b82f6; box-shadow: 0 10px 25px -5px rgba(37,99,235,0.35), 0 0 20px -4px rgba(59,130,246,0.45); }
-        html[data-theme="dark-neon"] .product-image-container { background-color: #10182a; }
-        html[data-theme="dark-neon"] .toast-notification { background: #0a2a6e; box-shadow: 0 0 20px -2px rgba(37,99,235,0.6); }
-
-        /* --- TEMA 3: MODERN & MINIMALIS --- */
-        html[data-theme="modern-minimalist"] body { background-color: #fafafa !important; color: #18181b !important; }
-        html[data-theme="modern-minimalist"] .bg-white { background-color: #ffffff !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-50 { background-color: #f4f4f5 !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-100 { background-color: #ececee !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-200 { background-color: #e4e4e7 !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-800 { background-color: #27272a !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-900 { background-color: #18181b !important; }
-        html[data-theme="modern-minimalist"] .bg-slate-950 { background-color: #09090b !important; }
-        html[data-theme="modern-minimalist"] .hover\:bg-slate-50:hover { background-color: #f4f4f5 !important; }
-        html[data-theme="modern-minimalist"] .hover\:bg-slate-100:hover { background-color: #ececee !important; }
-        html[data-theme="modern-minimalist"] .hover\:bg-slate-200:hover { background-color: #e4e4e7 !important; }
-        html[data-theme="modern-minimalist"] .hover\:bg-slate-800:hover { background-color: #3f3f46 !important; }
-        html[data-theme="modern-minimalist"] .border-slate-100,
-        html[data-theme="modern-minimalist"] .border-slate-200,
-        html[data-theme="modern-minimalist"] .border-slate-300 { border-color: #e4e4e7 !important; }
-        html[data-theme="modern-minimalist"] .text-slate-900,
-        html[data-theme="modern-minimalist"] .text-slate-950 { color: #18181b !important; }
-        html[data-theme="modern-minimalist"] .text-slate-800,
-        html[data-theme="modern-minimalist"] .text-slate-700 { color: #3f3f46 !important; }
-        html[data-theme="modern-minimalist"] .text-slate-600,
-        html[data-theme="modern-minimalist"] .text-slate-500 { color: #71717a !important; }
-        html[data-theme="modern-minimalist"] .text-slate-400,
-        html[data-theme="modern-minimalist"] .text-slate-300 { color: #a1a1aa !important; }
-        html[data-theme="modern-minimalist"] .rounded-2xl { border-radius: 10px !important; }
-        html[data-theme="modern-minimalist"] .rounded-xl { border-radius: 8px !important; }
-        html[data-theme="modern-minimalist"] .shadow-sm,
-        html[data-theme="modern-minimalist"] .shadow-md,
-        html[data-theme="modern-minimalist"] .shadow-lg,
-        html[data-theme="modern-minimalist"] .shadow-xl { box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important; }
-        html[data-theme="modern-minimalist"] .product-card,
-        html[data-theme="modern-minimalist"] .mission-card { background: #ffffff; border: 1px solid #e4e4e7; border-radius: 10px; }
-        html[data-theme="modern-minimalist"] .product-card:hover,
-        html[data-theme="modern-minimalist"] .mission-card:hover { border-color: #18181b; box-shadow: 0 8px 20px -6px rgba(0,0,0,0.12); transform: translateY(-2px); }
-        html[data-theme="modern-minimalist"] .toast-notification { background: #18181b; }
-
-        /* Kartu pilihan tema di Panel Admin */
-        .theme-option-card { cursor: pointer; border: 2px solid #e2e8f0; transition: all .2s ease; }
-        .theme-option-card:hover { border-color: #94a3b8; transform: translateY(-2px); }
-        .theme-option-card.theme-option-active { border-color: #0f172a; box-shadow: 0 8px 20px -6px rgba(15,23,42,0.25); }
-        .theme-swatch-bar { height: 10px; border-radius: 4px; }
-
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
@@ -1174,10 +1078,6 @@
                     <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Dashboard Toko Topup
                     </button>
-                    <button id="admin-tab-btn-theme" onclick="switchAdminTab('theme')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="palette" class="w-3.5 h-3.5"></i>
-                        Desain Web
-                    </button>
                 </div>
 
                 <!-- ADMIN SUB-TAB 0: STATISTIK PENGUNJUNG & PENDAFTARAN WEBSITE -->
@@ -1642,95 +1542,6 @@
                         ></iframe>
                     </div>
                 </div>
-
-                <!-- ADMIN SUB-TAB 9: DESAIN WEB (PENGATURAN TEMA WEBSITE) -->
-                <div id="admin-subtab-theme" class="hidden space-y-6">
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-1">
-                            <div>
-                                <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
-                                    <i data-lucide="palette" class="w-4 h-4"></i>
-                                    Desain / Tema Website
-                                </h3>
-                                <p class="text-xs text-slate-500 mt-1 max-w-xl">Pilih salah satu tema di bawah, lalu klik <strong>"Simpan &amp; Terapkan"</strong>. Tema akan langsung berubah secara otomatis untuk seluruh pengunjung website (member maupun tamu/publik) tanpa perlu me-refresh.</p>
-                            </div>
-                            <span class="px-3 py-1.5 bg-slate-900 text-white font-black text-[10px] rounded-full uppercase tracking-wider shrink-0" id="admin-theme-active-badge">
-                                Tema Aktif: Klasik
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-                        <!-- Kartu Tema 1: Default / Klasik -->
-                        <div class="theme-option-card bg-white rounded-2xl p-5 shadow-sm" id="theme-card-default" onclick="selectAdminThemeCard('default')">
-                            <div class="rounded-xl overflow-hidden border border-slate-200 mb-4">
-                                <div class="h-24 bg-slate-50 flex items-center justify-center gap-2 p-3">
-                                    <div class="w-1/3 h-full bg-white border border-slate-200 rounded-md"></div>
-                                    <div class="w-2/3 h-full flex flex-col gap-1.5 justify-center">
-                                        <div class="theme-swatch-bar bg-slate-900 w-3/4"></div>
-                                        <div class="theme-swatch-bar bg-slate-200 w-full"></div>
-                                        <div class="theme-swatch-bar bg-slate-100 w-1/2"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="font-black text-slate-900 text-sm mb-1">1. Klasik (Terang)</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Tampilan asli & bawaan: bersih, terang, dengan warna dasar slate &amp; putih.</p>
-                            <button type="button" class="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-100 text-slate-700 group-hover:bg-slate-200" id="theme-select-btn-default">
-                                Pilih Tema Ini
-                            </button>
-                        </div>
-
-                        <!-- Kartu Tema 2: Hitam Biru Tua Neon -->
-                        <div class="theme-option-card bg-white rounded-2xl p-5 shadow-sm" id="theme-card-dark-neon" onclick="selectAdminThemeCard('dark-neon')">
-                            <div class="rounded-xl overflow-hidden border border-slate-200 mb-4">
-                                <div class="h-24 flex items-center justify-center gap-2 p-3" style="background:#05070d;">
-                                    <div class="w-1/3 h-full rounded-md" style="background:#0b101c; border:1px solid #1c2942;"></div>
-                                    <div class="w-2/3 h-full flex flex-col gap-1.5 justify-center">
-                                        <div class="theme-swatch-bar w-3/4" style="background:#0a2a6e; box-shadow:0 0 8px 1px rgba(37,99,255,0.6);"></div>
-                                        <div class="theme-swatch-bar w-full" style="background:#172238;"></div>
-                                        <div class="theme-swatch-bar w-1/2" style="background:#10182a;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="font-black text-slate-900 text-sm mb-1">2. Hitam Biru Tua Neon</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Gelap total (hitam pekat) dengan aksen biru tua menyala (neon) yang tegas & elegan.</p>
-                            <button type="button" class="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-100 text-slate-700" id="theme-select-btn-dark-neon">
-                                Pilih Tema Ini
-                            </button>
-                        </div>
-
-                        <!-- Kartu Tema 3: Modern Minimalis -->
-                        <div class="theme-option-card bg-white rounded-2xl p-5 shadow-sm" id="theme-card-modern-minimalist" onclick="selectAdminThemeCard('modern-minimalist')">
-                            <div class="rounded-xl overflow-hidden border border-slate-200 mb-4">
-                                <div class="h-24 flex items-center justify-center gap-2 p-3" style="background:#fafafa;">
-                                    <div class="w-1/3 h-full bg-white rounded-md" style="border:1px solid #e4e4e7;"></div>
-                                    <div class="w-2/3 h-full flex flex-col gap-1.5 justify-center">
-                                        <div class="theme-swatch-bar w-3/4" style="background:#18181b;"></div>
-                                        <div class="theme-swatch-bar w-full" style="background:#e4e4e7;"></div>
-                                        <div class="theme-swatch-bar w-1/2" style="background:#f4f4f5; border:1px solid #e4e4e7;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="font-black text-slate-900 text-sm mb-1">3. Modern Minimalis</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed mb-4">Netral, flat, rapi & tegas — sudut lebih halus, bayangan lebih tipis, kesan modern minimalis.</p>
-                            <button type="button" class="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-100 text-slate-700" id="theme-select-btn-modern-minimalist">
-                                Pilih Tema Ini
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-xs text-slate-500 max-w-md">
-                            <i data-lucide="info" class="w-3.5 h-3.5 inline -mt-0.5 mr-1"></i>
-                            Tema yang dipilih di atas akan menjadi <strong>pratinjau sementara</strong> di layar Anda. Klik tombol di samping untuk benar-benar menyimpan & menerapkannya ke seluruh pengunjung website.
-                        </p>
-                        <button type="button" onclick="confirmSaveAdminTheme()" class="w-full sm:w-auto shrink-0 bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 active:scale-95">
-                            <i data-lucide="check-circle" class="w-4 h-4"></i>
-                            Simpan & Terapkan ke Semua Pengunjung
-                        </button>
-                    </div>
-                </div>
             </section>
         </main>
 
@@ -2161,21 +1972,6 @@
         const COMPLAINTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
         // Koleksi khusus untuk menyimpan statistik jumlah pengunjung harian website
         const VISITS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_visits');
-        // Koleksi untuk menyimpan pengaturan situs (termasuk Tema/Desain Web aktif)
-        // PENTING: Karena tema harus terbaca oleh TAMU yang belum login (di halaman
-        // Masuk/Daftar), pastikan Firestore Security Rules mengizinkan READ publik
-        // (tanpa auth) untuk path ini, namun WRITE tetap dibatasi hanya role admin, misalnya:
-        //   match /artifacts/{appId}/public/data/site_settings/{docId} {
-        //     allow read: if true;
-        //     allow write: if request.auth != null; // idealnya cek custom claim/role admin
-        //   }
-        const SETTINGS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_settings');
-        const THEME_OPTIONS = {
-            'default': { label: 'Klasik (Terang)', desc: 'Tampilan asli: bersih, terang, slate & putih.' },
-            'dark-neon': { label: 'Hitam Biru Tua Neon', desc: 'Gelap total dengan aksen biru tua menyala (neon).' },
-            'modern-minimalist': { label: 'Modern Minimalis', desc: 'Netral, flat, rapi, dan tegas — gaya modern minimalis.' }
-        };
-        window.currentSiteTheme = 'default';
 
         // Global State
         window.currentUserProfile = null;
@@ -2303,62 +2099,6 @@
             }
         }
         trackVisit(); // Jalankan langsung saat script dimuat, tidak perlu menunggu login
-
-        /* ----------------------------------------------------------------- */
-        /* 0.b SINKRONISASI TEMA / DESAIN WEB (REALTIME, BERLAKU UNTUK SEMUA) */
-        /* -------------------------------------------------------------------
-           Mendengarkan dokumen 'theme' pada koleksi site_settings secara
-           realtime. Begitu Admin mengubah & menyimpan tema di Panel Admin,
-           seluruh pengunjung website (termasuk yang belum login / tamu di
-           halaman Masuk-Daftar) langsung melihat tampilan baru tanpa perlu
-           me-refresh halaman, karena atribut [data-theme] pada <html>
-           diperbarui otomatis oleh listener ini.
-        ------------------------------------------------------------------- */
-        function applyThemeToDocument(themeId) {
-            const validTheme = THEME_OPTIONS[themeId] ? themeId : 'default';
-            window.currentSiteTheme = validTheme;
-            if (validTheme === 'default') {
-                document.documentElement.removeAttribute('data-theme');
-            } else {
-                document.documentElement.setAttribute('data-theme', validTheme);
-            }
-            if (typeof window.renderAdminThemeUI === 'function') {
-                window.renderAdminThemeUI();
-            }
-        }
-        window.applyThemeToDocument = applyThemeToDocument;
-
-        function listenSiteTheme() {
-            try {
-                onSnapshot(doc(SETTINGS_COL, 'theme'), (docSnap) => {
-                    const themeId = docSnap.exists() ? (docSnap.data().theme || 'default') : 'default';
-                    applyThemeToDocument(themeId);
-                }, (err) => console.warn('Gagal memuat pengaturan tema:', err));
-            } catch (err) {
-                console.warn('Listener tema gagal diinisialisasi:', err);
-            }
-        }
-        listenSiteTheme();
-
-        // Dipanggil dari Panel Admin > Desain Web saat admin menekan "Simpan & Terapkan"
-        window.saveSiteTheme = async function(themeId) {
-            if (!THEME_OPTIONS[themeId]) return;
-            try {
-                await setDoc(doc(SETTINGS_COL, 'theme'), {
-                    theme: themeId,
-                    updatedAt: new Date().toISOString(),
-                    updatedBy: window.currentUserProfile?.email || 'admin'
-                }, { merge: true });
-                if (typeof window.showToast === 'function') {
-                    window.showToast(`Tema "${THEME_OPTIONS[themeId].label}" diterapkan ke seluruh website!`);
-                } else {
-                    showToast(`Tema "${THEME_OPTIONS[themeId].label}" diterapkan ke seluruh website!`);
-                }
-            } catch (err) {
-                console.error('Gagal menyimpan tema:', err);
-                alert('Gagal menyimpan tema. Cek koneksi / Firestore Security Rules Anda.');
-            }
-        };
 
         /* ----------------------------------------------------------------- */
         /* 1. AUTHENTICATION & SESSION MANAGEMENT                            */
@@ -3212,7 +2952,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'tokotopup', 'theme'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -3229,77 +2969,6 @@
             // menghitung ukuran kanvas dengan benar (kanvas di tab tersembunyi punya lebar 0).
             if (tab === 'visitors' && typeof renderVisitorAnalytics === 'function') {
                 setTimeout(renderVisitorAnalytics, 50);
-            }
-
-            if (tab === 'theme' && typeof window.renderAdminThemeUI === 'function') {
-                window.renderAdminThemeUI();
-            }
-        };
-
-        /* ----------------------------------------------------------------- */
-        /* 5.b PANEL ADMIN > DESAIN WEB (PEMILIHAN & PENYIMPANAN TEMA)        */
-        /* ----------------------------------------------------------------- */
-        const THEME_LABELS = { 'default': 'Klasik', 'dark-neon': 'Hitam Biru Tua Neon', 'modern-minimalist': 'Modern Minimalis' };
-        window.pendingAdminTheme = null; // Tema yang sedang dipilih/dipratinjau admin (belum disimpan)
-
-        // Menyorot kartu tema yang sedang aktif tersimpan di Firestore, dan mereset pratinjau
-        window.renderAdminThemeUI = function() {
-            const active = window.currentSiteTheme || 'default';
-            window.pendingAdminTheme = active;
-            ['default', 'dark-neon', 'modern-minimalist'].forEach(t => {
-                const card = document.getElementById(`theme-card-${t}`);
-                const btn = document.getElementById(`theme-select-btn-${t}`);
-                if (!card || !btn) return;
-                if (t === active) {
-                    card.classList.add('theme-option-active');
-                    btn.textContent = 'Tema Aktif Saat Ini';
-                    btn.className = "w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-900 text-white";
-                } else {
-                    card.classList.remove('theme-option-active');
-                    btn.textContent = 'Pilih Tema Ini';
-                    btn.className = "w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-100 text-slate-700";
-                }
-            });
-            const badge = document.getElementById('admin-theme-active-badge');
-            if (badge) badge.textContent = `Tema Aktif: ${THEME_LABELS[active] || 'Klasik'}`;
-            safeLucideIcons();
-        };
-
-        // Saat admin klik salah satu kartu: tampilkan pratinjau LANGSUNG di layar admin (belum disimpan ke publik)
-        window.selectAdminThemeCard = function(themeId) {
-            window.pendingAdminTheme = themeId;
-            if (typeof window.applyThemeToDocument === 'function') {
-                // Pratinjau lokal: ubah tampilan admin saat ini saja (belum tersimpan/broadcast)
-                if (themeId === 'default') {
-                    document.documentElement.removeAttribute('data-theme');
-                } else {
-                    document.documentElement.setAttribute('data-theme', themeId);
-                }
-            }
-            ['default', 'dark-neon', 'modern-minimalist'].forEach(t => {
-                const card = document.getElementById(`theme-card-${t}`);
-                const btn = document.getElementById(`theme-select-btn-${t}`);
-                if (!card || !btn) return;
-                if (t === themeId) {
-                    card.classList.add('theme-option-active');
-                    btn.textContent = (t === window.currentSiteTheme) ? 'Tema Aktif Saat Ini' : 'Dipilih (Pratinjau)';
-                    btn.className = "w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-900 text-white";
-                } else {
-                    card.classList.remove('theme-option-active');
-                    btn.textContent = 'Pilih Tema Ini';
-                    btn.className = "w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition bg-slate-100 text-slate-700";
-                }
-            });
-        };
-
-        // Konfirmasi & simpan tema terpilih ke Firestore -> broadcast realtime ke SEMUA pengunjung
-        window.confirmSaveAdminTheme = function() {
-            const themeId = window.pendingAdminTheme || window.currentSiteTheme || 'default';
-            const label = THEME_LABELS[themeId] || 'Klasik';
-            const ok = confirm(`Terapkan tema "${label}" ke SELURUH pengunjung website sekarang?`);
-            if (!ok) return;
-            if (typeof window.saveSiteTheme === 'function') {
-                window.saveSiteTheme(themeId);
             }
         };
 
