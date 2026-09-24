@@ -735,17 +735,18 @@
                     <div id="depositFormContainer" class="p-6 sm:p-8 space-y-6">
                         <div class="bg-slate-900 text-white p-5 rounded-2xl relative overflow-hidden shadow-md">
                             <div class="flex justify-between items-start mb-3">
-                                <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">Rekening Transfer Deposit</span>
-                                <span class="bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded">BANK BRI</span>
+                                <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">Pembayaran Deposit via QRIS</span>
+                                <span class="bg-white text-slate-900 text-[10px] font-black px-2 py-0.5 rounded">QRIS</span>
                             </div>
-                            <p class="text-xs text-slate-400 mb-1">Nomor Rekening Resmi:</p>
-                            <div class="flex items-center justify-between mb-3 bg-slate-800 p-2.5 rounded-xl border border-slate-700">
-                                <span class="text-lg sm:text-xl font-mono font-bold tracking-wider text-white">646801000142569</span>
-                                <button onclick="copyToClipboard('646801000142569')" class="text-xs bg-white text-slate-900 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-200 transition active:scale-95">
-                                    Salin
-                                </button>
+                            <p class="text-xs text-slate-400 mb-3">Scan QRIS di bawah menggunakan aplikasi bank / e-wallet Anda, lalu isi jumlah deposit dan kirim pengajuan.</p>
+                            <div class="bg-white rounded-xl p-3 flex items-center justify-center min-h-[200px]">
+                                <img id="deposit-qris-img" class="hidden w-full max-w-[280px] h-auto object-contain" alt="QRIS Deposit">
+                                <p id="deposit-qris-empty" class="text-xs text-slate-500 text-center font-medium">QRIS belum tersedia. Silakan hubungi Admin.</p>
                             </div>
-                            <p class="text-xs text-slate-400">Atas Nama:</p>
+                            <a id="deposit-qris-download" download="QRIS-Deposit-ZHEDVANOIS.jpg" class="hidden mt-3 w-full items-center justify-center gap-2 text-xs bg-white text-slate-900 font-bold px-3 py-2 rounded-lg hover:bg-slate-200 transition active:scale-95">
+                                <i class="fa-solid fa-download"></i> Simpan QRIS
+                            </a>
+                            <p class="text-xs text-slate-400 mt-3">Atas Nama:</p>
                             <p class="text-xs font-bold text-white uppercase tracking-wide">PT ZHEDVANOIS CREATIVE AGENCY</p>
                         </div>
 
@@ -760,8 +761,8 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Catatan / Referensi Bukti Transfer</label>
-                                <input type="text" id="depositNotes" placeholder="Nomor referensi / Link bukti transfer" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 transition">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Catatan / Referensi Bukti Pembayaran</label>
+                                <input type="text" id="depositNotes" placeholder="Nomor referensi / Link bukti pembayaran QRIS" class="w-full text-xs font-medium px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-slate-900 transition">
                             </div>
 
                             <button type="submit" id="btnSubmitDeposit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition duration-200 shadow-lg flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
@@ -1074,6 +1075,9 @@
                     <button id="admin-tab-btn-bantuan" onclick="switchAdminTab('bantuan')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
                         Pusat Bantuan
                         <span id="admin-complaint-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
+                    </button>
+                    <button id="admin-tab-btn-qris" onclick="switchAdminTab('qris')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Kelola QRIS Deposit
                     </button>
                     <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Dashboard Toko Topup
@@ -1517,6 +1521,37 @@
 
                     <div id="admin-complaint-list" class="space-y-3">
                         <p class="text-xs text-slate-400">Memuat daftar keluhan...</p>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB: KELOLA QRIS DEPOSIT -->
+                <div id="admin-subtab-qris" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-1">Kelola QRIS Deposit</h3>
+                        <p class="text-xs text-slate-500 mb-5">QRIS yang diunggah di sini akan langsung tampil di halaman Deposit member. Mengunggah QRIS baru akan menggantikan yang lama.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
+                            <div>
+                                <p class="text-xs font-bold text-slate-700 mb-2">QRIS Aktif Saat Ini</p>
+                                <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 flex items-center justify-center min-h-[200px]">
+                                    <img id="admin-qris-current-img" class="hidden w-full max-w-[240px] h-auto object-contain" alt="QRIS aktif">
+                                    <p id="admin-qris-current-empty" class="text-xs text-slate-400 text-center">Belum ada QRIS yang diunggah.</p>
+                                </div>
+                                <button type="button" id="admin-qris-delete-btn" onclick="deleteQris()" class="hidden mt-3 bg-rose-600 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Hapus QRIS</button>
+                            </div>
+
+                            <form onsubmit="handleAdminSaveQris(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Upload Gambar QRIS Baru</label>
+                                    <input type="file" id="admin-qris-file" accept="image/*" onchange="previewQrisImage(event)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                    <p class="text-[10px] text-slate-400 mt-1">Gambar akan otomatis dikompres agar muat disimpan. Pastikan QR tetap jelas & bisa di-scan.</p>
+                                    <img id="admin-qris-preview" class="hidden mt-2 max-h-48 rounded-lg border border-slate-200 object-contain" alt="Preview QRIS baru">
+                                </div>
+                                <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">
+                                    Simpan & Tampilkan ke Member
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
@@ -1970,6 +2005,8 @@
         const ANNOUNCEMENTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'announcements');
         const ADS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
         const COMPLAINTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
+        // Koleksi pengaturan (dipakai untuk menyimpan gambar QRIS deposit: dokumen 'deposit_qris')
+        const SETTINGS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'settings');
         // Koleksi khusus untuk menyimpan statistik jumlah pengunjung harian website
         const VISITS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_visits');
 
@@ -2455,6 +2492,12 @@
         /* ----------------------------------------------------------------- */
         function setupRealtimeListeners() {
             const uid = window.currentUserProfile?.uid;
+
+            // Realtime QRIS Deposit (diunggah Admin -> tampil di halaman Deposit member & preview Admin)
+            onSnapshot(doc(SETTINGS_COL, 'deposit_qris'), (snap) => {
+                window.depositQrisData = snap.exists() ? (snap.data().imageData || null) : null;
+                if (typeof window.renderDepositQris === 'function') window.renderDepositQris();
+            }, (err) => console.error("Error loading QRIS deposit:", err));
 
             // Realtime Store Products (produk yang ditambahkan lewat Admin Panel)
             onSnapshot(PRODUCTS_COL, (snapshot) => {
@@ -2952,7 +2995,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'tokotopup'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -3805,6 +3848,109 @@
             window.setAdFormType('image');
         };
 
+        /* ----------------------------------------------------------------- */
+        /* QRIS DEPOSIT: upload oleh Admin -> tampil di halaman Deposit member */
+        /* ----------------------------------------------------------------- */
+        window.pendingQrisImageData = null;
+
+        window.renderDepositQris = () => {
+            const data = window.depositQrisData;
+
+            // Sisi Member (halaman Deposit)
+            const img = document.getElementById('deposit-qris-img');
+            const empty = document.getElementById('deposit-qris-empty');
+            const dl = document.getElementById('deposit-qris-download');
+            if (img) {
+                if (data) { img.src = data; img.classList.remove('hidden'); }
+                else { img.removeAttribute('src'); img.classList.add('hidden'); }
+            }
+            if (empty) empty.classList.toggle('hidden', !!data);
+            if (dl) {
+                if (data) { dl.href = data; dl.classList.remove('hidden'); dl.classList.add('flex'); }
+                else { dl.removeAttribute('href'); dl.classList.add('hidden'); dl.classList.remove('flex'); }
+            }
+
+            // Sisi Admin (preview QRIS aktif)
+            const aImg = document.getElementById('admin-qris-current-img');
+            const aEmpty = document.getElementById('admin-qris-current-empty');
+            const aDel = document.getElementById('admin-qris-delete-btn');
+            if (aImg) {
+                if (data) { aImg.src = data; aImg.classList.remove('hidden'); }
+                else { aImg.removeAttribute('src'); aImg.classList.add('hidden'); }
+            }
+            if (aEmpty) aEmpty.classList.toggle('hidden', !!data);
+            if (aDel) aDel.classList.toggle('hidden', !data);
+        };
+
+        window.previewQrisImage = (e) => {
+            const file = e.target.files && e.target.files[0];
+            const preview = document.getElementById('admin-qris-preview');
+            if (!file) {
+                window.pendingQrisImageData = null;
+                preview.classList.add('hidden');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Kompres sampai < ~700KB (batas dokumen Firestore 1MB). Latar diisi putih agar QR PNG transparan tidak jadi hitam.
+                    let maxW = 900, quality = 0.92, data = '';
+                    for (let i = 0; i < 4; i++) {
+                        const scale = Math.min(1, maxW / img.width);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        data = canvas.toDataURL('image/jpeg', quality);
+                        if (data.length < 700000) break;
+                        maxW -= 150; quality -= 0.08;
+                    }
+                    window.pendingQrisImageData = data;
+                    preview.src = data;
+                    preview.classList.remove('hidden');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.handleAdminSaveQris = async (e) => {
+            e.preventDefault();
+            if (!window.pendingQrisImageData) {
+                window.showToast("Silakan pilih gambar QRIS terlebih dahulu.");
+                return;
+            }
+            try {
+                await setDoc(doc(SETTINGS_COL, 'deposit_qris'), {
+                    imageData: window.pendingQrisImageData,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: window.currentUserProfile?.email || ''
+                });
+                window.showToast("QRIS berhasil disimpan & tampil di halaman Deposit member!");
+                e.target.reset();
+                window.pendingQrisImageData = null;
+                document.getElementById('admin-qris-preview').classList.add('hidden');
+            } catch (err) {
+                console.error('Gagal menyimpan QRIS:', err);
+                window.showToast("Gagal menyimpan QRIS. Cek Firestore Security Rules.");
+            }
+        };
+
+        window.deleteQris = async () => {
+            try {
+                await deleteDoc(doc(SETTINGS_COL, 'deposit_qris'));
+                window.showToast("QRIS berhasil dihapus.");
+            } catch (err) {
+                console.error('Gagal menghapus QRIS:', err);
+                window.showToast("Gagal menghapus QRIS. Cek Firestore Security Rules.");
+            }
+        };
+
         window.toggleAdActive = async (adId, newActive) => {
             await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', adId), { active: newActive });
             window.showToast(newActive ? "Iklan diaktifkan." : "Iklan dinonaktifkan.");
@@ -4125,7 +4271,7 @@
             let amount = 0, details = "";
             if (type === 'DEPOSIT') {
                 amount = parseFloat(document.getElementById('depositAmount').value);
-                details = document.getElementById('depositNotes').value || "Deposit BRI";
+                details = document.getElementById('depositNotes').value || "Deposit QRIS";
             } else {
                 amount = parseFloat(document.getElementById('withdrawAmount').value);
                 details = document.getElementById('withdrawDestination').value;
