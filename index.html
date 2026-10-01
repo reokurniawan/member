@@ -102,52 +102,109 @@
         }
 
     </style>
+
+    <style>
+        /* ===== TEMA BARU: Navy & Emas (terinspirasi mediatulisanmanusia.com) ===== */
+        :root{--navy:#07192C;--navy-2:#0d2a48;--navy-3:#12355c;--gold:#d9ad4b;--gold-2:#f3d588}
+        body{background:radial-gradient(900px 420px at 100% -5%,rgba(217,173,75,.16),transparent 60%),radial-gradient(800px 500px at -5% 25%,rgba(18,53,92,.12),transparent 60%),#f1f4f9}
+        ::selection{background:var(--gold);color:var(--navy)}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold),#b98a2c)}
+        .bg-slate-900{background-color:var(--navy)!important;background-image:linear-gradient(135deg,var(--navy),var(--navy-3))!important}
+        .hover\:bg-slate-800:hover{background-image:linear-gradient(135deg,var(--navy-3),#1b4a7d)!important}
+        button.bg-slate-900:hover,a.bg-slate-900:hover{box-shadow:0 10px 24px -8px rgba(217,173,75,.7)}
+        .text-slate-900{color:var(--navy)}
+        .border-slate-900{border-color:var(--gold)!important}
+        .border-t-transparent{border-top-color:transparent!important}
+        .focus\:ring-slate-900:focus{--tw-ring-color:var(--gold)!important}
+        .product-card:hover,.mission-card:hover{border-color:var(--gold)!important;box-shadow:0 22px 40px -18px rgba(7,25,44,.35)}
+        .toast-notification{background:linear-gradient(135deg,var(--navy),var(--navy-3));border:1px solid rgba(217,173,75,.5)}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+        @keyframes popIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+        @keyframes pingDot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+        main>section:not(.hidden){animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) backwards}
+
+        /* Header aplikasi */
+        #view-app>header{background:linear-gradient(90deg,var(--navy),var(--navy-2))!important;border-bottom:2px solid var(--gold)!important;box-shadow:0 12px 30px -16px rgba(7,25,44,.7)}
+        #view-app>header h1,#view-app>header .text-slate-900,#view-app>header .text-slate-800{color:#fff!important}
+        #view-app>header .text-slate-400{color:var(--gold-2)!important}
+        #view-app>header a>div.bg-slate-900{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:var(--navy)!important;box-shadow:0 0 0 3px rgba(217,173,75,.28)}
+        #view-app>header .bg-slate-100{background:rgba(255,255,255,.1)!important}
+        #view-app>header .hover\:bg-slate-100:hover,#view-app>header .hover\:bg-slate-200:hover{background:rgba(255,255,255,.22)!important}
+        #view-app>header #cart-badge{background:var(--gold)!important;color:var(--navy)!important}
+        #side-menu{border-left:3px solid var(--gold);border-radius:24px 0 0 24px}
+
+        /* Kartu & section */
+        #view-app section .bg-white.rounded-2xl{border-color:rgba(7,25,44,.08);box-shadow:0 1px 2px rgba(7,25,44,.04),0 18px 40px -26px rgba(7,25,44,.4);transition:box-shadow .3s,border-color .3s}
+        #view-app section .bg-white.rounded-2xl:hover{box-shadow:0 26px 50px -24px rgba(7,25,44,.5)}
+        #dashboard-content .bg-slate-900.rounded-2xl,#sec-ecomerce section.bg-slate-900{background-image:radial-gradient(420px 200px at 95% 0,rgba(217,173,75,.38),transparent 70%),linear-gradient(135deg,var(--navy),var(--navy-2))!important;box-shadow:0 24px 44px -20px rgba(7,25,44,.75),inset 0 0 0 1px rgba(217,173,75,.35)}
+        #sec-ecomerce section .bg-slate-800{background:rgba(217,173,75,.16)!important;color:var(--gold-2)!important;border-color:rgba(217,173,75,.45)!important}
+        #sec-ecomerce section.bg-slate-900 h1{letter-spacing:.01em;text-transform:uppercase}
+
+        /* Footer */
+        #view-app>footer{background:linear-gradient(90deg,var(--navy),var(--navy-2))!important;border-top:2px solid var(--gold)!important;color:#9fb3c8!important;padding:2rem 0!important}
+        #view-app>footer .bg-slate-900{background:var(--gold)!important;background-image:none!important}
+
+        /* Landing blog + ikon user + modal */
+        .landing{height:100vh;height:100dvh;background:var(--navy)}
+        .landing-bar{background:linear-gradient(90deg,var(--navy),var(--navy-2));border-bottom:2px solid var(--gold);box-shadow:0 10px 30px -14px rgba(0,0,0,.6);position:relative;z-index:5}
+        .user-fab{width:46px;height:46px;border-radius:9999px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(217,173,75,.25);transition:transform .25s,box-shadow .25s}
+        .user-fab:hover{transform:scale(1.09);box-shadow:0 0 0 7px rgba(217,173,75,.25),0 14px 28px -8px rgba(217,173,75,.75)}
+        .user-fab .dot{position:absolute;top:-1px;right:-1px;width:13px;height:13px;border-radius:9999px;background:#22c55e;border:2px solid var(--navy);animation:pingDot 2s infinite}
+        .auth-backdrop{background:rgba(4,14,26,.75);backdrop-filter:blur(8px)}
+        .auth-card{animation:popIn .4s cubic-bezier(.2,.9,.3,1.1) backwards;border-top:4px solid var(--gold)}
+        .auth-card-head{background:radial-gradient(300px 140px at 100% 0,rgba(217,173,75,.35),transparent 70%),linear-gradient(135deg,var(--navy),var(--navy-2))}
+        .auth-card-head .bg-slate-900{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:var(--navy)!important}
+        #auth-modal.flex{display:flex}
+    </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
 
     <!-- ================================================================= -->
     <!-- SECTION 1: AUTENTIKASI (LOG IN & PENDAFTARAN)                     -->
     <!-- ================================================================= -->
-    <div id="view-auth" class="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 p-4 bg-slate-100 w-full">
-
-        <!-- Panel Preview Blog ZHEDVANOIS.ID (Agar Member Bisa Baca Berita Sebelum Masuk/Daftar) -->
-        <div class="w-full max-w-md lg:max-w-xl order-2 lg:order-1 my-4 lg:my-8">
-            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-full">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
-                            <i data-lucide="newspaper" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <h2 class="font-black text-sm text-slate-900 leading-tight">BLOG ZHEDVANOIS</h2>
-                            <p class="text-[11px] text-slate-500 font-medium truncate">Baca berita & artikel terbaru sebelum Masuk/Daftar</p>
-                        </div>
-                    </div>
-                    <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="hidden sm:flex px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition items-center gap-1.5 uppercase tracking-wider shrink-0">
-                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-                        <span>Tab Baru</span>
-                    </a>
+    <div id="view-auth" class="landing w-full flex flex-col">
+        <!-- Bar atas: logo + ikon user (Masuk / Daftar) -->
+        <div class="landing-bar flex items-center justify-between gap-3 px-4 sm:px-6 py-3 shrink-0">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0" style="background:linear-gradient(135deg,#f3d588,#d9ad4b);color:#07192C">Z</div>
+                <div class="min-w-0">
+                    <h2 class="font-heading font-black text-white text-base sm:text-lg leading-tight tracking-wider">ZHEDVANOIS<span style="color:#d9ad4b">.ID</span></h2>
+                    <p class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest truncate" style="color:#9fb3c8">Blog &amp; Portal Member</p>
                 </div>
-                <div class="relative flex-grow">
-                    <iframe
-                        src="https://zhedvanois.id"
-                        title="Blog ZHEDVANOIS - Preview Sebelum Login"
-                        class="w-full h-[420px] lg:h-[600px] border-0"
-                        loading="lazy"
-                    ></iframe>
-                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-bold text-white border border-white/20 hover:bg-white/10 transition">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i><span>Tab Baru</span>
+                </a>
+                <button type="button" onclick="openAuthModal('login')" title="Masuk / Daftar" aria-label="Masuk atau Daftar" class="user-fab relative">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span class="dot"></span>
+                </button>
             </div>
         </div>
 
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden my-4 lg:my-8 order-1 lg:order-2">
+        <!-- Blog zhedvanois.id full -->
+        <div class="relative flex-1 min-h-0">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style="color:#9fb3c8">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 mb-3" style="border-color:#d9ad4b;border-top-color:transparent"></div>
+                <p class="text-xs font-semibold">Memuat blog zhedvanois.id...</p>
+                <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="mt-2 text-[11px] underline" style="color:#f3d588">Tidak tampil? Buka di tab baru</a>
+            </div>
+            <iframe src="https://zhedvanois.id" title="Blog ZHEDVANOIS" class="absolute inset-0 w-full h-full border-0 bg-white" loading="eager"></iframe>
+        </div>
+
+        <!-- Modal Masuk / Daftar (muncul saat ikon user diklik) -->
+        <div id="auth-modal" class="hidden fixed inset-0 z-[60] items-start justify-center p-4 overflow-y-auto auth-backdrop" onclick="if(event.target===this)closeAuthModal()">
+            <div class="auth-card relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden my-auto">
             
             <!-- Header Branding -->
-            <div class="bg-white p-6 border-b border-slate-100 text-center">
+            <div class="auth-card-head p-6 text-center relative">
+<button type="button" onclick="closeAuthModal()" aria-label="Tutup" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition"><i data-lucide="x" class="w-4 h-4"></i></button>
                 <div class="inline-flex items-center justify-center w-12 h-12 bg-slate-900 text-white font-extrabold rounded-2xl text-2xl tracking-wider mb-2 shadow-md">
                     Z
                 </div>
-                <h1 class="text-2xl font-black tracking-wider text-slate-900">ZHEDVANOIS</h1>
-                <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Portal Akun & Keanggotaan Terpadu</p>
+                <h1 class="text-2xl font-black tracking-wider text-white">ZHEDVANOIS</h1>
+                <p class="text-xs mt-1 uppercase tracking-widest font-semibold" style="color:#f3d588">Portal Akun & Keanggotaan Terpadu</p>
             </div>
 
             <!-- Tab Switcher -->
@@ -300,6 +357,7 @@
             <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
                 &copy; 2026 ZHEDVANOIS Portal. Protected by Firebase Auth.
             </div>
+        </div>
         </div>
     </div>
 
@@ -4432,6 +4490,23 @@
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
+
+        /* ===== Modal Masuk/Daftar (ikon user) ===== */
+        window.openAuthModal = function(tab){
+            if (window.switchAuthTab) window.switchAuthTab(tab || 'login');
+            var m = document.getElementById('auth-modal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            if (window.lucide) lucide.createIcons();
+        };
+        window.closeAuthModal = function(){
+            var m = document.getElementById('auth-modal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+        };
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') window.closeAuthModal(); });
+        (function(){
+            var gp = document.getElementById('google-profile-modal');
+            if (gp) new MutationObserver(function(){ if (!gp.classList.contains('hidden')) window.closeAuthModal(); }).observe(gp, {attributes:true, attributeFilter:['class']});
+        })();
     </script>
 </body>
 </html>
