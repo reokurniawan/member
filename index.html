@@ -156,6 +156,57 @@
         .auth-card-head .bg-slate-900{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:var(--navy)!important}
         #auth-modal.flex{display:flex}
     </style>
+
+    <style>
+        /* ===== BACKGROUND GAMBAR + POLESAN TAMPILAN (tambahan, tanpa mengubah fitur) ===== */
+        :root{
+            --bg-img:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrUiIvCS3ctgBQk8qjjsR-g-1GxRobvb7GsoGu6sLrQ8QMK3Sx5BwmU_aWu8sMt0R1yQx1Q64pdZiBNNtc5X4YN2xVpm6fSnFNRospeNFLEi08J2sWxvyQJioayCovZ5AaAtTB0X1Bg4MmyIN_JBTP7RlTaY3yqXmNp3B1FajJepGGzIqtXCxTFktwotNV/s1376/IMG_2446.jpeg');
+            --bg-img-opacity:.20;   /* naikkan/turunkan untuk mengatur seberapa terlihat gambarnya */
+        }
+        html{background:#f1f4f9;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+        /* Lapisan 1: gambar, dibuat samar */
+        body::before{
+            content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+            background:var(--bg-img) center/cover no-repeat;
+            opacity:var(--bg-img-opacity);
+            filter:saturate(.85) blur(1.5px);
+            transform:scale(1.03);
+        }
+        /* Lapisan 2: kabut lembut + kilau emas agar tetap serasi dengan tema navy-emas */
+        body::after{
+            content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+            background:
+                radial-gradient(900px 420px at 100% -5%,rgba(217,173,75,.14),transparent 60%),
+                radial-gradient(800px 500px at -5% 25%,rgba(18,53,92,.10),transparent 60%),
+                linear-gradient(180deg,rgba(241,244,249,.55) 0%,rgba(241,244,249,.80) 100%);
+        }
+
+        /* Kartu: sedikit kaca buram supaya teks tetap jelas di atas gambar */
+        #view-app section .bg-white.rounded-2xl,
+        #view-app section .bg-white.rounded-3xl,
+        #view-app section .bg-white.rounded-xl{
+            background-color:rgba(255,255,255,.95)!important;
+            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+        }
+        .product-card,.mission-card{background:rgba(255,255,255,.96)}
+        #view-app>header{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+
+        /* Polesan halus */
+        #view-app section .bg-white.rounded-2xl:hover{transform:translateY(-2px)}
+        button,a{-webkit-tap-highlight-color:transparent}
+        :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+        input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
+        ::-webkit-scrollbar-track{background:transparent}
+
+        @media (max-width:640px){
+            body::before{filter:saturate(.85);transform:none}
+            #view-app section .bg-white.rounded-2xl{-webkit-backdrop-filter:none;backdrop-filter:none}
+        }
+        @media (prefers-reduced-motion:reduce){
+            *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
 
