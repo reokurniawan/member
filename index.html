@@ -104,109 +104,99 @@
     </style>
 
     <style>
-        /* ===== TEMA BARU: Navy & Emas (terinspirasi mediatulisanmanusia.com) ===== */
-        :root{--navy:#07192C;--navy-2:#0d2a48;--navy-3:#12355c;--gold:#d9ad4b;--gold-2:#f3d588}
-        body{background:radial-gradient(900px 420px at 100% -5%,rgba(217,173,75,.16),transparent 60%),radial-gradient(800px 500px at -5% 25%,rgba(18,53,92,.12),transparent 60%),#f1f4f9}
-        ::selection{background:var(--gold);color:var(--navy)}
-        ::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold),#b98a2c)}
-        .bg-slate-900{background-color:var(--navy)!important;background-image:linear-gradient(135deg,var(--navy),var(--navy-3))!important}
-        .hover\:bg-slate-800:hover{background-image:linear-gradient(135deg,var(--navy-3),#1b4a7d)!important}
-        button.bg-slate-900:hover,a.bg-slate-900:hover{box-shadow:0 10px 24px -8px rgba(217,173,75,.7)}
-        .text-slate-900{color:var(--navy)}
-        .border-slate-900{border-color:var(--gold)!important}
-        .border-t-transparent{border-top-color:transparent!important}
-        .focus\:ring-slate-900:focus{--tw-ring-color:var(--gold)!important}
-        .product-card:hover,.mission-card:hover{border-color:var(--gold)!important;box-shadow:0 22px 40px -18px rgba(7,25,44,.35)}
-        .toast-notification{background:linear-gradient(135deg,var(--navy),var(--navy-3));border:1px solid rgba(217,173,75,.5)}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-        @keyframes popIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
-        @keyframes pingDot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
-        main>section:not(.hidden){animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) backwards}
-
-        /* Header aplikasi */
-        #view-app>header{background:linear-gradient(90deg,var(--navy),var(--navy-2))!important;border-bottom:2px solid var(--gold)!important;box-shadow:0 12px 30px -16px rgba(7,25,44,.7)}
-        #view-app>header h1,#view-app>header .text-slate-900,#view-app>header .text-slate-800{color:#fff!important}
-        #view-app>header .text-slate-400{color:var(--gold-2)!important}
-        #view-app>header a>div.bg-slate-900{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:var(--navy)!important;box-shadow:0 0 0 3px rgba(217,173,75,.28)}
-        #view-app>header .bg-slate-100{background:rgba(255,255,255,.1)!important}
-        #view-app>header .hover\:bg-slate-100:hover,#view-app>header .hover\:bg-slate-200:hover{background:rgba(255,255,255,.22)!important}
-        #view-app>header #cart-badge{background:var(--gold)!important;color:var(--navy)!important}
-        #side-menu{border-left:3px solid var(--gold);border-radius:24px 0 0 24px}
-
-        /* Kartu & section */
-        #view-app section .bg-white.rounded-2xl{border-color:rgba(7,25,44,.08);box-shadow:0 1px 2px rgba(7,25,44,.04),0 18px 40px -26px rgba(7,25,44,.4);transition:box-shadow .3s,border-color .3s}
-        #view-app section .bg-white.rounded-2xl:hover{box-shadow:0 26px 50px -24px rgba(7,25,44,.5)}
-        #dashboard-content .bg-slate-900.rounded-2xl,#sec-ecomerce section.bg-slate-900{background-image:radial-gradient(420px 200px at 95% 0,rgba(217,173,75,.38),transparent 70%),linear-gradient(135deg,var(--navy),var(--navy-2))!important;box-shadow:0 24px 44px -20px rgba(7,25,44,.75),inset 0 0 0 1px rgba(217,173,75,.35)}
-        #sec-ecomerce section .bg-slate-800{background:rgba(217,173,75,.16)!important;color:var(--gold-2)!important;border-color:rgba(217,173,75,.45)!important}
-        #sec-ecomerce section.bg-slate-900 h1{letter-spacing:.01em;text-transform:uppercase}
-
-        /* Footer */
-        #view-app>footer{background:linear-gradient(90deg,var(--navy),var(--navy-2))!important;border-top:2px solid var(--gold)!important;color:#9fb3c8!important;padding:2rem 0!important}
-        #view-app>footer .bg-slate-900{background:var(--gold)!important;background-image:none!important}
-
-        /* Landing blog + ikon user + modal */
-        .landing{height:100vh;height:100dvh;background:var(--navy)}
-        .landing-bar{background:linear-gradient(90deg,var(--navy),var(--navy-2));border-bottom:2px solid var(--gold);box-shadow:0 10px 30px -14px rgba(0,0,0,.6);position:relative;z-index:5}
-        .user-fab{width:46px;height:46px;border-radius:9999px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--navy);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(217,173,75,.25);transition:transform .25s,box-shadow .25s}
-        .user-fab:hover{transform:scale(1.09);box-shadow:0 0 0 7px rgba(217,173,75,.25),0 14px 28px -8px rgba(217,173,75,.75)}
-        .user-fab .dot{position:absolute;top:-1px;right:-1px;width:13px;height:13px;border-radius:9999px;background:#22c55e;border:2px solid var(--navy);animation:pingDot 2s infinite}
-        .auth-backdrop{background:rgba(4,14,26,.75);backdrop-filter:blur(8px)}
-        .auth-card{animation:popIn .4s cubic-bezier(.2,.9,.3,1.1) backwards;border-top:4px solid var(--gold)}
-        .auth-card-head{background:radial-gradient(300px 140px at 100% 0,rgba(217,173,75,.35),transparent 70%),linear-gradient(135deg,var(--navy),var(--navy-2))}
-        .auth-card-head .bg-slate-900{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:var(--navy)!important}
-        #auth-modal.flex{display:flex}
-    </style>
-
-    <style>
-        /* ===== BACKGROUND GAMBAR + POLESAN TAMPILAN (tambahan, tanpa mengubah fitur) ===== */
+        /* ===== REDESIGN: Modern Blue UI (hanya tampilan, fitur & logika tidak diubah) ===== */
         :root{
             --bg-img:url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrUiIvCS3ctgBQk8qjjsR-g-1GxRobvb7GsoGu6sLrQ8QMK3Sx5BwmU_aWu8sMt0R1yQx1Q64pdZiBNNtc5X4YN2xVpm6fSnFNRospeNFLEi08J2sWxvyQJioayCovZ5AaAtTB0X1Bg4MmyIN_JBTP7RlTaY3yqXmNp3B1FajJepGGzIqtXCxTFktwotNV/s1376/IMG_2446.jpeg');
-            --bg-img-opacity:.20;   /* naikkan/turunkan untuk mengatur seberapa terlihat gambarnya */
+            --bg-img-opacity:.10;
+            --b50:#eff6ff;--b100:#dbeafe;--b200:#bfdbfe;--b300:#93c5fd;--b400:#60a5fa;--b500:#3b82f6;--b600:#2563eb;--b700:#1d4ed8;--b800:#1e40af;--b900:#172554;--ink:#0b1b3a;
+            --grad:linear-gradient(135deg,#2563eb,#1d4ed8 60%,#1e40af);
+            --grad-soft:linear-gradient(135deg,#3b82f6,#2563eb);
+            --hero:radial-gradient(520px 240px at 100% 0,rgba(96,165,250,.45),transparent 70%),radial-gradient(380px 200px at 0 100%,rgba(56,189,248,.22),transparent 70%),linear-gradient(135deg,#0f2a6b,#1e40af 70%,#2563eb);
+            --ring:0 0 0 4px rgba(59,130,246,.22);
+            --sh-sm:0 1px 2px rgba(15,42,107,.05),0 4px 14px -6px rgba(15,42,107,.12);
+            --sh-md:0 2px 4px rgba(15,42,107,.04),0 18px 40px -22px rgba(30,64,175,.38);
+            --sh-lg:0 30px 60px -28px rgba(30,64,175,.5);
         }
-        html{background:#f1f4f9;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
-
-        /* Lapisan 1: gambar, dibuat samar */
-        body::before{
-            content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-            background:var(--bg-img) center/cover no-repeat;
-            opacity:var(--bg-img-opacity);
-            filter:saturate(.85) blur(1.5px);
-            transform:scale(1.03);
-        }
-        /* Lapisan 2: kabut lembut + kilau emas agar tetap serasi dengan tema navy-emas */
-        body::after{
-            content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-            background:
-                radial-gradient(900px 420px at 100% -5%,rgba(217,173,75,.14),transparent 60%),
-                radial-gradient(800px 500px at -5% 25%,rgba(18,53,92,.10),transparent 60%),
-                linear-gradient(180deg,rgba(241,244,249,.55) 0%,rgba(241,244,249,.80) 100%);
-        }
-
-        /* Kartu: sedikit kaca buram supaya teks tetap jelas di atas gambar */
-        #view-app section .bg-white.rounded-2xl,
-        #view-app section .bg-white.rounded-3xl,
-        #view-app section .bg-white.rounded-xl{
-            background-color:rgba(255,255,255,.95)!important;
-            -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-        }
-        .product-card,.mission-card{background:rgba(255,255,255,.96)}
-        #view-app>header{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-
-        /* Polesan halus */
-        #view-app section .bg-white.rounded-2xl:hover{transform:translateY(-2px)}
-        button,a{-webkit-tap-highlight-color:transparent}
-        :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-        input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
+        html{background:#f3f7ff;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+        body{color:var(--ink);background:#f3f7ff}
+        body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:var(--bg-img) center/cover no-repeat;opacity:var(--bg-img-opacity);filter:saturate(.7) blur(2px);transform:scale(1.03)}
+        body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(900px 480px at 100% -8%,rgba(59,130,246,.18),transparent 60%),radial-gradient(760px 520px at -8% 30%,rgba(14,165,233,.12),transparent 60%),linear-gradient(180deg,rgba(243,247,255,.7),rgba(243,247,255,.92))}
+        ::selection{background:var(--b500);color:#fff}
+        ::-webkit-scrollbar-thumb{background:linear-gradient(var(--b400),var(--b600))}
         ::-webkit-scrollbar-track{background:transparent}
+        button,a{-webkit-tap-highlight-color:transparent}
+        :focus-visible{outline:2px solid var(--b500);outline-offset:2px}
+        input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
+
+        /* Warna utama (menggantikan slate-900 / navy-emas) */
+        .bg-slate-900{background-color:var(--b700)!important;background-image:var(--grad)!important}
+        .hover\:bg-slate-800:hover{background-image:linear-gradient(135deg,#3b82f6,#1d4ed8)!important}
+        button.bg-slate-900,a.bg-slate-900{transition:transform .2s,box-shadow .2s,filter .2s}
+        button.bg-slate-900:hover,a.bg-slate-900:hover{box-shadow:0 12px 26px -10px rgba(37,99,235,.75);transform:translateY(-1px)}
+        button.bg-slate-900:active,a.bg-slate-900:active{transform:scale(.98)}
+        .text-slate-900{color:var(--ink)}
+        .border-slate-900{border-color:var(--b500)!important}
+        .border-t-transparent{border-top-color:transparent!important}
+        .focus\:ring-slate-900:focus,.focus\:ring-2:focus{--tw-ring-color:rgba(59,130,246,.45)!important}
+        input:focus,select:focus,textarea:focus{border-color:var(--b500)!important;box-shadow:var(--ring)}
+        input,select,textarea{transition:border-color .2s,box-shadow .2s,background-color .2s}
+        .bg-slate-50{background-color:#f6f9ff}
+
+        /* Kartu */
+        .product-card,.mission-card{background:rgba(255,255,255,.97);border:1px solid #e3ebfa;border-radius:20px;overflow:hidden}
+        .product-card:hover,.mission-card:hover{border-color:var(--b400)!important;transform:translateY(-4px);box-shadow:var(--sh-lg)!important}
+        #view-app section .bg-white.rounded-2xl,#view-app section .bg-white.rounded-3xl,#view-app section .bg-white.rounded-xl{background-color:rgba(255,255,255,.96)!important;border-color:#e3ebfa;box-shadow:var(--sh-md);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:box-shadow .3s,border-color .3s,transform .3s}
+        #view-app section .bg-white.rounded-2xl:hover{box-shadow:var(--sh-lg);border-color:var(--b200)}
+        #view-app section .rounded-2xl,#view-app section .rounded-3xl{border-radius:22px}
+
+        /* Hero / kartu gelap berwarna biru */
+        #dashboard-content .bg-slate-900.rounded-2xl,#sec-ecomerce section.bg-slate-900,#view-app section .bg-slate-900.rounded-2xl,#view-app section .bg-slate-900.rounded-3xl{background-image:var(--hero)!important;box-shadow:0 28px 50px -26px rgba(30,64,175,.75)}
+        #sec-ecomerce section .bg-slate-800,#view-app section .bg-slate-800{background:rgba(255,255,255,.14)!important;color:#e0edff!important;border-color:rgba(255,255,255,.28)!important}
+        #sec-ecomerce section.bg-slate-900 h1{letter-spacing:.01em;text-transform:uppercase}
+
+        /* Header aplikasi: kaca putih + aksen biru */
+        #view-app>header{background:rgba(255,255,255,.82)!important;border-bottom:1px solid rgba(37,99,235,.14)!important;box-shadow:0 10px 30px -22px rgba(30,64,175,.6);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px)}
+        #view-app>header a>div.bg-slate-900{background-image:var(--grad)!important;color:#fff!important;border-radius:12px;box-shadow:0 8px 18px -8px rgba(37,99,235,.8)}
+        #view-app>header .bg-slate-100{background:var(--b50)!important;color:var(--b700)!important}
+        #view-app>header .hover\:bg-slate-100:hover,#view-app>header .hover\:bg-slate-200:hover{background:var(--b100)!important}
+        #view-app>header .text-slate-400{color:var(--b600)!important}
+        #view-app>header #cart-badge{background:var(--b600)!important;background-image:none!important;color:#fff!important}
+        #side-menu{border-left:1px solid var(--b100);border-radius:28px 0 0 28px;background:linear-gradient(180deg,#fff,#f4f8ff)!important}
+        #side-menu a:hover,#side-menu button:hover{background-color:var(--b50)}
+
+        /* Footer */
+        #view-app>footer{background:linear-gradient(90deg,#0f2a6b,#1e40af)!important;border-top:0!important;color:#bcd2f5!important;padding:2rem 0!important}
+        #view-app>footer .bg-slate-900{background:var(--b500)!important;background-image:none!important}
+
+        /* Landing blog + ikon user + modal */
+        .landing{height:100vh;height:100dvh;background:#0f2a6b}
+        .landing-bar{background:linear-gradient(90deg,#0f2a6b,#1e40af 70%,#2563eb);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 30px -14px rgba(15,42,107,.7);position:relative;z-index:5}
+        .user-fab{width:46px;height:46px;border-radius:9999px;background:#fff;color:var(--b700);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(255,255,255,.22);transition:transform .25s,box-shadow .25s}
+        .user-fab:hover{transform:scale(1.08);box-shadow:0 0 0 7px rgba(255,255,255,.2),0 14px 28px -8px rgba(0,0,0,.45)}
+        .user-fab .dot{position:absolute;top:-1px;right:-1px;width:13px;height:13px;border-radius:9999px;background:#22c55e;border:2px solid #1e40af;animation:pingDot 2s infinite}
+        .auth-backdrop{background:rgba(8,20,58,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+        .auth-card{animation:popIn .4s cubic-bezier(.2,.9,.3,1.1) backwards;border:0;border-radius:28px!important;box-shadow:0 40px 80px -30px rgba(15,42,107,.7)}
+        .auth-card-head{background:var(--hero)}
+        .auth-card-head .bg-slate-900{background:rgba(255,255,255,.18)!important;background-image:none!important;color:#fff!important;border:1px solid rgba(255,255,255,.3)}
+        #auth-modal.flex{display:flex}
+
+        /* Toast */
+        .toast-notification{background:linear-gradient(135deg,#0f2a6b,#1d4ed8);border:1px solid rgba(147,197,253,.4);border-radius:16px;box-shadow:0 20px 40px -14px rgba(15,42,107,.55)}
+
+        /* Animasi */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+        @keyframes popIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+        @keyframes pingDot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+        main>section:not(.hidden){animation:fadeUp .5s cubic-bezier(.2,.7,.2,1) backwards}
 
         @media (max-width:640px){
-            body::before{filter:saturate(.85);transform:none}
+            body::before{filter:saturate(.7);transform:none}
             #view-app section .bg-white.rounded-2xl{-webkit-backdrop-filter:none;backdrop-filter:none}
+            #side-menu{border-radius:24px 0 0 24px}
         }
-        @media (prefers-reduced-motion:reduce){
-            *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-        }
+        @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
     </style>
+
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
 
@@ -217,10 +207,10 @@
         <!-- Bar atas: logo + ikon user (Masuk / Daftar) -->
         <div class="landing-bar flex items-center justify-between gap-3 px-4 sm:px-6 py-3 shrink-0">
             <div class="flex items-center gap-3 min-w-0">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0" style="background:linear-gradient(135deg,#f3d588,#d9ad4b);color:#07192C">Z</div>
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0" style="background:linear-gradient(135deg,#60a5fa,#2563eb);color:#fff">Z</div>
                 <div class="min-w-0">
-                    <h2 class="font-heading font-black text-white text-base sm:text-lg leading-tight tracking-wider">ZHEDVANOIS<span style="color:#d9ad4b">.ID</span></h2>
-                    <p class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest truncate" style="color:#9fb3c8">Blog &amp; Portal Member</p>
+                    <h2 class="font-heading font-black text-white text-base sm:text-lg leading-tight tracking-wider">ZHEDVANOIS<span style="color:#93c5fd">.ID</span></h2>
+                    <p class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest truncate" style="color:#bcd2f5">Blog &amp; Portal Member</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -236,10 +226,10 @@
 
         <!-- Blog zhedvanois.id full -->
         <div class="relative flex-1 min-h-0">
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style="color:#9fb3c8">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 mb-3" style="border-color:#d9ad4b;border-top-color:transparent"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style="color:#bcd2f5">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 mb-3" style="border-color:#60a5fa;border-top-color:transparent"></div>
                 <p class="text-xs font-semibold">Memuat blog zhedvanois.id...</p>
-                <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="mt-2 text-[11px] underline" style="color:#f3d588">Tidak tampil? Buka di tab baru</a>
+                <a href="https://zhedvanois.id" target="_blank" rel="noopener noreferrer" class="mt-2 text-[11px] underline" style="color:#bfdbfe">Tidak tampil? Buka di tab baru</a>
             </div>
             <iframe src="https://zhedvanois.id" title="Blog ZHEDVANOIS" class="absolute inset-0 w-full h-full border-0 bg-white" loading="eager"></iframe>
         </div>
@@ -255,7 +245,7 @@
                     Z
                 </div>
                 <h1 class="text-2xl font-black tracking-wider text-white">ZHEDVANOIS</h1>
-                <p class="text-xs mt-1 uppercase tracking-widest font-semibold" style="color:#f3d588">Portal Akun & Keanggotaan Terpadu</p>
+                <p class="text-xs mt-1 uppercase tracking-widest font-semibold" style="color:#bfdbfe">Portal Akun & Keanggotaan Terpadu</p>
             </div>
 
             <!-- Tab Switcher -->
