@@ -197,6 +197,13 @@
         @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
     </style>
 
+    <style>
+        /* ===== AFFILIATE: katalog geser ke samping ===== */
+        .aff-scroll{scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+        .aff-scroll::-webkit-scrollbar{height:8px}
+        .aff-card{transition:transform .25s,box-shadow .25s,border-color .25s}
+        .aff-card:hover{transform:translateY(-3px);border-color:var(--b400,#60a5fa);box-shadow:0 18px 36px -20px rgba(30,64,175,.45)}
+    </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-slate-900 selection:text-white">
 
@@ -531,6 +538,14 @@
                             <a href="#ecomerce" onclick="showAppSection('ecomerce'); toggleMenu()" id="nav-link-ecomerce" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
                                 <i data-lucide="shopping-bag" class="w-4 h-4 text-slate-500"></i>
                                 <span>Store Produk</span>
+                            </a>
+                            <a href="#affiliate" onclick="showAppSection('affiliate'); toggleMenu()" id="nav-link-affiliate" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="handshake" class="w-4 h-4 text-slate-500"></i>
+                                <span>Affiliate</span>
+                            </a>
+                            <a href="#riwayatbeli" onclick="showAppSection('riwayatbeli'); toggleMenu()" id="nav-link-riwayatbeli" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="package-check" class="w-4 h-4 text-slate-500"></i>
+                                <span>Riwayat Pembelian</span>
                             </a>
                             <a href="#topup" onclick="showAppSection('topup'); toggleMenu()" id="nav-link-topup" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
                                 <i data-lucide="zap" class="w-4 h-4 text-slate-500"></i>
@@ -1133,6 +1148,58 @@
             <!-- ========================================================= -->
             <!-- SUB-HALAMAN 6: KONTROL PANEL ADMIN (KHUSUS ROLE ADMIN)     -->
             <!-- ========================================================= -->
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN: AFFILIATE (KATALOG GESER SAMPING)            -->
+            <!-- ========================================================= -->
+            <section id="sec-affiliate" class="hidden max-w-6xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-100 text-emerald-900">Program Affiliate</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Katalog Affiliate</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Geser katalog ke samping untuk melihat produk. Saldo terpotong saat membeli; harga + komisi kembali ke saldo setelah Admin menandai pesanan <strong>Complete</strong>.</p>
+                    </div>
+                    <button onclick="showAppSection('riwayatbeli')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                        <i data-lucide="package-check" class="w-4 h-4"></i>
+                        <span>Riwayat Pembelian</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Saldo Anda: <span id="aff-saldo" class="text-emerald-700 font-black normal-case text-sm">Rp 0</span></p>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="scrollAffiliate(-1)" aria-label="Geser kiri" class="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-slate-100 flex items-center justify-center transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                            <button type="button" onclick="scrollAffiliate(1)" aria-label="Geser kanan" class="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-slate-100 flex items-center justify-center transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                    <div id="affiliate-catalog" class="aff-scroll flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3">
+                        <p class="text-xs text-slate-400 py-8 w-full text-center">Memuat katalog affiliate...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SUB-HALAMAN: RIWAYAT PEMBELIAN AFFILIATE (MEMBER)         -->
+            <!-- ========================================================= -->
+            <section id="sec-riwayatbeli" class="hidden max-w-5xl mx-auto px-4 py-8 w-full space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-blue-100 text-blue-900">Aktivitas Pembelian</span>
+                        <h2 class="text-2xl font-black text-slate-900 mt-1">Riwayat Pembelian Affiliate</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Status <strong>Pending</strong> = menunggu Admin. Status <strong>Complete</strong> = harga + komisi sudah masuk kembali ke saldo Anda.</p>
+                    </div>
+                    <button onclick="showAppSection('affiliate')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                        <i data-lucide="handshake" class="w-4 h-4"></i>
+                        <span>Ke Katalog</span>
+                    </button>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6">
+                    <div id="user-aff-orders-list" class="space-y-3">
+                        <p class="text-xs text-slate-400 text-center py-8">Memuat riwayat pembelian...</p>
+                    </div>
+                </div>
+            </section>
+
             <section id="sec-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
                 <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -1177,6 +1244,13 @@
                     </button>
                     <button id="admin-tab-btn-qris" onclick="switchAdminTab('qris')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Kelola QRIS Deposit
+                    </button>
+                    <button id="admin-tab-btn-affproducts" onclick="switchAdminTab('affproducts')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
+                        Katalog Affiliate
+                    </button>
+                    <button id="admin-tab-btn-afforders" onclick="switchAdminTab('afforders')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
+                        Pesanan Affiliate
+                        <span id="admin-aff-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
                     </button>
                     <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
                         Dashboard Toko Topup
@@ -1654,6 +1728,57 @@
                     </div>
                 </div>
 
+                <!-- ADMIN SUB-TAB: KATALOG AFFILIATE -->
+                <div id="admin-subtab-affproducts" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-1">+ Tambah Produk Katalog Affiliate</h3>
+                        <p class="text-xs text-slate-500 mb-4">Produk akan tampil di menu Affiliate member (katalog geser samping) dengan foto, harga, dan komisi.</p>
+                        <form onsubmit="handleAdminAddAffProduct(event)" class="space-y-4 max-w-2xl">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Produk</label>
+                                <input type="text" id="aff-prod-name" required placeholder="Contoh: Paket Reseller Parfum" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Harga (Rp)</label>
+                                    <input type="number" id="aff-prod-price" required min="1000" placeholder="50000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Komisi Member (Rp)</label>
+                                    <input type="number" id="aff-prod-commission" required min="0" placeholder="5000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Upload Foto Produk</label>
+                                <input type="file" id="aff-prod-image-file" accept="image/*" onchange="previewAffImage(event)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                                <p class="text-[10px] text-slate-400 mt-1">Foto otomatis dikompres agar muat disimpan.</p>
+                                <img id="aff-prod-image-preview" class="hidden mt-2 max-h-40 rounded-lg border border-slate-200 object-contain" alt="Preview">
+                            </div>
+                            <button type="submit" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-slate-800 transition">Simpan ke Katalog</button>
+                        </form>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                        <h3 class="font-extrabold text-slate-900 text-base mb-4">Daftar Produk Katalog Affiliate</h3>
+                        <div id="admin-aff-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <p class="text-xs text-slate-400">Memuat produk...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB: PESANAN AFFILIATE -->
+                <div id="admin-subtab-afforders" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">Pesanan Pembelian Affiliate Member</h3>
+                            <p class="text-xs text-slate-500">Ubah status Pending / Complete. Saat Complete, harga + komisi otomatis dikembalikan ke saldo member.</p>
+                        </div>
+                        <span class="text-xs text-slate-500 font-medium" id="admin-aff-count-badge">Total: 0 Pesanan</span>
+                    </div>
+                    <div id="admin-aff-orders-list" class="space-y-3">
+                        <p class="text-xs text-slate-400">Memuat pesanan...</p>
+                    </div>
+                </div>
+
                 <!-- ADMIN SUB-TAB 8: DASHBOARD TOKO TOPUP -->
                 <div id="admin-subtab-tokotopup" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-6 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100">
@@ -2056,6 +2181,35 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Pembelian Affiliate -->
+    <div id="aff-buy-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border border-slate-200 shadow-2xl my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="font-extrabold text-slate-900 text-base">Konfirmasi Pembelian</h3>
+                <button type="button" onclick="closeAffiliateBuyModal()" class="text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex items-center gap-3 mb-4">
+                <img id="aff-buy-img" class="w-20 h-20 rounded-xl object-cover border border-slate-200" alt="Produk">
+                <div class="min-w-0">
+                    <p id="aff-buy-name" class="font-extrabold text-slate-900 text-sm leading-snug">-</p>
+                    <p class="text-xs text-slate-500 mt-1">Harga: <span id="aff-buy-price" class="font-black text-slate-900">-</span></p>
+                    <p class="text-xs text-emerald-700 font-bold">Komisi: +<span id="aff-buy-commission">-</span></p>
+                </div>
+            </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1.5 mb-3">
+                <div class="flex justify-between"><span class="text-slate-500">Saldo saat ini</span><span id="aff-buy-saldo" class="font-bold text-slate-900">-</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Saldo setelah dipotong</span><span id="aff-buy-saldo-after" class="font-bold text-slate-900">-</span></div>
+                <div class="flex justify-between border-t border-slate-200 pt-1.5"><span class="text-slate-500">Kembali ke saldo saat Complete</span><span id="aff-buy-return" class="font-black text-emerald-700">-</span></div>
+            </div>
+            <p id="aff-buy-warning" class="hidden text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-3 mb-3">Saldo tidak cukup. Silakan deposit terlebih dahulu.</p>
+            <textarea id="aff-buy-note" rows="2" placeholder="Catatan untuk Admin (opsional)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium mb-4"></textarea>
+            <div class="flex gap-2">
+                <button type="button" onclick="closeAffiliateBuyModal()" class="flex-1 border py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-50 text-xs">Batal</button>
+                <button type="button" id="aff-buy-confirm-btn" onclick="confirmAffiliatePurchase()" class="flex-1 bg-slate-900 text-white py-2.5 rounded-xl font-bold hover:bg-slate-800 text-xs disabled:opacity-50 disabled:cursor-not-allowed">Beli Sekarang</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification Container -->
     <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50">
         <i class="fa-solid fa-circle-info"></i>
@@ -2073,7 +2227,7 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, doc, getDoc, setDoc, updateDoc, 
-            collection, getDocs, onSnapshot, addDoc, deleteDoc, increment 
+            collection, getDocs, onSnapshot, addDoc, deleteDoc, increment, query, where, runTransaction 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Application ID & Firebase Configuration
@@ -2108,6 +2262,9 @@
         const SETTINGS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'settings');
         // Koleksi khusus untuk menyimpan statistik jumlah pengunjung harian website
         const VISITS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'site_visits');
+        // Affiliate: katalog produk & pesanan pembelian member
+        const AFF_PRODUCTS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'affiliate_products');
+        const AFF_ORDERS_COL = collection(db, 'artifacts', appId, 'public', 'data', 'affiliate_orders');
 
         // Global State
         window.currentUserProfile = null;
@@ -2455,7 +2612,7 @@
         /* 2. UI NAVIGATION & ROUTING                                        */
         /* ----------------------------------------------------------------- */
         window.showAppSection = (pageId) => {
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'topup', 'bantuan', 'blog', 'aboutus', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'affiliate', 'riwayatbeli', 'topup', 'bantuan', 'blog', 'aboutus', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page (izinkan role admin & ops)
@@ -2473,6 +2630,8 @@
             });
 
             if (target === 'ecomerce') renderStoreProducts();
+            if (target === 'affiliate') renderAffiliateCatalog();
+            if (target === 'riwayatbeli') renderUserAffOrders();
 
             safeLucideIcons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2625,6 +2784,7 @@
                         document.getElementById('user-display-pinalti').textContent = window.currentUserProfile.pinaltyPoin || 0;
                         document.getElementById('info-level').textContent = `Level ${window.currentUserProfile.level || 1}`;
                         document.getElementById('info-pinalti').textContent = window.currentUserProfile.pinaltyPoin || 0;
+                        renderAffSaldo();
                     }
                 }, (err) => console.error("Error balance:", err));
             }
@@ -2941,6 +3101,25 @@
                 });
             });
 
+            // Realtime Affiliate: katalog produk (semua user) & pesanan (member: miliknya saja, admin/ops: semua)
+            onSnapshot(AFF_PRODUCTS_COL, (snapshot) => {
+                window.affProductsMap = {};
+                snapshot.forEach(d => { window.affProductsMap[d.id] = { id: d.id, ...d.data() }; });
+                renderAffiliateCatalog();
+                renderAdminAffProducts();
+                renderUserAffOrders();
+                renderAdminAffOrders();
+            }, (err) => console.error("Error affiliate products:", err));
+
+            const isStaffRole = ['admin','ops'].includes(window.currentUserProfile?.role);
+            const affOrdersSource = isStaffRole ? AFF_ORDERS_COL : query(AFF_ORDERS_COL, where('userId', '==', uid || '__none__'));
+            onSnapshot(affOrdersSource, (snapshot) => {
+                window.affOrdersMap = {};
+                snapshot.forEach(d => { window.affOrdersMap[d.id] = { id: d.id, ...d.data() }; });
+                renderUserAffOrders();
+                renderAdminAffOrders();
+            }, (err) => console.error("Error affiliate orders:", err));
+
             // Listeners for Admin Dashboard
             if (['admin','ops'].includes(window.currentUserProfile?.role)) {
                 listenAdminData();
@@ -3094,7 +3273,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'tokotopup'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'affproducts', 'afforders', 'tokotopup'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
@@ -4394,6 +4573,423 @@
                 subject: `Transaksi ${type} Anda Sedang Diproses (PENDING)`,
                 message: `Halo ${u.nama},\n\nPengajuan ${type} sebesar ${formatRupiah(amount)} telah kami terima dan sedang menunggu verifikasi Admin ZHEDVANOIS.\n\nDetail: ${details}\n\nTerima kasih.`
             });
+        };
+
+        /* ----------------------------------------------------------------- */
+        /* AFFILIATE: KATALOG, PEMBELIAN, RIWAYAT & KELOLA ADMIN             */
+        /* ----------------------------------------------------------------- */
+        window.affProductsMap = window.affProductsMap || {};
+        window.affOrdersMap = window.affOrdersMap || {};
+        window.affBuyProduct = null;
+        window.pendingAffImageData = null;
+
+        function escAff(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function renderAffSaldo() {
+            const el = document.getElementById('aff-saldo');
+            if (el) el.textContent = formatRupiah(window.currentUserProfile?.saldo || 0);
+        }
+
+        function renderAffiliateCatalog() {
+            const box = document.getElementById('affiliate-catalog');
+            if (!box) return;
+            renderAffSaldo();
+
+            const list = Object.values(window.affProductsMap || {}).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            if (!list.length) {
+                box.innerHTML = '<p class="text-xs text-slate-400 py-8 w-full text-center">Belum ada produk di katalog affiliate.</p>';
+                return;
+            }
+            box.innerHTML = list.map(p => `
+                <div class="aff-card snap-start shrink-0 w-56 sm:w-60 bg-white border border-slate-200 rounded-2xl overflow-hidden flex flex-col">
+                    <div class="aspect-square bg-slate-100">
+                        <img src="${p.image}" alt="${escAff(p.name)}" loading="lazy" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-3 flex flex-col gap-2 flex-grow">
+                        <h3 class="text-xs font-bold text-slate-800 line-clamp-2 leading-snug">${escAff(p.name)}</h3>
+                        <div>
+                            <p class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Harga</p>
+                            <p class="text-sm font-black text-slate-900">${formatRupiah(p.price)}</p>
+                        </div>
+                        <div class="px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100">
+                            <p class="text-[9px] font-bold uppercase tracking-wider text-emerald-700">Komisi</p>
+                            <p class="text-xs font-black text-emerald-800">+${formatRupiah(p.commission)}</p>
+                        </div>
+                        <button onclick="openAffiliateBuyModal('${p.id}')" class="mt-auto w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl text-[11px] uppercase tracking-wider">Beli Sekarang</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.scrollAffiliate = (dir) => {
+            const box = document.getElementById('affiliate-catalog');
+            if (box) box.scrollBy({ left: dir * 260, behavior: 'smooth' });
+        };
+
+        window.openAffiliateBuyModal = (productId) => {
+            const p = window.affProductsMap[productId];
+            const u = window.currentUserProfile;
+            if (!p || !u) return;
+            window.affBuyProduct = p;
+
+            const saldo = u.saldo || 0;
+            const after = saldo - (p.price || 0);
+            const enough = after >= 0;
+
+            document.getElementById('aff-buy-img').src = p.image;
+            document.getElementById('aff-buy-name').textContent = p.name;
+            document.getElementById('aff-buy-price').textContent = formatRupiah(p.price);
+            document.getElementById('aff-buy-commission').textContent = formatRupiah(p.commission);
+            document.getElementById('aff-buy-saldo').textContent = formatRupiah(saldo);
+            document.getElementById('aff-buy-saldo-after').textContent = enough ? formatRupiah(after) : '-';
+            document.getElementById('aff-buy-return').textContent = formatRupiah((p.price || 0) + (p.commission || 0));
+            document.getElementById('aff-buy-warning').classList.toggle('hidden', enough);
+            document.getElementById('aff-buy-note').value = '';
+            const btn = document.getElementById('aff-buy-confirm-btn');
+            btn.disabled = !enough;
+            btn.textContent = 'Beli Sekarang';
+
+            const modal = document.getElementById('aff-buy-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            safeLucideIcons();
+        };
+
+        window.closeAffiliateBuyModal = () => {
+            const modal = document.getElementById('aff-buy-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            window.affBuyProduct = null;
+        };
+
+        // Pembelian: saldo dipotong & pesanan dibuat dalam satu transaksi atomik (harga dibaca ulang dari server)
+        window.confirmAffiliatePurchase = async () => {
+            const u = window.currentUserProfile;
+            const p = window.affBuyProduct;
+            if (!u || !p) return;
+
+            const btn = document.getElementById('aff-buy-confirm-btn');
+            if (btn.disabled) return;
+            btn.disabled = true;
+            btn.textContent = 'Memproses...';
+
+            const note = document.getElementById('aff-buy-note').value.trim();
+            const userRef = doc(USERS_COL, u.uid);
+            const orderRef = doc(AFF_ORDERS_COL);
+            let orderData = null;
+
+            try {
+                await runTransaction(db, async (tx) => {
+                    const pSnap = await tx.get(doc(AFF_PRODUCTS_COL, p.id));
+                    const uSnap = await tx.get(userRef);
+                    if (!pSnap.exists()) throw new Error('PRODUK_HILANG');
+                    if (!uSnap.exists()) throw new Error('USER_HILANG');
+
+                    const prod = pSnap.data();
+                    const price = prod.price || 0;
+                    const saldo = uSnap.data().saldo || 0;
+                    if (saldo < price) throw new Error('SALDO_KURANG');
+
+                    orderData = {
+                        userId: u.uid,
+                        username: u.email,
+                        userNama: u.nama || '',
+                        userWa: u.wa || '',
+                        productId: p.id,
+                        productName: prod.name,
+                        price,
+                        commission: prod.commission || 0,
+                        note,
+                        status: 'pending',
+                        paidOut: false,
+                        createdAt: new Date().toISOString()
+                    };
+                    tx.update(userRef, { saldo: saldo - price });
+                    tx.set(orderRef, orderData);
+                });
+
+                closeAffiliateBuyModal();
+                window.showToast("Pembelian berhasil! Saldo terpotong, status: Pending.");
+                showAppSection('riwayatbeli');
+
+                window.sendEmailNotification({
+                    to_email: u.email,
+                    subject: `Pesanan Affiliate "${orderData.productName}" Sedang Diproses (PENDING)`,
+                    message: `Halo ${u.nama},\n\nPesanan affiliate "${orderData.productName}" seharga ${formatRupiah(orderData.price)} telah diterima dan saldo Anda telah dipotong. Setelah Admin menandai pesanan Complete, harga + komisi (${formatRupiah(orderData.price + orderData.commission)}) akan kembali ke saldo Anda.\n\nTerima kasih.`
+                });
+            } catch (err) {
+                const msgs = {
+                    SALDO_KURANG: 'Saldo tidak cukup untuk membeli produk ini.',
+                    PRODUK_HILANG: 'Produk sudah tidak tersedia di katalog.',
+                    USER_HILANG: 'Data akun tidak ditemukan.'
+                };
+                console.error('Gagal membeli produk affiliate:', err);
+                window.showToast(msgs[err.message] || 'Gagal memproses pembelian. Coba lagi.');
+                btn.disabled = false;
+                btn.textContent = 'Beli Sekarang';
+            }
+        };
+
+        const AFF_STATUS_BADGE = {
+            pending: { cls: 'bg-amber-100 text-amber-900 border-amber-200', label: 'Pending' },
+            complete: { cls: 'bg-emerald-100 text-emerald-800 border-emerald-200', label: 'Complete' }
+        };
+
+        function renderUserAffOrders() {
+            const box = document.getElementById('user-aff-orders-list');
+            if (!box) return;
+            const uid = window.currentUserProfile?.uid;
+            const orders = Object.values(window.affOrdersMap || {}).filter(o => o.userId === uid);
+
+            if (!orders.length) {
+                box.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-xs">
+                        <i data-lucide="package" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                        <p>Belum ada riwayat pembelian affiliate.</p>
+                    </div>`;
+                safeLucideIcons();
+                return;
+            }
+
+            orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            box.innerHTML = orders.map(o => {
+                const st = AFF_STATUS_BADGE[o.status] || AFF_STATUS_BADGE.pending;
+                const prod = window.affProductsMap[o.productId];
+                const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('id-ID') : '-';
+                const total = (o.price || 0) + (o.commission || 0);
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-center gap-3 text-xs">
+                        ${prod && prod.image
+                            ? `<img src="${prod.image}" class="w-14 h-14 rounded-lg object-cover border border-slate-200 shrink-0" alt="">`
+                            : `<div class="w-14 h-14 rounded-lg bg-slate-200 flex items-center justify-center text-slate-400 shrink-0"><i data-lucide="package" class="w-5 h-5"></i></div>`}
+                        <div class="flex-grow min-w-0 space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] border ${st.cls}">${st.label}</span>
+                                <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                            </div>
+                            <p class="font-extrabold text-slate-900 text-sm">${escAff(o.productName)}</p>
+                            <p class="text-slate-500">Harga ${formatRupiah(o.price)} &bull; Komisi <span class="text-emerald-700 font-bold">+${formatRupiah(o.commission)}</span></p>
+                            ${o.note ? `<p class="text-slate-500">Catatan: ${escAff(o.note)}</p>` : ''}
+                        </div>
+                        <div class="text-right shrink-0">
+                            <p class="text-[10px] font-bold uppercase text-slate-400">${o.status === 'complete' ? 'Sudah Kembali' : 'Akan Kembali'}</p>
+                            <p class="text-sm font-black ${o.status === 'complete' ? 'text-emerald-700' : 'text-slate-900'}">${formatRupiah(total)}</p>
+                        </div>
+                    </div>`;
+            }).join('');
+            safeLucideIcons();
+        }
+
+        /* ---------- ADMIN: KATALOG AFFILIATE ---------- */
+        window.previewAffImage = (e) => {
+            const file = e.target.files && e.target.files[0];
+            const preview = document.getElementById('aff-prod-image-preview');
+            if (!file) {
+                window.pendingAffImageData = null;
+                preview.classList.add('hidden');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Kompres sampai < ~700KB (batas dokumen Firestore 1MB)
+                    let maxW = 800, quality = 0.85, data = '';
+                    for (let i = 0; i < 4; i++) {
+                        const scale = Math.min(1, maxW / img.width);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        data = canvas.toDataURL('image/jpeg', quality);
+                        if (data.length < 700000) break;
+                        maxW -= 150; quality -= 0.08;
+                    }
+                    window.pendingAffImageData = data;
+                    preview.src = data;
+                    preview.classList.remove('hidden');
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.handleAdminAddAffProduct = async (e) => {
+            e.preventDefault();
+            if (!window.pendingAffImageData) {
+                window.showToast("Silakan pilih foto produk terlebih dahulu.");
+                return;
+            }
+            try {
+                await addDoc(AFF_PRODUCTS_COL, {
+                    name: document.getElementById('aff-prod-name').value.trim(),
+                    price: parseFloat(document.getElementById('aff-prod-price').value) || 0,
+                    commission: parseFloat(document.getElementById('aff-prod-commission').value) || 0,
+                    image: window.pendingAffImageData,
+                    createdAt: new Date().toISOString()
+                });
+                window.showToast("Produk berhasil ditambahkan ke katalog affiliate!");
+                e.target.reset();
+                window.pendingAffImageData = null;
+                document.getElementById('aff-prod-image-preview').classList.add('hidden');
+            } catch (err) {
+                console.error('Gagal menyimpan produk affiliate:', err);
+                window.showToast("Gagal menyimpan produk. Cek Firestore Security Rules.");
+            }
+        };
+
+        window.deleteAffProduct = async (pId) => {
+            if (!confirm('Hapus produk ini dari katalog affiliate? (Riwayat pesanan lama tidak terhapus)')) return;
+            await deleteDoc(doc(AFF_PRODUCTS_COL, pId));
+            window.showToast("Produk affiliate dihapus.");
+        };
+
+        function renderAdminAffProducts() {
+            const grid = document.getElementById('admin-aff-products-grid');
+            if (!grid) return;
+            const list = Object.values(window.affProductsMap || {}).sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            if (!list.length) {
+                grid.innerHTML = '<p class="text-xs text-slate-400">Belum ada produk di katalog affiliate.</p>';
+                return;
+            }
+            grid.innerHTML = list.map(p => `
+                <div class="p-3 border rounded-xl flex items-center justify-between text-xs gap-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <img src="${p.image}" class="w-12 h-12 rounded object-cover shrink-0" alt="">
+                        <div class="min-w-0">
+                            <p class="font-bold line-clamp-1">${escAff(p.name)}</p>
+                            <p class="text-slate-500">${formatRupiah(p.price)}</p>
+                            <p class="text-emerald-700 font-bold">Komisi +${formatRupiah(p.commission)}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteAffProduct('${p.id}')" class="bg-rose-600 text-white font-bold px-2.5 py-1 rounded text-[11px] shrink-0">Hapus</button>
+                </div>
+            `).join('');
+        }
+
+        /* ---------- ADMIN: PESANAN AFFILIATE ---------- */
+        function renderAdminAffOrders() {
+            const box = document.getElementById('admin-aff-orders-list');
+            if (!box) return;
+            const orders = Object.values(window.affOrdersMap || {});
+            const pendingCount = orders.filter(o => o.status !== 'complete').length;
+
+            const countBadge = document.getElementById('admin-aff-count-badge');
+            if (countBadge) countBadge.textContent = `Total: ${orders.length} Pesanan`;
+            const tabBadge = document.getElementById('admin-aff-badge');
+            if (tabBadge) {
+                if (pendingCount > 0) { tabBadge.textContent = pendingCount; tabBadge.classList.remove('hidden'); }
+                else tabBadge.classList.add('hidden');
+            }
+
+            if (!orders.length) {
+                box.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Belum ada pesanan pembelian affiliate.</p>';
+                return;
+            }
+
+            orders.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            box.innerHTML = orders.map(o => {
+                const st = AFF_STATUS_BADGE[o.status] || AFF_STATUS_BADGE.pending;
+                const dateStr = o.createdAt ? new Date(o.createdAt).toLocaleString('id-ID') : '-';
+                return `
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+                        <div class="space-y-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2 py-0.5 rounded-full font-bold uppercase text-[9px] border ${st.cls}">${st.label}</span>
+                                <span class="font-extrabold text-slate-900">${escAff(o.userNama)} (${escAff(o.username)})</span>
+                                <span class="text-slate-400 font-mono text-[10px]">${dateStr}</span>
+                            </div>
+                            <p class="font-bold text-slate-800">${escAff(o.productName)}</p>
+                            <p class="text-slate-600">Harga ${formatRupiah(o.price)} &bull; Komisi <span class="text-emerald-700 font-bold">+${formatRupiah(o.commission)}</span> &bull; Dikembalikan saat Complete: <span class="font-bold">${formatRupiah((o.price || 0) + (o.commission || 0))}</span></p>
+                            ${o.userWa ? `<p class="text-slate-500 text-[11px]">WhatsApp: ${escAff(o.userWa)}</p>` : ''}
+                            ${o.note ? `<p class="text-slate-500 text-[11px]">Catatan member: ${escAff(o.note)}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 flex-wrap">
+                            ${o.status === 'complete'
+                                ? `<button onclick="setAffOrderStatus('${o.id}', 'pending')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold px-3 py-1.5 rounded-lg text-[11px]">Kembali ke Pending</button>`
+                                : `<button onclick="setAffOrderStatus('${o.id}', 'complete')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px]">Tandai Complete</button>`}
+                            <button onclick="deleteAffOrder('${o.id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-2.5 py-1.5 rounded-lg text-[11px]">Hapus</button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        // Ubah status pesanan. Complete -> harga + komisi masuk ke saldo member (sekali saja, dijaga flag paidOut).
+        // Kembali ke Pending -> pengembalian tadi ditarik lagi supaya saldo tetap konsisten.
+        window.setAffOrderStatus = async (orderId, newStatus) => {
+            if (newStatus === 'pending' && !confirm('Kembalikan ke Pending? Harga + komisi yang sudah masuk akan ditarik lagi dari saldo member.')) return;
+            const orderRef = doc(AFF_ORDERS_COL, orderId);
+            let info = null;
+            try {
+                await runTransaction(db, async (tx) => {
+                    const oSnap = await tx.get(orderRef);
+                    if (!oSnap.exists()) throw new Error('ORDER_HILANG');
+                    const o = oSnap.data();
+                    const userRef = doc(USERS_COL, o.userId);
+                    const uSnap = await tx.get(userRef);
+                    const payout = (o.price || 0) + (o.commission || 0);
+
+                    if (newStatus === 'complete' && !o.paidOut) {
+                        if (!uSnap.exists()) throw new Error('USER_HILANG');
+                        tx.update(userRef, { saldo: (uSnap.data().saldo || 0) + payout });
+                        tx.update(orderRef, { status: 'complete', paidOut: true, completedAt: new Date().toISOString() });
+                        info = { o, payout };
+                    } else if (newStatus === 'pending' && o.paidOut) {
+                        if (!uSnap.exists()) throw new Error('USER_HILANG');
+                        tx.update(userRef, { saldo: Math.max(0, (uSnap.data().saldo || 0) - payout) });
+                        tx.update(orderRef, { status: 'pending', paidOut: false, completedAt: null });
+                    } else {
+                        tx.update(orderRef, { status: newStatus });
+                    }
+                });
+                window.showToast(newStatus === 'complete' ? "Pesanan Complete! Harga + komisi dikembalikan ke saldo member." : "Pesanan dikembalikan ke Pending.");
+
+                if (info) {
+                    window.sendEmailNotification({
+                        to_email: info.o.username,
+                        subject: `Pesanan Affiliate "${info.o.productName}" COMPLETE`,
+                        message: `Halo ${info.o.userNama},\n\nPesanan affiliate "${info.o.productName}" telah COMPLETE. Saldo sebesar ${formatRupiah(info.payout)} (harga ${formatRupiah(info.o.price)} + komisi ${formatRupiah(info.o.commission)}) telah dikembalikan ke dompet Anda.\n\nTerima kasih.`
+                    });
+                }
+            } catch (err) {
+                console.error('Gagal mengubah status pesanan affiliate:', err);
+                window.showToast(err.message === 'USER_HILANG' ? 'Data member tidak ditemukan.' : 'Gagal mengubah status pesanan.');
+            }
+        };
+
+        // Hapus pesanan. Jika masih Pending (saldo sudah terpotong), harga dikembalikan ke member agar tidak hilang.
+        window.deleteAffOrder = async (orderId) => {
+            const o = window.affOrdersMap[orderId];
+            if (!o) return;
+            const needRefund = !o.paidOut;
+            const msg = needRefund
+                ? `Hapus pesanan ini? Saldo member sebesar ${formatRupiah(o.price)} (harga produk) akan dikembalikan karena pesanan belum Complete.`
+                : 'Hapus catatan pesanan Complete ini? Saldo member tidak diubah.';
+            if (!confirm(msg)) return;
+
+            const orderRef = doc(AFF_ORDERS_COL, orderId);
+            try {
+                await runTransaction(db, async (tx) => {
+                    const oSnap = await tx.get(orderRef);
+                    if (!oSnap.exists()) return;
+                    const data = oSnap.data();
+                    if (!data.paidOut) {
+                        const userRef = doc(USERS_COL, data.userId);
+                        const uSnap = await tx.get(userRef);
+                        if (uSnap.exists()) tx.update(userRef, { saldo: (uSnap.data().saldo || 0) + (data.price || 0) });
+                    }
+                    tx.delete(orderRef);
+                });
+                window.showToast("Pesanan berhasil dihapus.");
+            } catch (err) {
+                console.error('Gagal menghapus pesanan affiliate:', err);
+                window.showToast("Gagal menghapus pesanan.");
+            }
         };
 
         function formatRupiah(num) {
