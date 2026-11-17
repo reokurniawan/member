@@ -1,0 +1,19 @@
+{
+  "name": "ZHEDVANOIS Member Portal",
+  "short_name": "ZHEDVANOIS",
+  "description": "Portal member ZHEDVANOIS: misi, transaksi, affiliate, dan toko.",
+  "lang": "id",
+  "id": "./",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f7ff",
+  "theme_color": "#1d4ed8",
+  "categories": ["shopping", "finance", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
