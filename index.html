@@ -195,6 +195,13 @@
             #side-menu{border-radius:24px 0 0 24px}
         }
         @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+        /* Kartu menu Admin Panel */
+        .admin-card{cursor:pointer;min-height:132px}
+        .admin-card:hover{border-color:var(--b400)!important;transform:translateY(-3px);box-shadow:var(--sh-lg)}
+        .admin-card:active{transform:scale(.98)}
+        .admin-card:hover .admin-card-icon{transform:scale(1.08)}
+        .admin-card-icon{transition:transform .2s}
+        #admin-back-bar.flex{display:flex}
     </style>
 
     <style>
@@ -1218,52 +1225,144 @@
                     </div>
                 </div>
 
-                <!-- Admin Tab Switcher -->
-                <div class="flex border-b border-slate-200 bg-white rounded-xl p-1 shadow-sm overflow-x-auto scrollbar-hide">
-                    <button id="admin-tab-btn-visitors" onclick="switchAdminTab('visitors')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Statistik Pengunjung
+                <!-- Admin Menu: Kartu -->
+                <div id="admin-menu-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <button type="button" id="admin-tab-btn-visitors" onclick="switchAdminTab('visitors')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#dbeafe;color:#2563eb">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Statistik Pengunjung</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Pantau pengunjung & pendaftaran website</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider">
-                        Daftar Member (Lengkap)
+                    <button type="button" id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#cffafe;color:#0891b2">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Daftar Member</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Data member lengkap & kelola akun</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-missions" onclick="switchAdminTab('missions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola Misi Baru
+                    <button type="button" id="admin-tab-btn-missions" onclick="switchAdminTab('missions')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#ede9fe;color:#7c3aed">
+                            <i data-lucide="target" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola Misi Baru</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Buat & atur misi untuk member</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-trackers" onclick="switchAdminTab('trackers')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Tracker Misi Member
+                    <button type="button" id="admin-tab-btn-trackers" onclick="switchAdminTab('trackers')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#d1fae5;color:#059669">
+                            <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Tracker Misi Member</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Verifikasi klaim misi member</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-analytics" onclick="switchAdminTab('analytics')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Analitik Video Member
+                    <button type="button" id="admin-tab-btn-analytics" onclick="switchAdminTab('analytics')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#fce7f3;color:#db2777">
+                            <i data-lucide="play-circle" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Analitik Video Member</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Statistik tontonan video seluruh member</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-transactions" onclick="switchAdminTab('transactions')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola & Riwayat Transaksi
+                    <button type="button" id="admin-tab-btn-transactions" onclick="switchAdminTab('transactions')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#fef3c7;color:#d97706">
+                            <i data-lucide="wallet" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola & Riwayat Transaksi</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Verifikasi deposit & penarikan</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-products" onclick="switchAdminTab('products')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola Produk Store
+                    <button type="button" id="admin-tab-btn-products" onclick="switchAdminTab('products')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#ffedd5;color:#ea580c">
+                            <i data-lucide="package" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola Produk Store</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Tambah, ubah & hapus produk</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-ads" onclick="switchAdminTab('ads')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola Iklan
+                    <button type="button" id="admin-tab-btn-ads" onclick="switchAdminTab('ads')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#e0e7ff;color:#4f46e5">
+                            <i data-lucide="image" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola Iklan</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Foto iklan atau kode Adsvantera</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-announcements" onclick="switchAdminTab('announcements')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Pengumuman Member
+                    <button type="button" id="admin-tab-btn-announcements" onclick="switchAdminTab('announcements')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#ccfbf1;color:#0d9488">
+                            <i data-lucide="megaphone" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Pengumuman Member</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Kirim info terbaru ke member</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-bantuan" onclick="switchAdminTab('bantuan')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
-                        Pusat Bantuan
-                        <span id="admin-complaint-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
+                    <button type="button" id="admin-tab-btn-bantuan" onclick="switchAdminTab('bantuan')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <span id="admin-complaint-badge" class="hidden absolute top-3 right-3 bg-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#ffe4e6;color:#e11d48">
+                            <i data-lucide="life-buoy" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Pusat Bantuan</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Keluhan & pertanyaan dari member</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-qris" onclick="switchAdminTab('qris')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Kelola QRIS Deposit
+                    <button type="button" id="admin-tab-btn-qris" onclick="switchAdminTab('qris')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#e2e8f0;color:#475569">
+                            <i data-lucide="qr-code" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola QRIS Deposit</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Atur QRIS untuk pembayaran deposit</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-affproducts" onclick="switchAdminTab('affproducts')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Katalog Affiliate
+                    <button type="button" id="admin-tab-btn-affproducts" onclick="switchAdminTab('affproducts')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#ecfccb;color:#65a30d">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Katalog Affiliate</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Kelola produk affiliate</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-afforders" onclick="switchAdminTab('afforders')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider flex items-center gap-1.5">
-                        Pesanan Affiliate
-                        <span id="admin-aff-badge" class="hidden bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">0</span>
+                    <button type="button" id="admin-tab-btn-afforders" onclick="switchAdminTab('afforders')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <span id="admin-aff-badge" class="hidden absolute top-3 right-3 bg-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">0</span>
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#fed7aa;color:#c2410c">
+                            <i data-lucide="truck" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Pesanan Affiliate</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Pantau pesanan affiliate masuk</p>
+                        </div>
                     </button>
-                    <button id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider">
-                        Dashboard Toko Topup
+                    <button type="button" id="admin-tab-btn-tokotopup" onclick="switchAdminTab('tokotopup')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#bfdbfe;color:#1d4ed8">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Dashboard Toko Topup</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Buka dashboard toko topup</p>
+                        </div>
                     </button>
+                </div>
+
+                <!-- Bar kembali ke menu kartu (tampil saat sebuah menu dibuka) -->
+                <div id="admin-back-bar" class="hidden items-center justify-between gap-3 bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+                    <button type="button" onclick="switchAdminTab(null)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shrink-0">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i><span>Menu Admin</span>
+                    </button>
+                    <p id="admin-current-title" class="text-xs sm:text-sm font-extrabold text-slate-900 uppercase tracking-wider truncate"></p>
                 </div>
 
                 <!-- ADMIN SUB-TAB 0: STATISTIK PENGUNJUNG & PENDAFTARAN WEBSITE -->
@@ -1323,7 +1422,7 @@
                 </div>
 
                 <!-- ADMIN SUB-TAB 1: KELOLA MEMBER LENGKAP -->
-                <div id="admin-subtab-members" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div id="admin-subtab-members" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                         <h3 class="font-extrabold text-slate-900 text-base">Seluruh Data Member Terdaftar</h3>
                         <span class="text-xs text-slate-500 font-medium" id="admin-member-count-badge">Total: 0 Member</span>
@@ -2732,7 +2831,7 @@
                 adminNavLink.classList.add('hidden');
             }
 
-            // Batasi akses role OPS: sembunyikan tab "Daftar Member (Lengkap)"
+            // Batasi akses role OPS: sembunyikan kartu "Daftar Member"
             // beserta jumlah total member terdaftar. Hanya role admin yang boleh melihat.
             const membersTabBtn = document.getElementById('admin-tab-btn-members');
             const membersSubtab = document.getElementById('admin-subtab-members');
@@ -2742,15 +2841,9 @@
                 if (membersTabBtn) membersTabBtn.classList.add('hidden');
                 if (membersSubtab) membersSubtab.classList.add('hidden');
                 if (membersBadge) membersBadge.textContent = '';
-
-                // Jika tab member sedang aktif (default saat load), alihkan ke tab lain yang diizinkan untuk Ops
-                if (membersTabBtn && membersTabBtn.classList.contains('bg-slate-900')) {
-                    window.switchAdminTab('missions');
-                }
             } else {
-                // Role admin (atau lainnya): pastikan tab & fitur Daftar Member kembali tampil normal
+                // Role admin (atau lainnya): pastikan kartu Daftar Member kembali tampil normal
                 if (membersTabBtn) membersTabBtn.classList.remove('hidden');
-                if (membersSubtab) membersSubtab.classList.remove('hidden');
             }
         }
 
@@ -3283,23 +3376,35 @@
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
             const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'affproducts', 'afforders', 'tokotopup'];
+            // Role ops tidak boleh membuka Daftar Member
+            if (tab === 'members' && window.currentUserProfile && window.currentUserProfile.role === 'ops') tab = null;
+
             tabs.forEach(t => {
-                const btn = document.getElementById(`admin-tab-btn-${t}`);
                 const view = document.getElementById(`admin-subtab-${t}`);
-                if (t === tab) {
-                    btn.className = "px-5 py-2.5 text-xs font-bold rounded-lg bg-slate-900 text-white transition shrink-0 uppercase tracking-wider";
-                    view.classList.remove('hidden');
-                } else {
-                    btn.className = "px-5 py-2.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition shrink-0 uppercase tracking-wider";
-                    view.classList.add('hidden');
-                }
+                if (view) view.classList.toggle('hidden', t !== tab);
             });
+
+            const grid = document.getElementById('admin-menu-grid');
+            const backBar = document.getElementById('admin-back-bar');
+            const titleEl = document.getElementById('admin-current-title');
+            if (grid) grid.classList.toggle('hidden', !!tab);
+            if (backBar) {
+                backBar.classList.toggle('hidden', !tab);
+                backBar.classList.toggle('flex', !!tab);
+            }
+            if (titleEl) {
+                const card = tab ? document.getElementById(`admin-tab-btn-${tab}`) : null;
+                const h = card ? card.querySelector('h3') : null;
+                titleEl.textContent = h ? h.textContent : '';
+            }
 
             // Render ulang grafik pengunjung setiap kali tab ini dibuka, supaya Chart.js
             // menghitung ukuran kanvas dengan benar (kanvas di tab tersembunyi punya lebar 0).
             if (tab === 'visitors' && typeof renderVisitorAnalytics === 'function') {
                 setTimeout(renderVisitorAnalytics, 50);
             }
+            if (typeof safeLucideIcons === 'function') safeLucideIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         function renderAdminTrackersList() {
