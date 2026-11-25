@@ -240,7 +240,7 @@
     </style>
 <style>
 /* ===== Landing info PT (sebelum login) ===== */
-.landing{height:auto!important;min-height:100vh;min-height:100dvh;background:#f3f7ff}
+.landing{height:100vh;height:100dvh;background:#0a1c4a}
 .co-wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 .co-bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:#0a1c4a;border-bottom:1px solid rgba(255,255,255,.12)}
 .co-brand{display:flex;align-items:center;gap:10px}
@@ -323,86 +323,14 @@
             </button>
         </header>
 
-        <main class="co">
-            <section class="co-hero">
-                <div class="co-wrap co-hero-grid">
-                    <div class="co-hero-copy">
-                        <p class="co-name">PT Zhedvanois Creative Agency</p>
-                        <h1>Media, video, dan distribusi konten dalam satu agensi.</h1>
-                        <p class="co-lead">Agensi digital progresif yang berfokus pada inovasi konten media dan distribusi visual. Kami menghubungkan audiens dengan konten yang relevan, cepat, dan berdampak tinggi.</p>
-                        <div class="co-cta">
-                            <button type="button" onclick="openAuthModal('register')" class="co-btn co-btn-solid">Daftar jadi member</button>
-                            <button type="button" onclick="openAuthModal('login')" class="co-btn co-btn-ghost">Masuk ke portal</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="co-sec co-read">
-                <div class="co-wrap">
-                    <div class="co-read-head">
-                        <h2>Ruang Baca</h2>
-                        <div class="co-read-nav">
-                            <button type="button" onclick="landKaryaScroll(-1)" aria-label="Geser kiri"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                            <button type="button" onclick="landKaryaScroll(1)" aria-label="Geser kanan"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-                    <p class="co-plat" style="margin-top:6px">Resensi, artikel, dan opini terbaru. Geser ke samping, lalu tekan Baca.</p>
-                    <div id="land-karya-track" class="co-track"><p class="co-plat">Memuat karya...</p></div>
-                </div>
-            </section>
-
-            <section class="co-sec">
-                <div class="co-wrap">
-                    <h2>Tiga layanan, satu alur konten</h2>
-                    <div class="co-svc">
-                        <article><i data-lucide="newspaper" class="w-6 h-6"></i><div><h3>Platform media berita digital</h3><p>Portal berita terkurasi, aktual, dan kredibel dengan penyajian yang dinamis dan relevan bagi audiens masa kini.</p></div></article>
-                        <article><i data-lucide="clapperboard" class="w-6 h-6"></i><div><h3>Layanan video clipping</h3><p>Video panjang diolah dan dikurasi menjadi konten pendek bernilai tinggi untuk memaksimalkan engagement, reach, dan potensi viral di berbagai platform.</p></div></article>
-                        <article><i data-lucide="share-2" class="w-6 h-6"></i><div><h3>Distribusi dan strategi konten</h3><p>Alur distribusi berbasis data yang membantu kreator, brand, dan entitas media mencapai keterlibatan audiens yang maksimal.</p></div></article>
-                    </div>
-                    <p class="co-plat">Format pendek untuk <b>TikTok</b>, <b>Instagram Reels</b>, dan <b>YouTube Shorts</b>.</p>
-                </div>
-            </section>
-
-            <section class="co-sec co-sec-alt">
-                <div class="co-wrap co-vm">
-                    <div>
-                        <h2>Visi</h2>
-                        <p class="co-visi">Menjadi pelopor ekosistem media digital terdepan di Indonesia yang menginspirasi, mengedukasi, dan menghibur melalui konten berkualitas tinggi serta distribusi visual yang inovatif.</p>
-                    </div>
-                    <div>
-                        <h2>Misi</h2>
-                        <ul class="co-misi">
-                            <li><i data-lucide="check-circle-2" class="w-5 h-5"></i><span>Menyajikan informasi digital yang akurat, cepat, dan mudah diakses oleh berbagai lapisan masyarakat.</span></li>
-                            <li><i data-lucide="check-circle-2" class="w-5 h-5"></i><span>Mengembangkan ekosistem video clipping kreatif yang memaksimalkan potensi konten audio-visual di ranah digital.</span></li>
-                            <li><i data-lucide="check-circle-2" class="w-5 h-5"></i><span>Menerapkan teknologi dan strategi berbasis data untuk mengoptimalkan jangkauan serta keterlibatan audiens.</span></li>
-                            <li><i data-lucide="check-circle-2" class="w-5 h-5"></i><span>Membangun kemitraan strategis dengan kreator, pelaku industri, dan pemegang merek untuk dampak media yang berkelanjutan.</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section class="co-end">
-                <div class="co-wrap">
-                    <h2>Sudah jadi bagian dari tim?</h2>
-                    <p>Masuk untuk mengerjakan tugas, absen, dan membaca di Ruang Baca.</p>
-                    <div class="co-cta co-cta-c">
-                        <button type="button" onclick="openAuthModal('login')" class="co-btn co-btn-amber">Masuk</button>
-                        <button type="button" onclick="openAuthModal('register')" class="co-btn co-btn-ghost">Daftar member</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <div id="land-reader" class="co-reader hidden" onclick="if(event.target===this)closeLandKarya()">
-            <div class="co-reader-box">
-                <button type="button" onclick="closeLandKarya()" class="co-reader-x" aria-label="Tutup"><i data-lucide="x" class="w-4 h-4"></i></button>
-                <div id="land-reader-body"></div>
-                <div class="co-reader-cta"><span>Ingin ikut berkarya dan mengerjakan tugas?</span><button type="button" onclick="closeLandKarya();openAuthModal('register')" class="co-btn co-btn-amber">Daftar member</button></div>
+        <div class="relative flex-1 min-h-0">
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6" style="color:#bcd2f5">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 mb-3" style="border-color:#60a5fa;border-top-color:transparent"></div>
+                <p class="text-xs font-semibold">Memuat baca.zhedvanois.id...</p>
+                <a href="https://baca.zhedvanois.id/" target="_blank" rel="noopener noreferrer" class="mt-2 text-[11px] underline" style="color:#bfdbfe">Tidak tampil? Buka di tab baru</a>
             </div>
+            <iframe src="https://baca.zhedvanois.id/" title="Ruang Baca ZHEDVANOIS" class="absolute inset-0 w-full h-full border-0 bg-white" loading="eager"></iframe>
         </div>
-
-        <footer class="co-foot">&copy; 2026 PT ZHEDVANOIS CREATIVE AGENCY. All rights reserved.</footer>
 
         <!-- Modal Masuk / Daftar (muncul saat ikon user diklik) -->
         <div id="auth-modal" class="hidden fixed inset-0 z-[60] items-start justify-center p-4 overflow-y-auto auth-backdrop" onclick="if(event.target===this)closeAuthModal()">
@@ -724,6 +652,10 @@
                                 <i data-lucide="zap" class="w-4 h-4 text-slate-500"></i>
                                 <span>Top Up Service</span>
                             </a>
+                            <a href="#ruangbaca" onclick="showAppSection('ruangbaca'); toggleMenu()" id="nav-link-ruangbaca" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
+                                <i data-lucide="book-open" class="w-4 h-4 text-slate-500"></i>
+                                <span>Ruang Baca</span>
+                            </a>
                             <a href="#bantuan" onclick="showAppSection('bantuan'); toggleMenu()" id="nav-link-bantuan" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
                                 <i data-lucide="life-buoy" class="w-4 h-4 text-slate-500"></i>
                                 <span>Pusat Bantuan</span>
@@ -842,6 +774,10 @@
                         <button type="button" onclick="showAppSection('absen')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
                             <span class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center"><i data-lucide="camera" class="w-5 h-5"></i></span>
                             <span class="text-[11px] font-extrabold text-slate-800 text-center leading-tight">Absen</span>
+                        </button>
+                        <button type="button" onclick="showAppSection('ruangbaca')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
+                            <span class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-700 flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
+                            <span class="text-[11px] font-extrabold text-slate-800 text-center leading-tight">Ruang Baca</span>
                         </button>
                         <button type="button" onclick="showAppSection('idcard')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
                             <span class="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-700 flex items-center justify-center"><i data-lucide="qr-code" class="w-5 h-5"></i></span>
@@ -1363,6 +1299,16 @@
             <!-- ========================================================= -->
             <!-- SUB-HALAMAN 5D: ABOUT US                                   -->
             <!-- ========================================================= -->
+            <section id="sec-ruangbaca" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center justify-between gap-3">
+                    <h2 class="font-black text-base text-slate-900">RUANG BACA ZHEDVANOIS</h2>
+                    <a href="https://baca.zhedvanois.id/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl shrink-0">Buka Tab Baru</a>
+                </div>
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <iframe src="https://baca.zhedvanois.id/" title="Ruang Baca ZHEDVANOIS" class="w-full h-[80vh] min-h-[650px] border-0" loading="lazy"></iframe>
+                </div>
+            </section>
+
             <section id="sec-aboutus" class="hidden max-w-4xl mx-auto px-4 py-8 w-full space-y-6">
                 <div class="text-center mb-2">
                     <span class="px-3 py-1 bg-slate-900 text-white font-black text-[10px] rounded-full uppercase tracking-wider">Tentang Kami</span>
@@ -1616,13 +1562,13 @@
                             <p class="text-[11px] text-slate-500 mt-1 leading-snug">Pantau pesanan affiliate masuk</p>
                         </div>
                     </button>
-                    <button type="button" id="admin-tab-btn-karya" onclick="switchAdminTab('karya')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
-                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#e0e7ff;color:#4338ca">
-                            <i data-lucide="book-open" class="w-5 h-5"></i>
+<button type="button" id="admin-tab-btn-laporan" onclick="switchAdminTab('laporan')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
+                        <div class="admin-card-icon w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style="background:#d1fae5;color:#047857">
+                            <i data-lucide="file-bar-chart" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Kelola Ruang Baca</h3>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Tulis, edit & hapus artikel, berita, opini</p>
+                            <h3 class="text-sm font-extrabold text-slate-900 leading-snug">Laporan Lengkap</h3>
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">Penjualan, absen, transaksi, anggota</p>
                         </div>
                     </button>
                     <button type="button" id="admin-tab-btn-absensi" onclick="switchAdminTab('absensi')" class="admin-card group relative text-left bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm flex flex-col gap-3 transition">
@@ -2287,6 +2233,20 @@
                     </div>
                 </div>
 
+                <div id="admin-subtab-laporan" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <h3 class="font-extrabold text-slate-900 text-base">Laporan Lengkap</h3>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <input type="date" id="rep-from" onchange="renderAdminReport()" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            <span class="text-xs text-slate-400">sampai</span>
+                            <input type="date" id="rep-to" onchange="renderAdminReport()" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium">
+                            <button type="button" onclick="document.getElementById('rep-from').value='';document.getElementById('rep-to').value='';renderAdminReport()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Semua</button>
+                            <button type="button" onclick="renderAdminReport()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Segarkan</button>
+                            <button type="button" onclick="printAdminReport()" class="px-3 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl">Cetak / PDF</button>
+                        </div>
+                    </div>
+                    <div id="rep-out" class="space-y-6"></div>
+                </div>
                 <!-- ADMIN SUB-TAB BARU: DATA ABSENSI -->
                 <div id="admin-subtab-absensi" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -3162,7 +3122,7 @@
                 try { karyaId = decodeURIComponent(pageId.slice(6)); } catch (e) { karyaId = pageId.slice(6); }
                 pageId = 'karyadetail';
             }
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'affiliate', 'riwayatbeli', 'topup', 'bantuan', 'aboutus', 'akun', 'absen', 'idcard', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'affiliate', 'riwayatbeli', 'topup', 'bantuan', 'aboutus', 'akun', 'absen', 'idcard', 'ruangbaca', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page (izinkan role admin & ops)
@@ -3826,7 +3786,7 @@
         /* 5. ADMIN PANEL CORE LOGIC & EDIT / HAPUS MASTER                   */
         /* ----------------------------------------------------------------- */
         window.switchAdminTab = (tab) => {
-            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'affproducts', 'afforders', 'tokotopup', 'karya', 'absensi'];
+            const tabs = ['visitors', 'members', 'missions', 'trackers', 'analytics', 'transactions', 'products', 'ads', 'announcements', 'bantuan', 'qris', 'affproducts', 'afforders', 'tokotopup', 'karya', 'absensi', 'laporan'];
             // Role ops tidak boleh membuka Daftar Member
             if (tab === 'members' && window.currentUserProfile && window.currentUserProfile.role === 'ops') tab = null;
 
@@ -3858,6 +3818,7 @@
                 if (typeof renderAdminKaryaList === 'function') renderAdminKaryaList();
                 if (typeof resetKaryaForm === 'function' && !document.getElementById('karya-edit-id').value && !document.getElementById('karya-title').value) resetKaryaForm();
             }
+            if (tab === 'laporan' && typeof renderAdminReport === 'function') renderAdminReport();
             if (tab === 'absensi') {
                 const dEl = document.getElementById('admin-att-date');
                 if (dEl) dEl.dataset.init = '1';
@@ -6466,6 +6427,62 @@
                     : card(false, 'Tidak terverifikasi', '', 'Member ini tidak ditemukan atau belum aktif.');
             } catch (err) { ov.innerHTML = card(false, 'Belum dapat diperiksa', '', 'Verifikasi belum tersedia. Hubungi admin.'); }
         })();
+
+
+        /* --- Admin: Laporan lengkap --- */
+        const rpRp = (n) => 'Rp ' + (Number(n) || 0).toLocaleString('id-ID');
+        const rpDay = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : `${d.getFullYear()}-${kPad(d.getMonth() + 1)}-${kPad(d.getDate())}`; };
+        function rpBuild() {
+            const f = document.getElementById('rep-from')?.value || '', t = document.getElementById('rep-to')?.value || '';
+            const inR = (day) => day && (!f || day >= f) && (!t || day <= t);
+            const mem = window.allMembersMap || {};
+            const nm = (r) => r.userNama || mem[r.userId]?.nama || r.username || '-';
+            const sales = Object.values(window.affOrdersMap || {}).filter(o => inR(rpDay(o.createdAt))).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+            const att = Object.values(window.allAttendance || {}).filter(r => inR(r.date)).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            const txs = Object.values(window.allTxMap || {}).filter(x => inR(rpDay(x.createdAt))).sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+            const tm = (r) => r ? kFmtTime(r.time) : '-';
+            const sum = (arr, fn) => arr.reduce((a, x) => a + (Number(fn(x)) || 0), 0);
+            const done = sales.filter(o => o.status === 'complete');
+            const okTx = (type) => txs.filter(x => x.type === type && x.status === 'approved');
+            const members = Object.values(mem);
+            return {
+                ringkas: { head: ['Ringkasan', 'Nilai'], rows: [
+                    ['Jumlah pesanan penjualan', sales.length], ['Pesanan selesai (Complete)', done.length], ['Total nilai penjualan (semua pesanan)', rpRp(sum(sales, o => o.price))],
+                    ['Nilai penjualan selesai', rpRp(sum(done, o => o.price))], ['Komisi pesanan selesai', rpRp(sum(done, o => o.commission))],
+                    ['Data absensi', att.length], ['Jumlah transaksi deposit/withdraw', txs.length], ['Deposit disetujui', rpRp(sum(okTx('deposit'), x => x.amount))],
+                    ['Withdraw disetujui', rpRp(sum(okTx('withdraw'), x => x.amount))], ['Total anggota', members.length], ['Total saldo seluruh anggota', rpRp(sum(members, m => m.saldo))]] },
+                penjualan: { head: ['Tanggal', 'Member', 'Produk', 'Harga', 'Komisi', 'Status'], rows: sales.map(o => [kFmtDate(o.createdAt), nm(o), o.productName || '-', rpRp(o.price), rpRp(o.commission), o.status === 'complete' ? 'Complete' : 'Pending']) },
+                absen: { head: ['Tanggal', 'Member', 'Clock In', 'Clock Out', 'Durasi'], rows: att.map(r => [kFmtDate(r.date + 'T00:00:00'), nm(r), tm(r.clockIn), tm(r.clockOut), absDur(r.clockIn, r.clockOut)]) },
+                transaksi: { head: ['Tanggal', 'Member', 'Jenis', 'Jumlah', 'Status', 'Keterangan'], rows: txs.map(x => [kFmtDate(x.createdAt), nm(x), x.type || '-', rpRp(x.amount), x.status || '-', typeof x.details === 'string' ? x.details : (x.details ? JSON.stringify(x.details) : '')]) },
+                anggota: { head: ['Nama', 'Email', 'Level', 'Saldo', 'Role'], rows: members.sort((a, b) => (a.nama || '').localeCompare(b.nama || '')).map(m => [m.nama || '-', m.email || '-', m.level || 1, rpRp(m.saldo), m.role || 'member']) }
+            };
+        }
+        const RP_TITLES = { ringkas: 'Ringkasan', penjualan: 'Laporan Penjualan', absen: 'Laporan Absensi', transaksi: 'Laporan Transaksi', anggota: 'Laporan Anggota' };
+        function rpTable(key, d, withBtn) {
+            const rows = d.rows.length ? d.rows.map(r => `<tr>${r.map(c => `<td class="p-2.5 border-b border-slate-100">${kEsc(c)}</td>`).join('')}</tr>`).join('') : `<tr><td colspan="${d.head.length}" class="p-4 text-center text-slate-400">Tidak ada data.</td></tr>`;
+            return `<div><div class="flex items-center justify-between gap-2 mb-2"><h4 class="font-extrabold text-slate-900 text-sm">${RP_TITLES[key]}${key !== 'ringkas' ? ` <span class="text-xs font-medium text-slate-400">(${d.rows.length} data)</span>` : ''}</h4>${withBtn && key !== 'ringkas' ? `<button type="button" onclick="downloadReportCsv('${key}')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold rounded-lg">Unduh CSV</button>` : ''}</div>
+                <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-slate-200 rounded-xl"><table class="w-full min-w-[560px] text-left text-xs"><thead class="bg-slate-100 text-slate-700 font-bold sticky top-0"><tr>${d.head.map(h => `<th class="p-2.5">${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+        }
+        window.renderAdminReport = () => {
+            const out = document.getElementById('rep-out'); if (!out) return;
+            window.__rep = rpBuild();
+            out.innerHTML = Object.keys(RP_TITLES).map(k => rpTable(k, window.__rep[k], true)).join('');
+        };
+        window.downloadReportCsv = (key) => {
+            const d = (window.__rep || rpBuild())[key]; if (!d) return;
+            const q = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+            const csv = '\ufeff' + [d.head, ...d.rows].map(r => r.map(q).join(',')).join('\r\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            a.download = `laporan-${key}-${rpDay(new Date())}.csv`; a.click();
+        };
+        window.printAdminReport = () => {
+            const rep = window.__rep || rpBuild();
+            const f = document.getElementById('rep-from')?.value || 'awal', t = document.getElementById('rep-to')?.value || 'sekarang';
+            const w = window.open('', '_blank'); if (!w) { window.showToast('Izinkan pop-up untuk mencetak laporan.'); return; }
+            const tbl = (k) => `<h2>${RP_TITLES[k]}</h2><table><thead><tr>${rep[k].head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rep[k].rows.map(r => `<tr>${r.map(c => `<td>${kEsc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+            w.document.write(`<html><head><title>Laporan ZHEDVANOIS</title><style>body{font-family:sans-serif;font-size:11px;padding:16px}table{border-collapse:collapse;width:100%;margin-bottom:16px}td,th{border:1px solid #999;padding:4px 6px;text-align:left}h1{font-size:16px}h2{font-size:13px;margin:14px 0 6px}</style></head><body><h1>Laporan PT ZHEDVANOIS CREATIVE AGENCY</h1><p>Periode: ${f} s/d ${t}</p>${Object.keys(RP_TITLES).map(tbl).join('')}</body></html>`);
+            w.document.close(); w.focus(); w.print();
+        };
 
     </script>
 
