@@ -724,10 +724,6 @@
                                 <i data-lucide="zap" class="w-4 h-4 text-slate-500"></i>
                                 <span>Top Up Service</span>
                             </a>
-                            <a href="#karya" onclick="showAppSection('karya'); toggleMenu()" id="nav-link-karya" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
-                                <i data-lucide="book-open" class="w-4 h-4 text-slate-500"></i>
-                                <span>Ruang Baca</span>
-                            </a>
                             <a href="#bantuan" onclick="showAppSection('bantuan'); toggleMenu()" id="nav-link-bantuan" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition">
                                 <i data-lucide="life-buoy" class="w-4 h-4 text-slate-500"></i>
                                 <span>Pusat Bantuan</span>
@@ -846,10 +842,6 @@
                         <button type="button" onclick="showAppSection('absen')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
                             <span class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center"><i data-lucide="camera" class="w-5 h-5"></i></span>
                             <span class="text-[11px] font-extrabold text-slate-800 text-center leading-tight">Absen</span>
-                        </button>
-                        <button type="button" onclick="showAppSection('karya')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
-                            <span class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-700 flex items-center justify-center"><i data-lucide="book-open" class="w-5 h-5"></i></span>
-                            <span class="text-[11px] font-extrabold text-slate-800 text-center leading-tight">Ruang Baca</span>
                         </button>
                         <button type="button" onclick="showAppSection('idcard')" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col items-center gap-2 hover:border-slate-900 transition active:scale-95">
                             <span class="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-700 flex items-center justify-center"><i data-lucide="qr-code" class="w-5 h-5"></i></span>
@@ -3170,7 +3162,7 @@
                 try { karyaId = decodeURIComponent(pageId.slice(6)); } catch (e) { karyaId = pageId.slice(6); }
                 pageId = 'karyadetail';
             }
-            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'affiliate', 'riwayatbeli', 'topup', 'bantuan', 'aboutus', 'akun', 'absen', 'karya', 'karyadetail', 'idcard', 'admin'];
+            const sections = ['beranda', 'trackermisi', 'analitik', 'riwayat', 'transaksi', 'ecomerce', 'affiliate', 'riwayatbeli', 'topup', 'bantuan', 'aboutus', 'akun', 'absen', 'idcard', 'admin'];
             const target = sections.includes(pageId) ? pageId : 'beranda';
 
             // Protect Admin Page (izinkan role admin & ops)
@@ -6388,8 +6380,18 @@
             if (k.content) return karyaSanitize(k.content);
             try {
                 if (!window.__blogFeed) {
-                    const r = await fetch(KARYA_SOURCE_BASE + 'feeds/posts/default?alt=json&max-results=500');
-                    window.__blogFeed = (await r.json()).feed.entry || [];
+                    const url = KARYA_SOURCE_BASE + 'feeds/posts/default?alt=json&max-results=500';
+                    try { window.__blogFeed = (await (await fetch(url)).json()).feed.entry || []; }
+                    catch (e1) {
+                        window.__blogFeed = await new Promise((res, rej) => {
+                            const cb = '__blogcb' + Date.now(), sc = document.createElement('script');
+                            const t = setTimeout(() => { sc.remove(); rej(new Error('timeout')); }, 12000);
+                            window[cb] = (j) => { clearTimeout(t); sc.remove(); res((j.feed && j.feed.entry) || []); };
+                            sc.onerror = () => { clearTimeout(t); rej(new Error('script')); };
+                            sc.src = url.replace('alt=json', 'alt=json-in-script') + '&callback=' + cb;
+                            document.body.appendChild(sc);
+                        });
+                    }
                 }
                 const h = (k.sourceUrl || '').replace(/^https?:\/\/[^/]+\//, '').replace(/\?.*$/, '');
                 const e = h && window.__blogFeed.find(x => (x.link || []).some(l => l.rel === 'alternate' && l.href.endsWith(h)));
@@ -6420,7 +6422,7 @@
             if (!k.content) {
                 const h = await karyaFullHTML(k);
                 const c = box.querySelector('.karya-content');
-                if (c) c.innerHTML = h || `<p>${kEsc(k.excerpt || '')}</p><p style="color:#94a3b8;font-size:13px">Tulisan lengkap belum dapat dimuat. Periksa koneksi lalu buka kembali.</p>`;
+                if (c) c.innerHTML = h || `<p>${kEsc(k.excerpt || '')}</p><p style="color:#94a3b8;font-size:13px">Tulisan lengkap belum dapat dimuat.</p>${k.sourceUrl ? `<p><a href="${kEsc(k.sourceUrl)}" target="_blank" rel="noopener noreferrer" style="font-weight:700;color:#2563eb">Buka tulisan lengkap di blog</a></p>` : ''}`;
             }
         };
         window.closeLandKarya = () => { document.getElementById('land-reader').classList.add('hidden'); document.body.style.overflow = ''; };
