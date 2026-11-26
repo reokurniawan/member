@@ -2711,6 +2711,34 @@
         </div>
     </div>
 
+    <!-- Pop Up Pengumuman Member (muncul otomatis setelah login berhasil) -->
+    <div id="announcement-popup" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" onclick="if(event.target===this)closeAnnouncementPopup()">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="ann-popup-title">
+            <div id="ann-popup-header" class="relative px-5 pt-6 pb-5 text-white bg-gradient-to-br from-blue-600 to-indigo-600">
+                <button type="button" onclick="closeAnnouncementPopup()" aria-label="Tutup" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+                <div class="flex items-center gap-3">
+                    <div id="ann-popup-icon" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0"></div>
+                    <div class="min-w-0">
+                        <p id="ann-popup-label" class="text-[10px] font-bold uppercase tracking-widest text-white/80">Pengumuman</p>
+                        <h3 id="ann-popup-title" class="text-base font-extrabold leading-snug break-words">Pengumuman</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="px-5 py-5 space-y-3">
+                <div id="ann-popup-msg" class="text-sm text-slate-700 leading-relaxed font-medium max-h-[45vh] overflow-y-auto break-words"></div>
+                <p id="ann-popup-date" class="text-[11px] text-slate-400 font-mono"></p>
+                <div id="ann-popup-nav" class="hidden flex items-center justify-between pt-1">
+                    <button type="button" id="ann-popup-prev" onclick="stepAnnouncement(-1)" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50">&larr; Sebelumnya</button>
+                    <span id="ann-popup-counter" class="text-xs font-bold text-slate-500"></span>
+                    <button type="button" id="ann-popup-next" onclick="stepAnnouncement(1)" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50">Berikutnya &rarr;</button>
+                </div>
+                <button type="button" id="ann-popup-close" onclick="closeAnnouncementPopup()" class="w-full bg-blue-600 text-white font-bold text-xs py-3 rounded-xl">Mengerti</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification Container -->
     <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-2xl translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 z-50">
         <i class="fa-solid fa-circle-info"></i>
@@ -3538,37 +3566,31 @@
                 safeLucideIcons();
             }, (err) => console.error("Error complaints:", err));
 
-            // Realtime Announcements Banner Listener
+            // Realtime Announcements Listener -> tampil sebagai POP UP setelah login berhasil
             onSnapshot(ANNOUNCEMENTS_COL, (snapshot) => {
-                const container = document.getElementById('announcement-banner-container');
-                if (!container) return;
+                const list = [];
+                snapshot.forEach(docSnap => list.push({ id: docSnap.id, ...docSnap.data() }));
+                list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                window.__announcements = list;
 
-                if (snapshot.empty) {
-                    container.innerHTML = '';
+                // Banner lama di beranda dikosongkan (diganti pop up)
+                const container = document.getElementById('announcement-banner-container');
+                if (container) container.innerHTML = '';
+
+                // Jika pop up sedang terbuka, perbarui isinya secara realtime
+                const modal = document.getElementById('announcement-popup');
+                if (modal && !modal.classList.contains('hidden')) {
+                    if (list.length === 0) { window.closeAnnouncementPopup(); }
+                    else { window.__annIndex = Math.min(window.__annIndex || 0, list.length - 1); window.renderAnnouncementPopup(); }
                     return;
                 }
 
-                let html = '';
-                snapshot.forEach(docSnap => {
-                    const a = docSnap.data();
-                    const badgeStyles = {
-                        info: 'bg-blue-50 text-blue-800 border-blue-200',
-                        warning: 'bg-amber-50 text-amber-800 border-amber-200',
-                        success: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-                        urgent: 'bg-rose-50 text-rose-800 border-rose-200'
-                    };
-                    html += `
-                        <div class="p-4 rounded-xl border ${badgeStyles[a.type] || badgeStyles.info} shadow-sm flex items-start gap-3">
-                            <i data-lucide="bell" class="w-5 h-5 shrink-0 mt-0.5"></i>
-                            <div>
-                                <h4 class="font-extrabold text-xs uppercase tracking-wider">${a.title}</h4>
-                                <p class="text-xs mt-0.5 font-medium leading-relaxed">${a.message}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-                safeLucideIcons();
+                // Tampilkan otomatis sekali setiap kali user berhasil login (logout me-reload halaman, jadi flag ter-reset)
+                if (list.length > 0 && !window.__annPopupShown) {
+                    window.__annPopupShown = true;
+                    window.__annIndex = 0;
+                    setTimeout(() => window.openAnnouncementPopup(), 600);
+                }
             });
 
             // Realtime Ads (Iklan) Banner Listener
@@ -4773,6 +4795,69 @@
             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', adId));
             window.showToast("Iklan berhasil dihapus.");
         };
+
+        /* ===== POP UP PENGUMUMAN MEMBER ===== */
+        const ANN_STYLES = {
+            info:    { label: 'Info Umum',          grad: 'from-blue-600 to-indigo-600',    icon: 'info',           btn: 'bg-blue-600 hover:bg-blue-700' },
+            warning: { label: 'Peringatan',         grad: 'from-amber-500 to-orange-500',   icon: 'triangle-alert', btn: 'bg-amber-600 hover:bg-amber-700' },
+            success: { label: 'Pengumuman Penting', grad: 'from-emerald-600 to-teal-600',   icon: 'megaphone',      btn: 'bg-emerald-600 hover:bg-emerald-700' },
+            urgent:  { label: 'Urgent / Darurat',   grad: 'from-rose-600 to-red-600',       icon: 'siren',          btn: 'bg-rose-600 hover:bg-rose-700' }
+        };
+        const annEsc = (t) => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+        window.renderAnnouncementPopup = () => {
+            const list = window.__announcements || [];
+            const i = window.__annIndex || 0;
+            const a = list[i];
+            if (!a) return;
+            const st = ANN_STYLES[a.type] || ANN_STYLES.info;
+
+            document.getElementById('ann-popup-header').className = 'relative px-5 pt-6 pb-5 text-white bg-gradient-to-br ' + st.grad;
+            document.getElementById('ann-popup-icon').innerHTML = '<i data-lucide="' + st.icon + '" class="w-6 h-6"></i>';
+            document.getElementById('ann-popup-label').textContent = st.label;
+            document.getElementById('ann-popup-title').textContent = a.title || 'Pengumuman';
+            document.getElementById('ann-popup-msg').innerHTML = annEsc(a.message).replace(/\n/g, '<br>');
+            document.getElementById('ann-popup-date').textContent = a.createdAt
+                ? new Date(a.createdAt).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' }) : '';
+
+            const multi = list.length > 1;
+            document.getElementById('ann-popup-nav').classList.toggle('hidden', !multi);
+            document.getElementById('ann-popup-counter').textContent = (i + 1) + ' / ' + list.length;
+            document.getElementById('ann-popup-prev').disabled = i === 0;
+            document.getElementById('ann-popup-next').disabled = i >= list.length - 1;
+            document.getElementById('ann-popup-prev').classList.toggle('opacity-40', i === 0);
+            document.getElementById('ann-popup-next').classList.toggle('opacity-40', i >= list.length - 1);
+
+            const closeBtn = document.getElementById('ann-popup-close');
+            closeBtn.className = 'w-full text-white font-bold text-xs py-3 rounded-xl transition ' + st.btn;
+            safeLucideIcons();
+        };
+
+        window.openAnnouncementPopup = () => {
+            if (!(window.__announcements || []).length) return;
+            const modal = document.getElementById('announcement-popup');
+            if (!modal) return;
+            window.renderAnnouncementPopup();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeAnnouncementPopup = () => {
+            const modal = document.getElementById('announcement-popup');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.stepAnnouncement = (dir) => {
+            const n = (window.__announcements || []).length;
+            window.__annIndex = Math.max(0, Math.min(n - 1, (window.__annIndex || 0) + dir));
+            window.renderAnnouncementPopup();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeAnnouncementPopup();
+        });
 
         window.handleAdminCreateAnnouncement = async (e) => {
             e.preventDefault();
